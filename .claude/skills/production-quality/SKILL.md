@@ -1,0 +1,109 @@
+---
+name: production-quality
+description: Brings code up to production quality level by orchestrating lint, refactor, test-coverage, security-scan, code-review, and update-documentation skills. Use when the user asks to clean up code, improve code quality, prepare code for production, or run the production quality routine.
+---
+
+# Production Quality Code Routine
+
+Orchestrates multiple quality skills to bring all changed files up to production quality level.
+
+## Scope
+
+This routine applies to all files changed in the current branch compared to `main` (or `origin/main`).
+Identify changed files with: `git diff --name-only origin/main...HEAD`
+
+## Step 1: Baseline Test Run
+
+Run the **Test (fast)** command from the CLAUDE.md Tooling table.
+**If tests fail, STOP** -- do not proceed with quality improvements on broken code.
+
+## Step 2: Lint Cleanup
+
+Run the `lint` skill:
+- Linter for code issues
+- Formatter for consistent style
+- Type checker for annotation errors
+- Do NOT disable any rules
+
+## Step 3: Refactor for Clarity
+
+Run the `refactor` skill:
+- Replace conditionals with lookup tables where appropriate
+- Use early returns and guard clauses
+- Extract magic numbers and strings to constants
+- Remove unnecessary comments
+
+## Step 4: Test Coverage Check
+
+Run the `test-coverage` skill:
+- Verify all new public functions have tests
+- Check edge cases and error paths
+- Add missing tests if coverage is insufficient
+- Verify reproducibility (same inputs -> same outputs)
+
+## Step 5: Security Scan
+
+Run the `security-scan` skill:
+- Static analysis for code security issues
+- Dependency audit for known vulnerabilities
+
+## Step 6: Logging and Observability Check
+
+Verify that changed code follows logging standards:
+- Uses the language's logging framework, not bare print/console output
+- Key operations produce structured log output
+- Diagnostic mode available for verbose recording
+- Sufficient data logged for post-mortem debugging
+
+## Step 7: Commit Changes
+
+Commit the work in small, structured commits:
+- One logical change per commit
+- Stage specific files (never `git add .`)
+- Use short, single-sentence commit messages in present tense
+
+## Step 8: Code Review Loop
+
+Run the `code-review` skill iteratively:
+- Review for SOLID violations, language best practices, performance issues
+- Fix the most critical issues found
+- Commit each fix separately with clear messages
+- Run tests after each fix
+- Repeat until no critical issues remain
+
+## Step 9: Update Documentation
+
+Run the `update-documentation` skill:
+- Update README if user-facing behavior changed
+- Update architecture docs if structural changes were made
+- Update doc comments for changed public APIs
+
+## Step 10: Final Checks
+
+Run all quality checks one final time using the commands from the CLAUDE.md Tooling table:
+- Linter: verify no style issues
+- Formatter: verify consistent formatting
+- Tests: verify all pass
+- Security: verify no issues
+
+Do NOT disable any rules or remove any test functions.
+
+## Step 11: Skill Self-Improvement
+
+Review this run and improve the skills themselves:
+- Were any steps unclear or incomplete?
+- Did you discover checks that should be added?
+- Were there quality issues the skills didn't catch?
+
+If improvements are identified, update the relevant skill file(s) in `.claude/skills/`.
+If the run was smooth, skip this step.
+
+## Completion
+
+Summarize:
+- Number of commits made
+- Key improvements made (from each skill)
+- Test coverage status
+- Security scan results
+- Logging/observability status
+- Skill improvements made (if any)
