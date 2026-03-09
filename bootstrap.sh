@@ -2,13 +2,13 @@
 set -euo pipefail
 
 # Bootstrap a new project from the best_practices template.
-# Usage: ./bootstrap.sh <target-directory> [--lang python|typescript|go|rust]
+# Usage: ./bootstrap.sh <target-directory> [--lang python|typescript|go|rust|ruby]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LANG="python"  # default
 
 usage() {
-    echo "Usage: $0 <target-directory> [--lang python|typescript|go|rust]"
+    echo "Usage: $0 <target-directory> [--lang python|typescript|go|rust|ruby]"
     echo ""
     echo "Sets up a new project with best-practices structure:"
     echo "  - .claude/ directory (agents, skills)"
@@ -20,7 +20,7 @@ usage() {
     echo ""
     echo "Options:"
     echo "  --lang    Language/stack (default: python)"
-    echo "            Supported: python, typescript, go, rust"
+    echo "            Supported: python, typescript, go, rust, ruby"
     exit 1
 }
 
@@ -50,9 +50,9 @@ done
 
 # Validate language
 case "$LANG" in
-    python|typescript|go|rust) ;;
+    python|typescript|go|rust|ruby) ;;
     *)
-        echo "Error: Unsupported language '$LANG'. Use: python, typescript, go, rust"
+        echo "Error: Unsupported language '$LANG'. Use: python, typescript, go, rust, ruby"
         exit 1
         ;;
 esac
@@ -126,6 +126,16 @@ case "$LANG" in
         echo "  Note: No Rust templates yet. Run 'cargo init' manually."
         echo "  Update the Project Tooling table in CLAUDE.md for Rust commands."
         ;;
+    ruby)
+        # Rails-style directory structure
+        mkdir -p "$TARGET/app/models" "$TARGET/app/controllers" "$TARGET/app/services"
+        mkdir -p "$TARGET/config" "$TARGET/db" "$TARGET/lib"
+        mkdir -p "$TARGET/spec/models" "$TARGET/spec/controllers" "$TARGET/spec/services"
+        mkdir -p "$TARGET/spec/support" "$TARGET/spec/factories"
+        echo "  Created: app/{models,controllers,services}, config/, db/, lib/"
+        echo "  Created: spec/{models,controllers,services,support,factories}"
+        echo "  Update the Project Tooling table in CLAUDE.md for Ruby commands."
+        ;;
 esac
 
 # 6. Initialize git if not already a repo
@@ -154,6 +164,13 @@ echo "  +-- .gitignore"
 case "$LANG" in
     python)
         echo "  +-- pyproject.toml     # Python config (ruff, mypy, pytest)"
+        ;;
+    ruby)
+        echo "  +-- app/               # Application code (models, controllers, services)"
+        echo "  +-- config/            # Configuration files"
+        echo "  +-- db/                # Database migrations and schema"
+        echo "  +-- lib/               # Library code"
+        echo "  +-- spec/              # RSpec test files"
         ;;
 esac
 echo ""

@@ -7,6 +7,16 @@ dist/
 build/
 *.egg
 
+# Ruby / Rails
+*.gem
+.bundle/
+vendor/bundle/
+tmp/
+storage/
+public/assets/
+public/packs/
+node_modules/
+
 # Virtual environments
 .venv/
 venv/

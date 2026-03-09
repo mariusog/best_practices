@@ -46,7 +46,7 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 ./bootstrap.sh /path/to/new-project --lang python
 ```
 
-Supported languages: `python`, `typescript`, `go`, `rust`.
+Supported languages: `python`, `typescript`, `go`, `rust`, `ruby`.
 
 This copies the full structure, creates `src/`, `tests/`, `logs/`, `docs/` directories, and sets up language-specific config.
 

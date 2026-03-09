@@ -22,16 +22,16 @@ Configure these for your language/stack. All commands throughout this file and i
 
 <details><summary>Common alternative stacks</summary>
 
-| Tool | TypeScript/Node | Go | Rust |
-|------|----------------|-----|------|
-| Test (fast) | `npx jest --silent 2>&1 \| tail -20` | `go test ./... 2>&1 \| tail -20` | `cargo test 2>&1 \| tail -20` |
-| Lint | `npx eslint <files>` | `golangci-lint run` | `cargo clippy` |
-| Format | `npx prettier --write <files>` | `gofmt -w <files>` | `cargo fmt` |
-| Type check | (built-in with tsc) | (built-in) | (built-in) |
-| Security | `npm audit` | `govulncheck ./...` | `cargo audit` |
-| Constants file | `src/constants.ts` | `internal/constants.go` | `src/constants.rs` |
-| Test fixtures | `tests/helpers.ts` | `testutil/helpers.go` | `tests/common/mod.rs` |
-| Source extension | `.ts` | `.go` | `.rs` |
+| Tool | TypeScript/Node | Go | Rust | Ruby/Rails |
+|------|----------------|-----|------|------------|
+| Test (fast) | `npx jest --silent 2>&1 \| tail -20` | `go test ./... 2>&1 \| tail -20` | `cargo test 2>&1 \| tail -20` | `bundle exec rspec --format progress 2>&1 \| tail -20` |
+| Lint | `npx eslint <files>` | `golangci-lint run` | `cargo clippy` | `bundle exec rubocop <files>` |
+| Format | `npx prettier --write <files>` | `gofmt -w <files>` | `cargo fmt` | `bundle exec rubocop -a <files>` |
+| Type check | (built-in with tsc) | (built-in) | (built-in) | `bundle exec srb tc` (Sorbet) |
+| Security | `npm audit` | `govulncheck ./...` | `cargo audit` | `bundle audit check --update` |
+| Constants file | `src/constants.ts` | `internal/constants.go` | `src/constants.rs` | `config/constants.rb` |
+| Test fixtures | `tests/helpers.ts` | `testutil/helpers.go` | `tests/common/mod.rs` | `spec/factories/` (FactoryBot) |
+| Source extension | `.ts` | `.go` | `.rs` | `.rb` |
 
 </details>
 
