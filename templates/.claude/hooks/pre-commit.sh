@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-set -o pipefail
+set -uo pipefail
 # Block git commit if tests fail.
 # Claude Code hook: reads JSON from stdin, exit 2 to block.
+
+command -v jq >/dev/null 2>&1 || { echo "Error: jq is required for Claude Code hooks" >&2; exit 1; }
 
 INPUT=$(cat)
 COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command')
