@@ -11,7 +11,7 @@ Configure these for your language/stack. All commands throughout this file and i
 | **Lint** | `ruff check <files>` | Auto-fix: `ruff check --fix <files>` |
 | **Format** | `ruff format <files>` | Check only: `ruff format --check <files>` |
 | **Type check** | `mypy <files>` | |
-| **Security scan** | `bandit -r . -ll` | Dependencies: `pip-audit` |
+| **Security scan** | `bandit -r src/ -ll` | Dependencies: `pip-audit` |
 | **Log analysis** | `<your-tool> <log> --brief 2>&1 \| tail -15` | Configure per-project. See Log-Reading Workflow below. |
 | **Benchmark** | `<your-tool> --diagnostics` | Configure per-project. Results go to `docs/`. |
 | **Constants file** | `src/constants.py` | All magic numbers and tuning parameters. |
@@ -176,7 +176,7 @@ your_project/
 - **SRP**: Every class/function has one responsibility. If you can say "and", split it.
 - **OCP**: Behavior is extensible without modifying existing code.
 - **LSP**: Subtypes are drop-in replacements for their base types.
-- **ISP**: Specific imports only. No wildcard imports.
+- **ISP**: Depend on small, focused interfaces -- not large monolithic ones. No wildcard imports.
 - **DIP**: High-level modules depend on abstractions, not low-level implementation details.
 
 ### Law of Demeter
