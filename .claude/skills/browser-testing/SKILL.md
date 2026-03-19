@@ -15,8 +15,8 @@ Configure MCP servers so Claude can see browser state directly:
 
 | Tool | Purpose | Setup |
 |------|---------|-------|
-| [Playwright MCP](https://github.com/microsoft/playwright-mcp) | Browser automation, screenshots, DOM inspection | `npx @anthropic-ai/claude-code mcp add playwright -- npx @anthropic-ai/playwright-mcp` |
-| [Chrome DevTools MCP](https://developer.chrome.com/blog/chrome-devtools-mcp) | Console logs, network tab, performance | Connect via Chrome DevTools Protocol |
+| [Playwright MCP](https://github.com/microsoft/playwright-mcp) | Browser automation, screenshots, DOM inspection | `claude mcp add playwright -- npx @anthropic-ai/playwright-mcp` |
+| [Chrome DevTools MCP](https://developer.chrome.com/blog/chrome-devtools-mcp) | Console logs, network tab, performance | `claude mcp add chrome-devtools -- npx @anthropic-ai/chrome-devtools-mcp` |
 
 With MCP configured, Claude can take screenshots, read console errors, and inspect DOM elements without you manually copying output.
 
@@ -48,7 +48,7 @@ Separate e2e tests from unit tests. E2e tests are slow — mark them accordingly
 
 ## Step 3: Page Object Model
 
-Encapsulate page interactions behind a clean API. Tests should read like user stories, not DOM manipulation scripts.
+Encapsulate page interactions behind a clean API. Tests should read like user stories, not DOM manipulation scripts. Create a page object for each major page or component your tests interact with. You're done with this step when at least one e2e test runs end-to-end through page objects without direct selector manipulation in the test body.
 
 ```python
 # pages/login_page.py
@@ -198,6 +198,7 @@ Critical path smoke tests. Run these:
 - After infrastructure changes
 - As the first check when "something is wrong"
 """
+import time
 
 async def test_signup_flow(page, base_url):
     """New user can sign up, verify email, and land on dashboard."""
