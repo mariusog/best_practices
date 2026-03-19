@@ -148,7 +148,7 @@ gh run view <run-id> --log-failed
 1. Read the failed check output
 2. Fix locally, push new commit (do NOT force-push)
 3. Wait for CI to re-run
-4. If the failure is flaky/unrelated, note it in the PR
+4. If the failure is flaky/unrelated, note it in the PR. To determine if a failure is flaky: (1) check if the failing test is related to your changes — if not, it may be pre-existing, (2) re-run the CI pipeline once — if it passes on retry, it's flaky, (3) check recent CI history on the base branch — if the same test fails there too, it's a pre-existing issue. Only mark as flaky after at least one of these checks.
 
 ## Merge Strategy
 
@@ -219,7 +219,7 @@ Split it:
 3. Open smaller, focused PRs
 4. Reference the original task in each PR
 
-**Rule of thumb**: If a PR touches more than 10 files or 300 lines of diff, consider splitting.
+**Rule of thumb**: If a PR exceeds 10 files or 300 lines of diff, actively look for a natural split point (e.g., refactoring vs. feature, backend vs. frontend). If all changes are tightly coupled and splitting would require duplicating context, proceed as one PR but note the size in the description. Trivial changes (import reordering, formatting) don't count toward the limit.
 
 ## Multi-Agent PR Workflow
 

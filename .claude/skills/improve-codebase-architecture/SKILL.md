@@ -23,7 +23,11 @@ Use the Agent tool with subagent_type=Explore to navigate the codebase naturally
 
 The friction you encounter IS the signal.
 
+Spend no more than 10-15 minutes on exploration. You're looking for friction, not building a complete map. If you haven't found friction after reading 10-15 files, the codebase may already be well-structured — report that as a finding.
+
 ### 2. Present Candidates
+
+Present 3-5 candidates, ranked by impact (most coupling/friction first). If you found more than 5, include only the top 5 — the user can always ask for more.
 
 Present a numbered list of deepening opportunities. For each candidate, show:
 

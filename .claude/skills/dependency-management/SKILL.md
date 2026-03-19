@@ -126,7 +126,16 @@ cargo update   # Update within semver ranges
 Follow this checklist every time:
 
 1. **Do you actually need it?** Can the standard library do this in <20 lines?
-2. **Check quality**: GitHub stars, last commit date, open issue count, maintenance status
+2. **Check quality**: Evaluate using these thresholds:
+
+   | Signal | Green | Yellow | Red |
+   |--------|-------|--------|-----|
+   | Last commit | < 6 months | 6-18 months | > 18 months |
+   | Open issues | Responsive maintainer | Backlog growing | Abandoned (no responses) |
+   | Downloads/stars | Active community | Niche but maintained | Very few users |
+   | Dependencies | Few, well-known | Moderate | Deep tree of unknowns |
+
+   Yellow signals warrant investigation. Two or more red signals: find an alternative.
 3. **Check security**: Run the audit tool after adding
 4. **Pin the version range**: Use compatible ranges, not `*` or `latest`
 5. **Update the lock file**: Commit the updated lock file

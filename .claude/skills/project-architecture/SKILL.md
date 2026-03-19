@@ -36,10 +36,12 @@ Analyze the code using these metrics:
 |--------|---------|-----------|
 | Module size | < 300 lines | > 500 lines, multiple unrelated responsibilities |
 | Class size | < 200 lines | God class doing everything |
-| Import depth | 2-3 levels max | Deep chains: a -> b -> c -> d -> e |
+| Import depth | ≤ 3 levels (warning at 4, unhealthy at 5+) | Deep chains: a -> b -> c -> d -> e |
 | Circular imports | Zero | Any |
 | Public surface area | Small, intentional | Everything is public |
 | Coupling | Modules share interfaces, not internals | Module A reaches into Module B's data structures |
+
+If all metrics are in the healthy range, report that the architecture is sound and no restructuring is needed. This is a valid outcome — not every codebase needs refactoring. Note any minor opportunities but don't force changes.
 
 ### Step 3: Apply the Right Pattern
 

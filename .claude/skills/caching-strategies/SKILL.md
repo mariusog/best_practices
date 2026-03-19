@@ -127,6 +127,13 @@ def load_or_compute(key, compute_fn):
 
 ## Cache Invalidation
 
+### Choosing an Invalidation Strategy
+
+- Data changes are **event-driven** (e.g., user action, write operation) → **Event-based** invalidation (clear cache on write)
+- Data changes are **time-based** or **unpredictable** (e.g., external API, sensor data) → **TTL-based** invalidation (cache expires after fixed duration)
+- Data is **immutable** once computed (e.g., historical aggregations, hashed lookups) → **No invalidation needed** — cache permanently
+- Data changes are **rare but important** (e.g., config, feature flags) → **Event-based** with a TTL safety net (clear on change, but also expire after a long TTL as a fallback)
+
 ### Event-Based
 
 ```python
@@ -176,5 +183,5 @@ def test_cache_invalidation():
 - [ ] Cache keys are hashable (tuples, frozensets, not lists/dicts)
 - [ ] Caches cleared between runs/sessions
 - [ ] Cache hit rates monitored for key caches (log them)
-- [ ] No unbounded caches that could cause memory issues
+- [ ] No unbounded caches — every cache must have an explicit size limit (e.g., `maxsize=1024`) or TTL. If you can't predict the cardinality of cache keys, use an LRU policy. As a rule of thumb, a cache entry should not exceed 1KB, and total cache memory should stay under 100MB unless profiling justifies more.
 - [ ] Disk caching for expensive ML training or data processing
