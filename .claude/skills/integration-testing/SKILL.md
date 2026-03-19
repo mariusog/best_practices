@@ -1,6 +1,6 @@
 ---
 name: integration-testing
-description: Patterns for testing module interactions, external services, and end-to-end workflows. Principles are language-neutral; examples use Python/pytest. Use when testing API integrations, service interactions, database access, or when user mentions integration test, mock API, test containers, contract test, or end-to-end test.
+description: Use when testing API integrations, service interactions, database access, or when user mentions integration test, mock API, test containers, contract test, or end-to-end test. Covers module interactions, external services, and end-to-end workflows; examples use Python/pytest but principles are language-neutral.
 ---
 
 # Integration Testing Patterns

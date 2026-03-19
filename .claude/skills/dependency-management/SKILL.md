@@ -1,6 +1,6 @@
 ---
 name: dependency-management
-description: Manages project dependencies, virtual environments, lock files, and version pinning. Language-neutral principles with multi-language examples. Use when setting up environments, adding dependencies, auditing packages, or when user mentions dependencies, packages, virtual environment, lock file, or version pinning.
+description: Use when setting up environments, adding dependencies, auditing packages, or when user mentions dependencies, packages, virtual environment, lock file, or version pinning. Manages project dependencies, virtual environments, lock files, and version pinning with multi-language examples.
 ---
 
 # Dependency Management

@@ -1,6 +1,6 @@
 ---
 name: readme-standards
-description: Guidelines for writing clear, complete README files. Language-neutral. Use when creating a new project README, reviewing documentation quality, or when user mentions README, project documentation, or onboarding docs.
+description: Use when creating a new project README, reviewing documentation quality, or when user mentions README, project documentation, or onboarding docs. Guidelines for writing clear, complete README files. Language-neutral.
 ---
 
 # README Standards

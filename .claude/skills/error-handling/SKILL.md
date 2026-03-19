@@ -1,6 +1,6 @@
 ---
 name: error-handling
-description: Structured error handling patterns including custom exceptions, error propagation, boundary validation, and recovery. Principles are language-neutral; examples use Python. Use when adding error handling, designing exception hierarchies, fixing swallowed errors, or when user mentions errors, exceptions, validation, or error recovery.
+description: Use when adding error handling, designing exception hierarchies, fixing swallowed errors, or when user mentions errors, exceptions, validation, or error recovery. Covers custom exceptions, error propagation, boundary validation, and recovery; examples use Python but principles are language-neutral.
 ---
 
 # Error Handling Patterns

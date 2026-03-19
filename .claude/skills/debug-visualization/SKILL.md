@@ -1,6 +1,6 @@
 ---
 name: debug-visualization
-description: Build text-based debug and visualization tools optimized for AI agent consumption. Principles are language-neutral; examples use Python. Use when the user asks to visualize data, build debug tools, inspect system behavior, or when user mentions visualization, debug tools, replay, or analysis tools.
+description: Use when the user asks to visualize data, build debug tools, inspect system behavior, or when user mentions visualization, debug tools, replay, or analysis tools. Builds text-based debug and visualization tools optimized for AI agent consumption; examples use Python but principles are language-neutral.
 ---
 
 # Debug Visualization Skill

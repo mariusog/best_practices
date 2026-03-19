@@ -1,6 +1,6 @@
 ---
 name: data-pipeline
-description: Creates data processing pipelines and transformation patterns. Principles are language-neutral; examples use Python. Use when building data transforms, processing chains, ETL workflows, or when user mentions data pipeline, data processing, feature engineering, or data transformation.
+description: Use when building data transforms, processing chains, ETL workflows, or when user mentions data pipeline, data processing, feature engineering, or data transformation. Creates data processing pipeline patterns; examples use Python but principles are language-neutral.
 ---
 
 # Data Pipeline Patterns

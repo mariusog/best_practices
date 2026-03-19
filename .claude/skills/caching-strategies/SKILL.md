@@ -1,6 +1,6 @@
 ---
 name: caching-strategies
-description: Implements caching patterns for performance optimization. Principles are language-neutral; examples use Python. Use when adding memoization, precomputation, result caching, or when user mentions caching, performance, cache keys, or memoization.
+description: Use when adding memoization, precomputation, result caching, or when user mentions caching, performance, cache keys, or memoization. Implements caching patterns for performance optimization; examples use Python but principles are language-neutral.
 ---
 
 # Caching Strategies

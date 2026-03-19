@@ -1,6 +1,6 @@
 ---
 name: project-architecture
-description: Guides project architecture decisions and patterns. The principles (separation of concerns, module organization, when to abstract) apply to any language; code examples use Python. Use when deciding where to put code, choosing between patterns, designing module structure, or when user mentions architecture, code organization, or design patterns.
+description: Use when deciding where to put code, choosing between patterns, designing module structure, or when user mentions architecture, code organization, or design patterns. Guides project architecture decisions including separation of concerns, module organization, and when to abstract; code examples use Python but principles are language-neutral.
 ---
 
 # Project Architecture Patterns

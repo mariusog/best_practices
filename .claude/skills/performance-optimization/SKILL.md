@@ -1,6 +1,6 @@
 ---
 name: performance-optimization
-description: Identifies and fixes performance issues including algorithmic complexity, memory usage, and profiling. Principles are language-neutral; examples use Python. Use when optimizing code, fixing slow functions, improving response times, or when user mentions performance, slow, optimization, or profiling.
+description: Use when optimizing code, fixing slow functions, improving response times, or when user mentions performance, slow, optimization, or profiling. Identifies and fixes performance issues including algorithmic complexity, memory usage, and profiling; examples use Python but principles are language-neutral.
 ---
 
 # Performance Optimization

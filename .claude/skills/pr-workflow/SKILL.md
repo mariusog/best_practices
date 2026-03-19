@@ -1,6 +1,6 @@
 ---
 name: pr-workflow
-description: Guides the full pull request lifecycle from branch creation through review to merge. Language-neutral. Use when creating PRs, reviewing PRs, checking CI status, or when user mentions pull request, PR, merge, code review workflow, or branch strategy.
+description: Use when creating PRs, reviewing PRs, checking CI status, or when user mentions pull request, PR, merge, code review workflow, or branch strategy. Guides the full pull request lifecycle from branch creation through review to merge. Language-neutral.
 ---
 
 # PR Workflow

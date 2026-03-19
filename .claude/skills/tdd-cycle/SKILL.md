@@ -1,6 +1,6 @@
 ---
 name: tdd-cycle
-description: Guides Test-Driven Development workflow with Red-Green-Refactor cycle. Principles are language-neutral; examples use Python/pytest. Use when the user wants to implement a feature using TDD, write tests first, follow test-driven practices, or mentions red-green-refactor.
+description: Use when the user wants to implement a feature using TDD, write tests first, follow test-driven practices, or mentions red-green-refactor. Guides the Red-Green-Refactor cycle; examples use Python/pytest but principles are language-neutral.
 ---
 
 # TDD Cycle Skill
