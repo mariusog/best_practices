@@ -282,43 +282,60 @@ Agents should almost NEVER need to go past Step 2.
 
 When multiple agents run in parallel (via worktrees), they MUST follow this protocol.
 
+### Execution Model
+
+1. **Lead-agent runs first** -- diagnoses, plans, creates tasks
+2. **Core, feature, and QA agents start in parallel** -- each works on assigned tasks independently
+3. **Lead-agent monitors and validates** -- reads agent plan files, handles escalations, merges branches
+
+### Task Architecture
+
+| File | Owner | Purpose |
+|------|-------|---------|
+| `TASKS.md` | lead-agent (exclusively) | Master task board with assignments, statuses, and result summaries |
+| `TASKS-core.md` | core-agent | Detailed checklists, progress, and results for core tasks |
+| `TASKS-feature.md` | feature-agent | Detailed checklists, progress, and results for feature tasks |
+| `TASKS-qa.md` | qa-agent | Detailed checklists, audit reports, and escalations |
+
+**Each agent only writes to their own plan file.** This eliminates merge conflicts on shared files.
+
 ### Task Workflow
 
-1. Read `TASKS.md` -- see what's available, claimed, and done
-2. Claim a task matching your role -- set status to `in-progress`, add your agent name
-3. Do the work -- stay in your lane (only modify your owned files)
-4. Run tests -- all must pass before committing
-5. Update `TASKS.md` -- set status to `done`, add result note in this format:
-
-```
-Result: <what changed> | <metric before> -> <metric after> | <tests: pass/fail>
-```
-
-Example: `Result: Added idle timeout | idle_pct: 15% -> 3% | tests: 432 pass`
+1. Lead creates tasks in `TASKS.md` and writes detailed checklists in the appropriate agent plan file
+2. Agents read `TASKS.md` for assignments, then work from their own plan file
+3. Agents check off items and write results in their plan file as they progress
+4. Lead validates by reading agent plan files and running quality checks
+5. Lead updates `TASKS.md` with final results after validation
 
 ### Task Result Format
 
-Every completed task MUST report:
+Every completed task MUST report in the agent's plan file:
 - **What changed**: One sentence describing the code change
 - **Metrics**: Before/after numbers for the targeted metric
 - **Tests**: Pass count, any new tests added
-- **Problems**: Any issues discovered for other agents (add as new tasks)
+
+### Escalation
+
+- If blocked by another agent's code, mark the task as **BLOCKED** in your plan file with a description
+- If QA finds a critical issue (data loss, security hole, crash), mark as **CRITICAL** in `TASKS-qa.md`
+- Lead-agent monitors plan files and triages blockers and escalations
+- Do NOT silently stall -- always surface the blocker
 
 ### Conflict Prevention
 
-- Never claim a task already marked `in-progress`
-- If you discover work in another agent's files, add a task -- do NOT modify their files
-- QA Agent benchmarks AFTER other agents commit, not in parallel with active changes
+- Each agent only modifies their owned files -- never touch another agent's code
+- If you discover work needed in another agent's files, add it to your plan file with a `BLOCKED` tag
 - One task at a time -- finish or abandon before claiming another
+- Lead-agent handles all cross-cutting changes
 
 ## File Ownership
 
 | Agent | Owned Files | Role |
 |-------|-------------|------|
-| lead-agent | Entry points, constants, `TASKS.md`, `CLAUDE.md`, `.claude/agents/` | Architecture, cross-cutting changes, task design |
-| core-agent | Core algorithm and data modules | Algorithms, data structures, computation |
-| feature-agent | Feature/business logic modules | Decision logic, workflows, rules |
-| qa-agent | `tests/`, benchmarks, `docs/` | Testing, benchmarking, profiling |
+| lead-agent | Entry points, constants, `TASKS.md`, `TASKS-*.md` (creates), `CLAUDE.md`, `.claude/agents/` | Architecture, coordination, cross-cutting changes |
+| core-agent | Core algorithm and data modules, `TASKS-core.md` (fills out) | Algorithms, data structures, computation |
+| feature-agent | Feature/business logic modules, `TASKS-feature.md` (fills out) | Decision logic, workflows, rules |
+| qa-agent | `tests/`, benchmarks, `docs/`, `TASKS-qa.md` (fills out) | Testing, benchmarking, quality enforcement |
 
 The lead-agent has cross-cutting authority -- it may modify any file when a fix spans multiple agents' boundaries.
 
@@ -358,7 +375,7 @@ This copies the full structure, creates directories, and sets up language-specif
 2. Copy this CLAUDE.md -- update the **Project Tooling** table for your language/stack
 3. Replace the **Project Structure** section with your actual layout
 4. Copy `templates/.gitignore` (adapt language-specific patterns)
-5. Copy `templates/TASKS.md` for task tracking
+5. Copy `templates/TASKS.md` for task tracking and `templates/TASKS-agent.md` to create per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
 6. If Python: copy `templates/pyproject.toml`, `templates/conftest.py`, `templates/constants.py`
 7. If other language: create equivalent config, test fixtures, and constants files
 8. If using Claude Code hooks: copy `templates/.claude/settings.json` and `templates/.claude/hooks/`
