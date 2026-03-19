@@ -165,6 +165,23 @@ Not a review finding. Multiple correct approaches exist. Only flag it if your ap
 **"This violates a project convention."**
 Check CLAUDE.md for the convention. If it's documented, flag it as major. If it's just your preference, skip it.
 
+## Scoring (0-100)
+
+Start at 100. Deduct points for each **unresolved** issue (after fixes in Step 5):
+
+| Severity | Deduction per issue |
+|----------|---------------------|
+| Critical | -15 |
+| Major | -5 |
+| Minor | -1 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Production-ready -- no critical issues, minimal major issues |
+| 70-89 | Needs attention -- some major issues remain |
+| 50-69 | Significant issues -- multiple major or critical problems |
+| 0-49 | Not ready -- critical issues unresolved |
+
 ## Output Format
 
 Report findings grouped by severity, with file locations:
@@ -187,4 +204,5 @@ Report findings grouped by severity, with file locations:
 - Issues found: 1 critical, 2 major, 1 minor
 - Issues fixed: 1 critical, 1 major
 - Tests: all passing
+- **Score: 89/100** (0 critical × -15, 1 major × -5, 1 minor × -1 remaining)
 ```

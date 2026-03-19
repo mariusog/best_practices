@@ -52,12 +52,20 @@ Use the **Security scan** command from the CLAUDE.md Tooling table.
 
 ## Step 2: Dependency Audit
 
-Check for known vulnerabilities in dependencies. Update vulnerable packages if patched versions exist. If no patch available, document the risk.
+Check for known vulnerabilities in dependencies. Update vulnerable packages if patched versions exist. If no patch available, add a comment in the dependency file (e.g., `requirements.txt`, `package.json`) explaining the vulnerability and why no update is possible, and note it in the Completion report.
 
 ## Step 3: Additional Checks
 
 ### Check for Hardcoded Secrets
 Search for: API keys, tokens, passwords, private keys, connection strings.
+
+Use grep to scan for common secret patterns:
+```sh
+grep -rn --include='*.py' --include='*.ts' --include='*.go' --include='*.rs' --include='*.rb' --include='*.yml' --include='*.json' \
+  -iE '(password|secret|token|api_key|apikey|private_key)\s*[:=]\s*["'"'"'][^"'"'"']{8,}' . 2>/dev/null | grep -v node_modules | grep -v .git
+```
+
+Also check for base64-encoded strings and high-entropy strings in config files.
 
 ### Check .gitignore
 Ensure sensitive files are excluded:
@@ -69,9 +77,29 @@ Ensure sensitive files are excluded:
 
 Re-run all scans to confirm issues are resolved.
 
+## Scoring (0-100)
+
+Start at 100. Deduct points for each **unresolved** finding (after fixes in Steps 1-3):
+
+| Severity | Deduction per finding |
+|----------|----------------------|
+| Critical (RCE, injection, auth bypass) | -20 |
+| High (hardcoded secrets, unsafe deserialization) | -10 |
+| Medium (missing input validation, weak crypto) | -5 |
+| Low (informational, best-practice deviation) | -2 |
+| Vulnerable dependency (unpatched) | -5 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Secure -- no critical or high findings |
+| 70-89 | Acceptable -- no critical findings, some medium issues |
+| 50-69 | At risk -- high-severity findings or multiple medium |
+| 0-49 | Unsafe -- critical vulnerabilities present |
+
 ## Completion
 
 Report:
 - Number of warnings found and fixed
 - Number of vulnerable dependencies found and updated
 - Any remaining issues that need attention
+- **Score: X/100** (deductions itemized by severity)

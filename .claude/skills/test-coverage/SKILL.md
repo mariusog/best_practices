@@ -38,7 +38,8 @@ If tests fail:
 For each changed file, verify test coverage:
 
 ### Check for Missing Tests
-- Does every new public function have a corresponding test?
+- Does every new or significantly modified public function have a corresponding test? ("Modified" means changed logic, parameters, or return values -- not just formatting or comment edits.)
+- For modified functions that already have tests, check whether the change introduces new code paths that need additional test scenarios.
 - Are new classes covered by tests?
 - Are new algorithms tested with representative inputs?
 
@@ -61,6 +62,8 @@ If coverage is insufficient:
 
 Use your language's coverage tool to identify untested code paths. Check the CLAUDE.md Tooling table for the project-specific command.
 
+If no coverage tool is configured, manually verify coverage by reading each changed public function and confirming a corresponding test exists in the test directory.
+
 ## Step 4: Run Full Test Suite
 
 Run the **Test (fast)** command from the CLAUDE.md Tooling table. Ensure all tests pass before completing.
@@ -72,6 +75,37 @@ If refactoring was done alongside coverage work:
 - Check that no existing tests were broken
 - Verify benchmark scores haven't degraded (if applicable)
 
+## Scoring (0-100)
+
+Score across two dimensions:
+
+### Coverage Breadth (50 points)
+
+| Criteria | Points |
+|----------|--------|
+| Every public function/method has at least one test | 20 |
+| Every new class/module has test coverage | 10 |
+| Integration tests exist for cross-module workflows | 10 |
+| Parameterized tests cover multiple input scenarios | 10 |
+
+### Test Quality (50 points)
+
+| Criteria | Points |
+|----------|--------|
+| Happy path covered for each tested function | 10 |
+| Edge cases covered (empty, zero, boundary) | 10 |
+| Error paths covered (invalid input, failures) | 10 |
+| All tests are deterministic (fixed seeds where needed) | 10 |
+| Test names follow `test_<method>_<scenario>` convention | 5 |
+| Arrange-Act-Assert pattern used consistently | 5 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Thorough -- all public methods tested with quality scenarios |
+| 70-89 | Adequate -- most methods tested, some gaps in edge cases |
+| 50-69 | Incomplete -- significant coverage or quality gaps |
+| 0-49 | Insufficient -- major public methods lack tests |
+
 ## Completion
 
 Report:
@@ -80,3 +114,4 @@ Report:
 - Pass/fail status
 - Any new tests added
 - Coverage gaps that still need attention
+- **Score: X/100** (breadth: Y/50, quality: Z/50)

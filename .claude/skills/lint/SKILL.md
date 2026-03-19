@@ -66,9 +66,28 @@ Fix type errors properly:
 
 Run linter and formatter one final time to confirm all issues are resolved.
 
+## Scoring (0-100)
+
+Start at 100. Deduct points for each **unresolved** offense (after auto-fix and manual fixes):
+
+| Category | Deduction per offense |
+|----------|----------------------|
+| Type error | -5 |
+| Lint error (bug-risk rules) | -3 |
+| Lint warning (style rules) | -1 |
+| Format violation | -1 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Clean -- no type errors, minimal lint warnings |
+| 70-89 | Acceptable -- some warnings, no errors |
+| 50-69 | Messy -- multiple errors or type issues |
+| 0-49 | Needs work -- pervasive issues across files |
+
 ## Completion
 
 Report:
 - Number of files linted
 - Number of offenses fixed
 - Any remaining issues that need manual attention
+- **Score: X/100** (deductions itemized by category)

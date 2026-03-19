@@ -172,6 +172,28 @@ When an AI agent reads your README, it needs:
 
 If the project has a `CLAUDE.md`, the README should focus on human onboarding and link to `CLAUDE.md` for AI-agent-specific instructions. Don't duplicate between the two.
 
+## Scoring (0-100)
+
+Score each area. Award the indicated points when the criteria are fully met, partial credit for partial coverage:
+
+| Area | Points | Criteria for full points |
+|------|--------|--------------------------|
+| Title + one-line description | 15 | Concrete, not marketing language |
+| Quick start | 20 | Zero to working in ≤5 commands; commands actually work |
+| Usage examples | 15 | 2-3 real examples covering main use cases |
+| Project structure | 10 | Top-level dirs with one-line descriptions |
+| Development setup | 15 | Setup, test, lint commands that work |
+| License | 5 | Stated clearly |
+| Brevity | 10 | Under 200 lines, no padding or duplication |
+| Accuracy | 10 | All commands work, all paths exist, no stale info |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Complete -- all required sections present and well-written |
+| 70-89 | Good -- most sections present, minor gaps |
+| 50-69 | Incomplete -- missing key sections or stale content |
+| 0-49 | Insufficient -- major sections missing or misleading |
+
 ## Checklist
 
 - [ ] Title + one-line description (concrete, not marketing)

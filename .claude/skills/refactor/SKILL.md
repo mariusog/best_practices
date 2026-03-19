@@ -117,6 +117,33 @@ After refactoring, use the commands from the CLAUDE.md Tooling table:
 1. Run **Test (fast)** to confirm no regressions
 2. Run **Lint** to confirm no style issues
 
+If tests fail after refactoring:
+1. Identify whether the refactor changed behavior (bug introduced) or exposed a pre-existing test issue
+2. If the refactor changed behavior: revert the specific refactor that broke the test and try a different approach
+3. If the test was brittle (testing implementation details rather than behavior): fix the test to assert on behavior
+4. Never commit with failing tests
+
+## Scoring (0-100)
+
+Evaluate code clarity across five dimensions. Award up to 20 points each:
+
+| Dimension | 0-5 (Poor) | 6-10 (Needs work) | 11-15 (Good) | 16-20 (Excellent) |
+|-----------|-----------|-------------------|--------------|-------------------|
+| **Control flow** | Deep nesting, long if/elif chains | Some nesting, few early returns | Mostly flat, guard clauses used | Flat flow, dict dispatch where appropriate |
+| **Constants** | Magic numbers throughout | Some extracted, some inline | Most in named constants | All thresholds/config in constants file |
+| **Comments** | Restating code or outdated | Mix of useful and noise | Mostly "why" comments | Only valuable comments remain |
+| **Naming** | Misleading or single-letter | Some unclear names | Clear and descriptive | Self-documenting, follows conventions |
+| **File structure** | Files >300 lines, mixed concerns | Some large files | Within limits, clear organization | Focused modules, single responsibility |
+
+Score each dimension independently, then sum.
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Clean -- code is clear and well-structured |
+| 70-89 | Good -- minor clarity improvements possible |
+| 50-69 | Needs refactoring -- multiple dimensions below standard |
+| 0-49 | Poor -- significant structural and clarity issues |
+
 ## Completion
 
 Report:
@@ -124,3 +151,4 @@ Report:
 - Number of constants extracted
 - Number of comments cleaned up
 - Any areas that could benefit from further refactoring
+- **Score: X/100** (breakdown: control flow Y/20, constants Y/20, comments Y/20, naming Y/20, structure Y/20)

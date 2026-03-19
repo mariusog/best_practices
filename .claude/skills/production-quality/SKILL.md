@@ -71,6 +71,14 @@ Verify that changed code follows logging standards:
 - Diagnostic mode available for verbose recording
 - Sufficient data logged for post-mortem debugging
 
+How to check:
+1. Search for bare print/console output in changed source files: `grep -rn 'print(' src/` (adapt pattern for your language)
+2. Verify logging imports exist in modules that perform I/O or key operations
+3. Check that error handling blocks include log statements (not just silent catches)
+4. If the project has a diagnostic/debug mode, verify it can be toggled via config
+
+If changed files are config-only or documentation, skip this step.
+
 ## Step 7: Commit Changes
 
 Commit the work in small, structured commits:
@@ -133,9 +141,33 @@ If improvements are identified:
 
 If the run was smooth and no gaps were found, skip this step.
 
+## Scoring (0-100)
+
+The production readiness score is the weighted average of sub-skill scores:
+
+| Sub-skill | Weight | Source |
+|-----------|--------|--------|
+| Test coverage | 25% | Step 4 score |
+| Code review | 25% | Step 8 score |
+| Security scan | 20% | Step 5 score |
+| Lint | 15% | Step 2 score |
+| Refactor | 15% | Step 3 score |
+
+**Production readiness = (test × 0.25) + (review × 0.25) + (security × 0.20) + (lint × 0.15) + (refactor × 0.15)**
+
+If a sub-skill is not applicable (e.g., no source code to lint), redistribute its weight equally among the remaining skills.
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Production-ready -- ship with confidence |
+| 70-89 | Nearly ready -- address remaining major issues |
+| 50-69 | Not ready -- significant quality gaps |
+| 0-49 | Far from ready -- fundamental issues across multiple areas |
+
 ## Completion
 
 Summarize:
+- **Production readiness score: X/100** (test: A, review: B, security: C, lint: D, refactor: E)
 - Number of commits made
 - Key improvements made (from each skill)
 - Test coverage status
