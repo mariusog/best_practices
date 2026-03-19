@@ -6,7 +6,7 @@ A reusable template for bootstrapping projects with AI-agent-friendly tooling, s
 
 ### Project Instructions (`CLAUDE.md`)
 
-The main configuration file. Contains a **Project Tooling** table (swap commands per language), AI agent ground rules, code quality standards, testing standards, three-tier logging architecture, multi-agent coordination protocol, and git conventions.
+The main configuration file. Contains a **Project Tooling** table (swap commands per language), AI agent ground rules, code quality standards (SOLID, size limits, no magic numbers), testing standards, three-tier logging architecture, multi-agent coordination protocol, git conventions, and a **Skill Selection Guide** decision tree that maps tasks to the right skill.
 
 ### Agents (`.claude/agents/`)
 
@@ -17,7 +17,7 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 | `feature-agent` | Business logic, decision workflows |
 | `qa-agent` | Testing, benchmarking, SOLID enforcement |
 
-### Skills (`.claude/skills/`)
+### Skills (`.claude/skills/`) — 26 total
 
 | Category | Skills |
 |----------|--------|
@@ -27,6 +27,8 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
 | Shipping | `security-scan`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
+
+See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
 
 ### Templates (`templates/`)
 
@@ -41,6 +43,10 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 | `.claude/hooks/` | Pre-commit test gate and post-edit linter |
 | `.github/workflows/ci.yml` | GitHub Actions CI pipeline |
 
+### Bootstrap Script (`bootstrap.sh`)
+
+Copies the full structure into a new project directory, creates `src/`, `tests/`, `logs/`, `docs/`, sets up language-specific config, and initializes git. Merges safely into existing directories without overwriting files.
+
 ## Quick Start
 
 ```bash
@@ -48,8 +54,6 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 ```
 
 Supported languages: `python`, `typescript`, `go`, `rust`, `ruby`.
-
-This copies the full structure, creates `src/`, `tests/`, `logs/`, `docs/` directories, and sets up language-specific config.
 
 ### Manual Setup
 
