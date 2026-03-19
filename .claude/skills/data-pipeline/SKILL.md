@@ -164,6 +164,12 @@ def test_pipeline_is_deterministic():
     assert result1 == result2
 ```
 
+## Gotchas
+
+- **Mutating input data in pipeline steps**: A step that modifies its input in place breaks replayability and makes debugging impossible. Each step should return new data, not modify the input.
+- **Building the full pipeline before testing any step**: Test each transformation step in isolation first. Debugging a 10-step pipeline failure is much harder than debugging one step.
+- **Silently dropping records**: A step that filters without logging how many records were dropped hides data loss. Always log the count before and after filtering.
+
 ## Checklist
 
 - [ ] Each pipeline step is a pure function (input -> output)

@@ -194,6 +194,12 @@ Score each area. Award the indicated points when the criteria are fully met, par
 | 50-69 | Incomplete -- missing key sections or stale content |
 | 0-49 | Insufficient -- major sections missing or misleading |
 
+## Gotchas
+
+- **Setup instructions that only work on your machine**: "Run `make start`" fails if the reader doesn't have Make installed. List prerequisites explicitly and test instructions on a clean environment.
+- **Documenting aspirational features as if they exist**: If a feature is planned but not built, don't put it in the README. Readers will try to use it and get confused. Mark future work clearly or omit it.
+- **Letting the README grow past 200 lines**: A long README means information is buried. Move detailed content to separate docs and keep the README focused on quick start and orientation.
+
 ## Checklist
 
 - [ ] Title + one-line description (concrete, not marketing)

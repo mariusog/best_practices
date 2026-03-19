@@ -132,3 +132,9 @@ Run the **Test (fast)** command from the CLAUDE.md Tooling table. All tests must
 4. **Slow tests**: Mock external services, avoid unnecessary I/O
 5. **Mystery data**: Make test data explicit and visible in each test
 6. **Non-deterministic tests**: Always use fixed seeds for randomized behavior
+
+## Gotchas
+
+- **Writing tests after implementation and calling it TDD**: TDD means the test exists BEFORE the code. If you write the code first, you're writing regression tests — which is fine, but it's not TDD and you lose the design benefits.
+- **Tests that are too coupled to implementation**: Asserting on internal variable names, private method calls, or exact data structures makes tests break on every refactor. Test observable behavior through the public API.
+- **Skipping the refactor step**: Green does not mean done. After the test passes, refactor the implementation for clarity. The Red-Green-Refactor cycle has three steps, not two.

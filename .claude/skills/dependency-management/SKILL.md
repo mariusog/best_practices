@@ -219,6 +219,12 @@ cargo update                                               # Rust
 | Vulnerability in transitive dep | Indirect dependency has CVE | Update parent dep, or pin transitive dep |
 | Slow installs | Large dependency tree | Audit for unused deps, use `uv` (Python) or `pnpm` (Node) |
 
+## Gotchas
+
+- **Adding a dependency for a trivial function**: If the functionality is under 20 lines of straightforward code, write it yourself. Every dependency is a maintenance burden and potential supply-chain risk.
+- **Pinning exact versions without a lock file**: Exact pins (`==1.2.3`) without a lock file mean you get reproducible installs but miss security patches. Use a lock file for reproducibility and range specifiers (`>=1.2,<2.0`) in the project config.
+- **Not checking for existing alternatives**: The dependency you're adding may already be covered by a transitive dependency or the standard library. Check before adding.
+
 ## Checklist
 
 - [ ] Environment isolation set up (venv, nvm, etc.)

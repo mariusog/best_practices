@@ -390,6 +390,12 @@ def setup_logging(name: str, level: int = logging.INFO) -> logging.Logger:
 - `oscillation entity=1 count=8 between=move_left,move_right`
 - `timeout step=42 elapsed=2.3s budget=2.0s`
 
+## Gotchas
+
+- **Logging sensitive data**: Passwords, tokens, PII, and credit card numbers must never appear in logs. Scrub or mask sensitive fields before logging. This is a security violation, not just a best-practice issue.
+- **String formatting instead of structured logging**: `logger.info(f"User {user_id} logged in")` loses structure. Use `logger.info("user_login", extra={"user_id": user_id})` so log aggregators can filter and search by field.
+- **Logging too much in hot paths**: A log statement inside a tight loop can generate millions of entries and fill disks. Use debug-level for high-frequency events and sample or rate-limit if needed.
+
 ## Checklist
 
 - [ ] `logging` module used everywhere (no bare `print()`)

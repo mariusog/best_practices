@@ -55,3 +55,9 @@ When all branches are resolved, summarize the shared understanding: what was dec
 - Don't suggest solutions. The goal is to stress-test the user's plan, not redesign it.
 - Stop when you've walked every branch, not when you run out of questions.
 - You're done when: (1) every concern you raised has a concrete answer or is logged as an open question, and (2) no new concerns emerge from the user's last round of answers. Two consecutive rounds with no new branches means you've covered the space.
+
+## Gotchas
+
+- **Accepting vague answers**: "We'll figure that out later" is not a resolution. Press for specifics — what exactly will you figure out, who decides, and what's the fallback if it doesn't work?
+- **Asking leading questions**: "Don't you think X would be better?" suggests the answer. Ask open questions: "How would you handle X?" Let the user defend their own design.
+- **Spending too long on resolved branches**: Once a concern has a concrete answer, move on. Revisiting settled questions wastes the user's time and breaks interview momentum.

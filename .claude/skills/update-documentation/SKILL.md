@@ -74,6 +74,12 @@ If dependencies changed:
 - Constants have comments explaining their purpose and tuning
 - Magic numbers are named and documented
 
+## Gotchas
+
+- **Updating docs for your change but not side effects**: If you rename a function, check for references in the README, docstrings in other modules, and comments that mention the old name. Ripple effects are easy to miss.
+- **Adding docstrings that restate the function name**: `def get_user(): """Gets the user."""` adds no value. Docstrings should explain parameters, return values, edge cases, or WHY the function exists — not repeat the name.
+- **Forgetting to update CLI help text**: When command-line flags or arguments change, the `--help` output and README usage examples must be updated. These are the first things users read.
+
 ## Completion
 
 Report directly to the user (as a message, not written to a file) listing:

@@ -266,6 +266,12 @@ Justify it: Does it have a distinct responsibility? Will multiple other modules 
 - **Internal pure functions**: let exceptions propagate. Don't add try/except inside domain logic -- the caller decides how to handle failure.
 - **Between layers**: convert low-level exceptions to domain-meaningful ones at layer boundaries
 
+## Gotchas
+
+- **Recommending patterns the team doesn't know**: Introducing hexagonal architecture to a team that writes simple CRUD apps adds complexity without benefit. Match the architecture to the team's capabilities and the project's actual complexity.
+- **Over-modularizing small projects**: A 5-file project doesn't need 3 abstraction layers. Start simple, split when you feel pain (files over 300 lines, too many reasons to change one module).
+- **Splitting by technical layer when the domain says otherwise**: Organizing as `models/`, `services/`, `controllers/` scatters related code across directories. For domain-heavy apps, organize by feature (`auth/`, `payments/`, `notifications/`).
+
 ## Related Skills
 
 | Need | Skill |

@@ -106,3 +106,9 @@ A concise description of this vertical slice. Describe the end-to-end behavior, 
 
 <!-- Repeat for each phase -->
 ```
+
+## Gotchas
+
+- **Including implementation details that will change**: File paths, function names, and specific class structures don't belong in a plan — they'll change during implementation. Focus on responsibilities, interfaces, and data flow.
+- **Planning too many phases**: More than 3-4 phases usually means the plan is too granular. Each phase should deliver a working vertical slice. If phases depend on each other linearly, collapse them.
+- **Skipping the tracer bullet**: The first phase must be a minimal end-to-end slice that proves the architecture works. Don't plan Phase 1 as "set up infrastructure" — plan it as "one user can do one thing, end to end."

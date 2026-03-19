@@ -84,3 +84,9 @@ A description of the things that are out of scope for this PRD.
 
 Any further notes about the feature.
 ```
+
+## Gotchas
+
+- **Writing solutions instead of problems**: A PRD that specifies "build a REST API with endpoints X, Y, Z" has already decided the solution. Start with the problem: what user need is unmet? The implementation approach should emerge from the requirements, not the other way around.
+- **Skipping the interview and assuming requirements**: Even when you think you understand what's needed, the interview step surfaces hidden constraints, edge cases, and priorities. Never skip it for non-trivial features.
+- **Making the PRD too long**: A PRD over 2 pages is rarely read in full. Keep it focused: problem, key decisions, acceptance criteria. Move detailed specs to linked documents if needed.

@@ -236,6 +236,12 @@ def top_level_handler(data):
 | Retry on non-transient errors | Only retry `ConnectionError`, `TimeoutError`, etc. |
 | Logging at every catch level | Log once at the top-level handler |
 
+## Gotchas
+
+- **Catching too broadly**: `except Exception` or bare `except:` hides bugs. Catch the specific exception type you expect; let unexpected errors propagate.
+- **Retrying non-idempotent operations**: Retry logic on a function that has side effects (database writes, API calls that create resources) can cause duplicate actions. Only retry operations that are safe to repeat.
+- **Logging the error but not re-raising**: `logger.error(e)` followed by continuing execution means the caller never knows something went wrong. Log AND propagate unless you have a concrete recovery strategy.
+
 ## Checklist
 
 - [ ] Custom exception hierarchy defined (base + 3-5 specific types)

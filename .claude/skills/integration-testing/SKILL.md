@@ -273,6 +273,12 @@ Mark a test as `slow` if it takes more than 2 seconds to run. The exact threshol
 | No contract tests for external APIs | Save real response samples, test parser against them |
 | Skipping cleanup (temp files, connections) | Use fixtures with teardown (`yield` + cleanup) |
 
+## Gotchas
+
+- **Mocking at the wrong level**: Mocking deep internals (e.g., `socket.connect`) instead of the caller's boundary (e.g., `api_client.get_user`) makes tests brittle and tightly coupled to implementation.
+- **Test data leaking between tests**: Database state from one test affecting another causes intermittent failures. Each test must set up and tear down its own state — use transactions or fixtures with cleanup.
+- **Tests that depend on execution order**: If test B only passes after test A, you have a hidden dependency. Every test must be independently runnable with `pytest test_file.py::test_name`.
+
 ## Checklist
 
 - [ ] External services mocked (no real network calls in CI)

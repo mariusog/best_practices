@@ -151,3 +151,9 @@ Durable architectural guidance that is NOT coupled to current file paths:
 - What it should expose (the interface contract)
 - How callers should migrate to the new interface
 ```
+
+## Gotchas
+
+- **Proposing refactors that break all existing tests**: A "better" architecture that requires rewriting every test is a net negative. Propose changes that can be migrated incrementally, with existing tests still passing at each step.
+- **Over-abstracting with one implementation**: Creating an interface or abstraction layer when only one concrete implementation exists adds complexity without benefit. Abstract when you have 2+ real implementations, not before.
+- **Refactoring stable, working code**: Code that works, is tested, and rarely changes doesn't need architectural improvement regardless of how it looks. Focus on code that is actively causing friction.

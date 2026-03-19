@@ -88,3 +88,9 @@ Reference by number from the parent PRD:
 ```
 
 Do NOT close or modify the parent PRD issue.
+
+## Gotchas
+
+- **Creating issues that are too large**: An issue should be completable in a single focused session. If the description has more than 5-7 checklist items, split it into smaller issues.
+- **Missing acceptance criteria**: Every issue must have a clear "how to verify this is done" section. Without it, there's no way to confirm completion and no basis for code review.
+- **Ignoring blocking dependencies**: If issue B requires issue A's output, the dependency must be explicit. Untracked dependencies cause agents to stall or build on incomplete foundations.

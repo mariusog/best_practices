@@ -176,6 +176,12 @@ def test_cache_invalidation():
     assert (0, 0) not in _dist_cache
 ```
 
+## Gotchas
+
+- **Caching mutable objects**: If you cache a list or dict and return a reference, the caller can modify it and corrupt the cache. Return copies, or cache immutable types (tuples, frozensets).
+- **Forgetting to invalidate**: Adding a cache without an invalidation path means stale data after writes. Every cache must have a clear answer to "when does this entry become invalid?"
+- **Unhashable cache keys**: Passing a list or dict as a cache key will crash at runtime. Convert to tuple or frozenset before using as a key.
+
 ## Checklist
 
 - [ ] Pure functions use `@lru_cache` or `@cache`

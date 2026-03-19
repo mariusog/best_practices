@@ -201,6 +201,12 @@ def test_search_scales_linearly():
     assert ratio < 8, f"Scaling too fast: {ratio:.1f}x"
 ```
 
+## Gotchas
+
+- **Optimizing before profiling**: The bottleneck is almost never where you think it is. Profile first, then optimize the top hotspot. Optimizing cold paths is wasted effort.
+- **Micro-optimizing while ignoring algorithmic complexity**: Saving 10% on a constant factor doesn't matter if the algorithm is O(n^2) and input is growing. Fix the big-O first.
+- **Adding caching without invalidation**: A cache that never expires will eventually serve stale data. Every cache needs an explicit invalidation strategy — event-based, TTL, or both.
+
 ## Performance Checklist
 
 - [ ] Hot paths profiled and optimized

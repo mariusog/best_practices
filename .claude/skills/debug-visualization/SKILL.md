@@ -432,6 +432,12 @@ def print_step_range(
 | Printing unchanged metrics in diffs | Wasted tokens on "no change" | Only show deltas |
 | Full timeline without compression | 200 lines for 200 steps | Run-length encode to ~10 lines |
 
+## Gotchas
+
+- **Building tools that require a browser or GUI**: AI agents work in terminals. Every visualization must be text-based (ASCII grids, markdown tables, structured logs). If it can't render in a terminal, it's useless to an agent.
+- **Generating output that exceeds token limits**: A 500-row table defeats the purpose of visualization. Always bound output (use `--brief` modes, `head`/`tail`, run-length encoding) and default to summary views.
+- **Coupling visualization to runtime**: Debug tools should read from log files, not hook into live execution. This allows post-mortem analysis without reproducing the run.
+
 ## Checklist
 
 - [ ] All visualization is text-based (ASCII grids, tables, summaries)

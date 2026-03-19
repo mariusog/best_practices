@@ -249,6 +249,12 @@ Agent C: qa/T15-coverage  ─── PR #3 ──┘
 | Rebasing public branches | Use merge to update from main |
 | Committing review fixes as amends | New commits preserve review context |
 
+## Gotchas
+
+- **Describing WHAT changed but not WHY**: "Updated user.py" tells the reviewer nothing. The PR description should explain the motivation: what problem this solves and why this approach was chosen.
+- **Including unrelated changes**: A PR that fixes a bug AND refactors an unrelated module is hard to review and risky to merge. One logical change per PR — split if you notice scope creep.
+- **Not running tests locally before pushing**: Pushing and waiting for CI is slower than running tests locally first. Catch failures before they block the review cycle.
+
 ## Checklist
 
 - [ ] Branch named correctly (`<author>/<task-id>-<description>`)

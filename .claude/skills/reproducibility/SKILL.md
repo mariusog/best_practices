@@ -285,6 +285,12 @@ COPY requirements-lock.txt .
 RUN pip install -r requirements-lock.txt
 ```
 
+## Gotchas
+
+- **Reusing the same seed for independent components**: If two subsystems use the same seed, they produce identical random sequences. Use derived seeds (via `rng.randint()`) so each component gets independent randomness.
+- **Assuming file system ordering is deterministic**: `os.listdir()` and `glob()` return files in arbitrary order on some platforms. Always sort the results when order matters for reproducibility.
+- **Hardcoding baselines from an unvalidated run**: Baseline scores should come from a deliberate, documented run with a known-good configuration. Never copy numbers from a debug session or a run with uncommitted changes.
+
 ## Checklist
 
 - [ ] All random sources use seeded RNG instances (never global `random`)
