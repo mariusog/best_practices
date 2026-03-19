@@ -5,7 +5,7 @@ set -euo pipefail
 # Usage: ./bootstrap.sh <target-directory> [--lang python|typescript|go|rust|ruby]
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-LANG="python"  # default
+PROJECT_LANG="python"  # default
 
 usage() {
     echo "Usage: $0 <target-directory> [--lang python|typescript|go|rust|ruby]"
@@ -35,7 +35,11 @@ shift
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --lang)
-            LANG="$2"
+            if [[ $# -lt 2 ]]; then
+                echo "Error: --lang requires a value"
+                usage
+            fi
+            PROJECT_LANG="$2"
             shift 2
             ;;
         -h|--help)
@@ -49,10 +53,10 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Validate language
-case "$LANG" in
+case "$PROJECT_LANG" in
     python|typescript|go|rust|ruby) ;;
     *)
-        echo "Error: Unsupported language '$LANG'. Use: python, typescript, go, rust, ruby"
+        echo "Error: Unsupported language '$PROJECT_LANG'. Use: python, typescript, go, rust, ruby"
         exit 1
         ;;
 esac
@@ -71,7 +75,7 @@ mkdir -p "$TARGET"
 TARGET="$(cd "$TARGET" && pwd)"
 
 echo "Bootstrapping project in: $TARGET"
-echo "Language: $LANG"
+echo "Language: $PROJECT_LANG"
 echo ""
 
 # 1. Copy .claude directory (agents + skills)
@@ -102,8 +106,8 @@ echo "[4/7] Creating directory structure..."
 mkdir -p "$TARGET/src" "$TARGET/tests" "$TARGET/logs" "$TARGET/docs"
 
 # 5. Language-specific setup
-echo "[5/7] Setting up $LANG config..."
-case "$LANG" in
+echo "[5/7] Setting up $PROJECT_LANG config..."
+case "$PROJECT_LANG" in
     python)
         cp -n "$SCRIPT_DIR/templates/pyproject.toml" "$TARGET/pyproject.toml" 2>/dev/null || true
         cp -n "$SCRIPT_DIR/templates/conftest.py" "$TARGET/tests/conftest.py" 2>/dev/null || true
@@ -161,7 +165,7 @@ echo "  +-- docs/              # Generated reports"
 echo "  +-- CLAUDE.md          # Project instructions"
 echo "  +-- TASKS.md           # Task tracking board"
 echo "  +-- .gitignore"
-case "$LANG" in
+case "$PROJECT_LANG" in
     python)
         echo "  +-- pyproject.toml     # Python config (ruff, mypy, pytest)"
         ;;
@@ -177,8 +181,8 @@ echo ""
 echo "Next steps:"
 echo "  1. cd $TARGET"
 STEP=2
-if [[ "$LANG" != "python" ]]; then
-    echo "  $STEP. Update the Project Tooling table in CLAUDE.md for $LANG"
+if [[ "$PROJECT_LANG" != "python" ]]; then
+    echo "  $STEP. Update the Project Tooling table in CLAUDE.md for $PROJECT_LANG"
     STEP=$((STEP + 1))
 fi
 echo "  $STEP. Update the File Ownership table in CLAUDE.md with your file paths"
