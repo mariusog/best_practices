@@ -106,6 +106,11 @@ fi
 echo "[3/7] Copying templates..."
 cp -n "$SCRIPT_DIR/templates/.gitignore" "$TARGET/.gitignore" 2>/dev/null || true
 cp -n "$SCRIPT_DIR/templates/TASKS.md" "$TARGET/TASKS.md" 2>/dev/null || true
+# Copy per-agent plan file templates
+for agent in core feature qa; do
+    sed "s/<agent-name>/${agent}-agent/g; s/<agent>/${agent}/g" \
+        "$SCRIPT_DIR/templates/TASKS-agent.md" > "$TARGET/TASKS-${agent}.md" 2>/dev/null || true
+done
 
 # Copy Claude Code hooks
 mkdir -p "$TARGET/.claude/hooks"

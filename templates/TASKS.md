@@ -1,10 +1,17 @@
 # Tasks
 
+**Owner**: lead-agent (exclusively). Other agents read this file but do not write to it.
+
+Each agent has a separate plan file with detailed checklists:
+- [TASKS-core.md](TASKS-core.md) -- core-agent tasks
+- [TASKS-feature.md](TASKS-feature.md) -- feature-agent tasks
+- [TASKS-qa.md](TASKS-qa.md) -- qa-agent tasks
+
 ## Format
 
 Each task has: ID, status, agent, title, details, and optional dependencies.
 
-**Statuses**: `open`, `in-progress`, `done`, `blocked`
+**Statuses**: `open`, `in-progress`, `done`, `blocked`, `deferred`
 
 ## Open Tasks
 
