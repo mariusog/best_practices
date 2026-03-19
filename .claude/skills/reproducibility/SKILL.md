@@ -1,6 +1,6 @@
 ---
 name: reproducibility
-description: Ensure exact replication of results through deterministic design, seed management, and reproducible benchmarking. Use when the user asks about reproducibility, determinism, seed management, result replication, or when debugging non-deterministic behavior.
+description: Ensure exact replication of results through deterministic design, seed management, and reproducible benchmarking. Principles are language-neutral; examples use Python. Use when the user asks about reproducibility, determinism, seed management, result replication, or when debugging non-deterministic behavior.
 ---
 
 # Reproducibility Skill

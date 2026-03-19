@@ -1,6 +1,6 @@
 ---
 name: logging-observability
-description: Implement structured logging, diagnostics, and observability patterns optimized for AI agent consumption. Use when adding logging, debugging output, metrics collection, or when user mentions logging, observability, diagnostics, monitoring, or debug data.
+description: Implement structured logging, diagnostics, and observability patterns optimized for AI agent consumption. Principles are language-neutral; examples use Python. Use when adding logging, debugging output, metrics collection, or when user mentions logging, observability, diagnostics, monitoring, or debug data.
 ---
 
 # Logging and Observability Skill
