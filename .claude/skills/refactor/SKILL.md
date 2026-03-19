@@ -52,7 +52,7 @@ def process(data):
     # long processing logic
 ```
 
-### Simplify with Python Idioms
+### Simplify with Language Idioms
 ```python
 # Before
 result = []
@@ -103,20 +103,19 @@ Preserve comments that:
 
 ## Step 4: File and Naming Conventions
 
-- Modules: `snake_case.py`
-- Classes: `PascalCase`
-- Functions/variables: `snake_case`
-- Constants: `UPPER_SNAKE_CASE`
-- Private: `_leading_underscore`
-- Test files: `test_*.py`
+Follow your language's standard naming conventions. Common principles:
+- **Modules/files**: lowercase, consistent with language convention
+- **Classes/types**: PascalCase (most languages)
+- **Functions/variables**: camelCase or snake_case (per language convention)
+- **Constants**: UPPER_SNAKE_CASE (most languages)
+- **Private/internal**: use the language's visibility mechanism (underscore prefix, `private` keyword, unexported names, etc.)
+- **Test files**: follow the test framework's naming convention
 
 ## Step 5: Verify Changes
 
-After refactoring:
-```bash
-python -m pytest tests/ -q --tb=line -m "not slow" 2>&1 | tail -20
-ruff check <changed files>
-```
+After refactoring, use the commands from the CLAUDE.md Tooling table:
+1. Run **Test (fast)** to confirm no regressions
+2. Run **Lint** to confirm no style issues
 
 ## Completion
 

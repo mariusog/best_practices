@@ -17,20 +17,16 @@ Identify changed files with: `git diff --name-only origin/main...HEAD`
 For each changed file, find corresponding test files:
 
 ### Mapping Source to Tests
-- `src/module.py` -> `tests/test_module.py`
-- `src/package/module.py` -> `tests/package/test_module.py`
 
-Use grep to find test references:
-```bash
-grep -r "from module import\|import module" tests/
-```
+Source and test directories should mirror each other. For example:
+- `src/module` -> `tests/test_module`
+- `src/package/module` -> `tests/package/test_module`
+
+Use grep to find test references to your module in the test directory.
 
 ## Step 2: Baseline Test Run
 
-Run identified tests to ensure we start green:
-```bash
-python -m pytest <test files> -q --tb=line 2>&1 | tail -20
-```
+Run identified tests using the **Test (fast)** command from the CLAUDE.md Tooling table to ensure we start green.
 
 If tests fail:
 - **STOP** -- Do not proceed with other quality steps
@@ -59,20 +55,15 @@ If coverage is insufficient:
 1. Write unit tests for new/changed public functions
 2. Write integration tests for new workflows
 3. Add edge case and error path tests
-4. Use `@pytest.mark.parametrize` for multiple input scenarios
+4. Use parameterized tests for multiple input scenarios
 
 ### Coverage Tool
-```bash
-python -m pytest --cov=src --cov-report=term-missing tests/ -q 2>&1 | tail -30
-```
+
+Use your language's coverage tool to identify untested code paths. Check the CLAUDE.md Tooling table for the project-specific command.
 
 ## Step 4: Run Full Test Suite
 
-```bash
-python -m pytest tests/ -q --tb=line -m "not slow" 2>&1 | tail -20
-```
-
-Ensure all tests pass before completing.
+Run the **Test (fast)** command from the CLAUDE.md Tooling table. Ensure all tests pass before completing.
 
 ## Step 5: Verify No Regressions
 

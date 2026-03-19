@@ -37,10 +37,10 @@ One sentence explaining what this project does and who it's for.
 
 \```bash
 # Install
-pip install myproject  # or: git clone + pip install -e .
+<install command>
 
 # Run
-myproject input.csv --output models.py
+<example usage command>
 \```
 ```
 
@@ -104,14 +104,13 @@ logs/          # Runtime logs
 
 \```bash
 # Setup
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
+<language-specific setup commands>
 
 # Test
-pytest tests/ -q
+<test command from CLAUDE.md Tooling table>
 
 # Lint
-ruff check .
+<lint command from CLAUDE.md Tooling table>
 \```
 ```
 

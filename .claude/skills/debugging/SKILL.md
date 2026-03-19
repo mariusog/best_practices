@@ -13,15 +13,12 @@ Debugging is a systematic process, not guesswork. Follow this workflow every tim
 
 Before anything else, get a reliable reproduction.
 
-```sh
-# If a test fails, rerun just that test with more detail:
-python -m pytest tests/path/test_file.py::TestClass::test_name -q --tb=short 2>&1 | tail -40
+If a test fails, rerun just that test with more detail using the **Test (debug)** command from the CLAUDE.md Tooling table.
 
-# If it's a runtime bug, find or write a minimal reproducing test:
-# - Same seed
-# - Same config
-# - Smallest possible input that triggers the bug
-```
+If it's a runtime bug, find or write a minimal reproducing test:
+- Same seed
+- Same config
+- Smallest possible input that triggers the bug
 
 **Key questions:**
 - Can you reproduce it every time? (If no, it's a non-determinism bug -- check seeds)
@@ -36,12 +33,9 @@ Narrow down WHERE the bug is. Work from the error backward.
 
 ### Read the Error
 
-```sh
-# Get the full traceback for the specific failing test
-python -m pytest tests/path/test_file.py::test_name -q --tb=long 2>&1 | tail -60
-```
+Run the failing test with the **Test (debug)** command from the CLAUDE.md Tooling table to get the full error output.
 
-The traceback tells you:
+The error output tells you:
 - **Which line** raised the error
 - **Which function** called it
 - **What values** were involved (in the assertion message)
@@ -100,10 +94,7 @@ def test_function_handles_empty_input():
     assert result is None  # Or whatever the correct behavior should be
 ```
 
-Run it to confirm it fails:
-```sh
-python -m pytest tests/path/test_file.py::test_function_handles_empty_input -q --tb=short
-```
+Run it to confirm it fails using the **Test (debug)** command from the CLAUDE.md Tooling table.
 
 ## Step 5: Fix
 
@@ -117,16 +108,9 @@ Rules:
 
 ## Step 6: Verify
 
-```sh
-# The regression test passes
-python -m pytest tests/path/test_file.py::test_function_handles_empty_input -q --tb=short
-
-# All other tests still pass
-python -m pytest tests/ -q --tb=line -m "not slow" 2>&1 | tail -20
-
-# If benchmark-relevant, verify no regression
-cat docs/benchmark_results.md
-```
+1. Run the regression test with the **Test (debug)** command -- confirm it passes
+2. Run the full suite with the **Test (fast)** command -- confirm no regressions
+3. If benchmark-relevant, check `docs/benchmark_results.md` for regressions
 
 ## Step 7: Report
 
@@ -143,8 +127,8 @@ Result: Fixed <root cause> | added regression test | tests: N pass
 | Different results each run | Missing seed, set iteration order, dict ordering | Search for `random`, unordered `set` iteration |
 | Works for small input, fails for large | Off-by-one, unbounded iteration, memory | Check boundary conditions, max_steps limits |
 | Correct on first call, wrong on second | Stale cache, mutation of shared data | Check cache invalidation, defensive copies |
-| Assertion error with correct-looking values | Float comparison, type mismatch, off-by-one | Use `pytest.approx()` for floats, check types |
-| Import error or attribute error | Circular import, renamed function, missing __init__ | Check import chain, recent renames |
+| Assertion error with correct-looking values | Float comparison, type mismatch, off-by-one | Use approximate comparison for floats, check types |
+| Import error or attribute error | Circular import, renamed function, missing module export | Check import chain, recent renames |
 
 ## Anti-Patterns
 

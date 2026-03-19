@@ -95,9 +95,7 @@ def sample_state():
 
 ## Step 4: Verify Failure
 
-```bash
-python -m pytest path/to/test_file.py::TestClass::test_name -q --tb=short
-```
+Run the new test using the **Test (debug)** command from the CLAUDE.md Tooling table.
 
 The test MUST fail. If it passes immediately:
 - The behavior already exists
@@ -112,9 +110,7 @@ Write the MINIMUM code to pass:
 
 ## Step 6: Verify Pass
 
-```bash
-python -m pytest path/to/test_file.py::TestClass::test_name -q --tb=short
-```
+Run the test again using the **Test (debug)** command.
 
 ## Step 7: Refactor
 
@@ -126,11 +122,7 @@ Improve the code while keeping tests green:
 
 ## Step 8: Final Verification
 
-```bash
-python -m pytest tests/ -q --tb=line -m "not slow" 2>&1 | tail -20
-```
-
-All tests must pass.
+Run the **Test (fast)** command from the CLAUDE.md Tooling table. All tests must pass.
 
 ## Anti-Patterns to Avoid
 
