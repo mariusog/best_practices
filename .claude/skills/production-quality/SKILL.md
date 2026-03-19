@@ -12,10 +12,26 @@ Orchestrates multiple quality skills to bring all changed files up to production
 This routine applies to all files changed in the current branch compared to `main` (or `origin/main`).
 Identify changed files with: `git diff --name-only origin/main...HEAD`
 
+### File Type Considerations
+
+Categorize changed files to determine which steps apply:
+
+| File Type | Lint | Refactor | Test Coverage | Security | Code Review |
+|-----------|------|----------|---------------|----------|-------------|
+| Source code | Yes | Yes | Unit + integration tests | Static analysis | Yes |
+| Test helpers/fixtures | Yes | Minimal | Verified by running tests | N/A | Yes |
+| Config (`.yml`, `.json`, `.toml`) | N/A | N/A | Integration tests | Review secrets | Verify correctness |
+| CI/Docker | N/A | N/A | Run CI pipeline | Review exposure | Verify correctness |
+| Markdown (`.md`) | N/A | N/A | N/A | N/A | Verify accuracy |
+
+For configuration-only changes, focus on: baseline tests passing, security review, and documentation updates.
+
 ## Step 1: Baseline Test Run
 
-Run the **Test (fast)** command from the CLAUDE.md Tooling table.
-**If tests fail, STOP** -- do not proceed with quality improvements on broken code.
+Run the `test-coverage` skill to ensure we start green:
+- Identifies all relevant test files for changed code
+- Runs baseline tests
+- **If tests fail, STOP** -- do not proceed with quality improvements on broken code
 
 ## Step 2: Lint Cleanup
 
@@ -35,7 +51,7 @@ Run the `refactor` skill:
 
 ## Step 4: Test Coverage Check
 
-Run the `test-coverage` skill:
+Run the `test-coverage` skill again to:
 - Verify all new public functions have tests
 - Check edge cases and error paths
 - Add missing tests if coverage is insufficient
@@ -91,12 +107,31 @@ Do NOT disable any rules or remove any test functions.
 ## Step 11: Skill Self-Improvement
 
 Review this run and improve the skills themselves:
+
+### Identify Gaps
 - Were any steps unclear or incomplete?
 - Did you discover checks that should be added?
 - Were there quality issues the skills didn't catch?
+- Did documentation updates get missed that should be automated?
 
-If improvements are identified, update the relevant skill file(s) in `.claude/skills/`.
-If the run was smooth, skip this step.
+### Identify Obsolete Steps
+- Are any steps now handled automatically by tooling or linters?
+- Have new tools or packages made certain manual checks redundant?
+- Are there steps that consistently yield no findings and can be removed?
+- Can multiple steps be consolidated?
+
+### Capture New Patterns
+- New refactoring patterns worth adding as examples
+- New anti-patterns to warn against
+- Project-specific conventions to document
+
+### Update Skills
+If improvements are identified:
+1. Update the relevant skill file(s) in `.claude/skills/`
+2. Keep changes focused and actionable
+3. Add concrete examples where helpful
+
+If the run was smooth and no gaps were found, skip this step.
 
 ## Completion
 
@@ -107,3 +142,4 @@ Summarize:
 - Security scan results
 - Logging/observability status
 - Skill improvements made (if any)
+- Any remaining non-critical items for future consideration
