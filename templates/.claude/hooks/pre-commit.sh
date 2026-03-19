@@ -1,4 +1,5 @@
 #!/bin/bash
+set -o pipefail
 # Block git commit if tests fail.
 # Claude Code hook: reads JSON from stdin, exit 2 to block.
 
