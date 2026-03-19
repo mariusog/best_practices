@@ -4,7 +4,7 @@ set -o pipefail
 # Claude Code hook: reads JSON from stdin, exit 2 to block.
 
 INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command')
+COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command')
 
 # Only trigger on git commit commands
 if [[ "$COMMAND" == *"git commit"* ]]; then
