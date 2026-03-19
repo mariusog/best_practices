@@ -82,7 +82,7 @@ echo ""
 echo "[1/7] Copying .claude/ (agents and skills)..."
 if [[ -d "$TARGET/.claude" ]]; then
     # Merge into existing .claude/ without overwriting files
-    find "$SCRIPT_DIR/.claude" -type f | while read -r src; do
+    find "$SCRIPT_DIR/.claude" -type f -print0 | while IFS= read -r -d '' src; do
         rel="${src#"$SCRIPT_DIR/"}"
         dest="$TARGET/$rel"
         if [[ ! -f "$dest" ]]; then
