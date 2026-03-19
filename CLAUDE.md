@@ -86,7 +86,20 @@ Do NOT read every file. Read the minimum needed for your task.
 
 ### Skill Selection Guide
 
-After writing or modifying code, use this decision tree:
+**Before writing code**, use this decision tree:
+
+```
+Planning a new feature or major change?
++-- Need to define requirements? -> write-a-prd
++-- Have a PRD, need an implementation plan? -> prd-to-plan
++-- Have a PRD, need GitHub issues? -> prd-to-issues
++-- Want to stress-test a design? -> grill-me
++-- Need architecture guidance? -> project-architecture
++-- Want to find refactoring opportunities? -> improve-codebase-architecture
++-- Building a new feature test-first? -> tdd-cycle
+```
+
+**After writing or modifying code**, use this decision tree:
 
 ```
 Did you write new code?
