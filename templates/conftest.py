@@ -5,10 +5,10 @@ Copy this file to your tests/ directory and adapt to your project.
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
 # Auto-reset global state between tests
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture(autouse=True)
 def _reset_state():
@@ -28,6 +28,7 @@ def _reset_state():
 # Factory fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def make_config():
     """Factory for creating test configurations.
@@ -35,6 +36,7 @@ def make_config():
     Returns a function that builds config dicts with sensible defaults.
     Override specific fields as needed.
     """
+
     def _make_config(**overrides):
         defaults = {
             "seed": 42,
@@ -45,6 +47,7 @@ def make_config():
         }
         defaults.update(overrides)
         return defaults
+
     return _make_config
 
 
@@ -55,6 +58,7 @@ def make_state(make_config):
     Returns a function that builds minimal valid state dicts.
     All positions are within default grid bounds (0 <= x < 10, 0 <= y < 10).
     """
+
     def _make_state(
         entities=None,
         items=None,
@@ -63,7 +67,8 @@ def make_state(make_config):
     ):
         state = {
             "config": config or make_config(),
-            "entities": entities or [
+            "entities": entities
+            or [
                 {"id": 0, "position": [3, 3], "state": "idle"},
             ],
             "items": items or [],
@@ -71,12 +76,14 @@ def make_state(make_config):
         }
         state.update(overrides)
         return state
+
     return _make_state
 
 
 # ---------------------------------------------------------------------------
 # Helpers (importable by test modules)
 # ---------------------------------------------------------------------------
+
 
 def get_action(actions: list[dict], entity_id: int) -> dict:
     """Extract action for a specific entity from an action list."""
@@ -90,6 +97,9 @@ def get_action(actions: list[dict], entity_id: int) -> dict:
 # Markers
 # ---------------------------------------------------------------------------
 
+
 def pytest_configure(config):
     """Register custom markers."""
-    config.addinivalue_line("markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')")
+    config.addinivalue_line(
+        "markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')"
+    )
