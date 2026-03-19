@@ -9,7 +9,7 @@ Create a Product Requirements Document through structured interview and codebase
 
 ## Process
 
-You may skip steps if you don't consider them necessary.
+Steps 1 (context) and 5 (write PRD) are always required. Steps 2-4 can be shortened or skipped: skip Step 2 (codebase exploration) if the feature is standalone with no existing code to integrate with. Skip Step 3 (interview) if the user has already provided detailed requirements. Skip Step 4 (module design) if the feature is small enough to fit in a single module.
 
 ### 1. Gather the Problem
 

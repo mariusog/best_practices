@@ -44,6 +44,8 @@ The error output tells you:
 
 If the error isn't obvious from the traceback:
 
+Stop as soon as you identify the cause. These checks are ordered by likelihood -- you rarely need all four. Once a check reveals the problem, proceed to Step 3.
+
 1. **Check the input**: Is the test data valid? Positions within bounds? Types correct?
 2. **Check the function under test**: Add a focused test with the simplest possible input
 3. **Check dependencies**: Does the function depend on state that wasn't set up correctly?

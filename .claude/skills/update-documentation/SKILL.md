@@ -76,7 +76,9 @@ If dependencies changed:
 
 ## Completion
 
-Report:
+Report directly to the user (as a message, not written to a file) listing:
 - Documentation files updated
 - Docstrings added or updated
 - Areas that may need future documentation work
+
+If no documentation changes are needed (e.g., internal refactoring with no API or behavior changes), report that explicitly: "No documentation updates required — changes are internal only." This is a valid outcome.

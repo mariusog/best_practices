@@ -70,6 +70,8 @@ def outer_function(seed: int = 42):
     return combine(result_a, result_b)
 ```
 
+Use the **same seed** when you want identical behavior across runs (benchmarking, regression tests). Use **derived seeds** (via `rng.randint()`) when you need independent randomness for sub-components within a single run (e.g., different entity behaviors in a simulation). Never reuse the same seed for two components that should behave independently — their random sequences would be identical.
+
 ## Step 2: Deterministic Iteration
 
 ### Dict Ordering
@@ -198,6 +200,8 @@ def get_git_hash() -> str:
         return "unknown"
 ```
 
+If git is not available (e.g., CI container, exported archive), use `"unknown"` as the `git_commit` value. The key requirement is that the seed and config are always recorded — git hash is helpful but not blocking.
+
 ## Step 5: Testing Reproducibility
 
 ### Test Determinism
@@ -231,6 +235,10 @@ def test_different_seeds_produce_different_results():
 @pytest.mark.slow
 def test_benchmark_score_regression():
     """Benchmark scores must not regress from known baselines."""
+    # Derive baselines from a known-good run: run the benchmark with your
+    # chosen seeds, record the scores, and hardcode them as the baseline.
+    # Update baselines only after a deliberate optimization — never
+    # silently after a regression.
     BASELINE_SCORES = {
         "easy": 150,
         "medium": 100,

@@ -42,6 +42,8 @@ def test_fetch_data_returns_parsed_response():
         assert result[0]["id"] == 1
 ```
 
+Mock at the **caller's boundary**, not at the network layer. If your code calls `api_client.get_user()`, mock `api_client.get_user`, not `requests.get`. This keeps tests focused on your code's behavior, not on the HTTP library's internals. Only mock at the network level (`socket`, `responses`) when testing the HTTP client itself.
+
 ### Fixture-Based Mock Service
 
 ```python
@@ -176,6 +178,8 @@ def test_parser_handles_missing_optional_fields():
     assert result.metadata is None
 ```
 
+Refresh contract fixtures when: (1) the external API releases a new version you're upgrading to, (2) a contract test fails unexpectedly (the API may have changed), or (3) at a regular cadence (e.g., quarterly). Store the fixture alongside the test with a comment noting when it was captured.
+
 ## Pipeline Integration Tests
 
 Test multiple stages working together:
@@ -254,6 +258,8 @@ def test_full_pipeline_with_large_dataset():
 # Run all tests:                  pytest
 # Run only slow tests:            pytest -m slow
 ```
+
+Mark a test as `slow` if it takes more than 2 seconds to run. The exact threshold is project-specific — adjust based on your test suite's total runtime budget. The goal: the fast test suite (`-m 'not slow'`) completes in under 30 seconds.
 
 ## Anti-Patterns
 

@@ -25,6 +25,14 @@ Useful profiling tools:
 - `line_profiler` -- Line-by-line timing
 - `py-spy` -- Sampling profiler (no code changes)
 
+### Which tool to use
+
+- **Quick check** (is this function slow?): use `timeit` or equivalent
+- **Find the bottleneck** (where is time spent?): use the built-in CPU profiler (e.g., `cProfile`)
+- **Memory investigation** (is memory growing?): use a memory profiler (e.g., `tracemalloc`, `memray`)
+- **Production profiling** (can't add instrumentation): use a sampling profiler (e.g., `py-spy`)
+- **Line-level detail** (which lines are slow?): use a line profiler
+
 ## Algorithmic Complexity
 
 ### Common Fixes
@@ -156,6 +164,10 @@ t1 = timeit.timeit(lambda: approach_a(data), number=10000)
 t2 = timeit.timeit(lambda: approach_b(data), number=10000)
 print(f"A: {t1:.4f}s, B: {t2:.4f}s")
 ```
+
+### Reading profiler output
+
+Focus on these columns: **cumulative time** (total time in function + callees) and **call count**. Sort by cumulative time to find the top bottlenecks. A function is worth optimizing if it appears in the top 5 by cumulative time AND is called frequently (1000+ times). A function called once that takes 0.1s is not a bottleneck even if it's slow per-call.
 
 ## Testing for Performance
 

@@ -9,6 +9,10 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
+## Prerequisites
+
+If the user hasn't shared a plan, design, or proposal yet, ask them to describe it before starting. You need something concrete to interrogate.
+
 ## Approach
 
 ### 1. Understand the Proposal
@@ -50,3 +54,4 @@ When all branches are resolved, summarize the shared understanding: what was dec
 - If the user says "I don't know", that's a finding. Note it and move on.
 - Don't suggest solutions. The goal is to stress-test the user's plan, not redesign it.
 - Stop when you've walked every branch, not when you run out of questions.
+- You're done when: (1) every concern you raised has a concrete answer or is logged as an open question, and (2) no new concerns emerge from the user's last round of answers. Two consecutive rounds with no new branches means you've covered the space.

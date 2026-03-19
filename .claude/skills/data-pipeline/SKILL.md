@@ -63,6 +63,15 @@ pipeline = transform(filter_valid(read_records("data.jsonl")))
 results = list(pipeline)
 ```
 
+### Error Handling in Pipelines
+
+If a pipeline step raises an exception:
+- **Fail-fast** (default): Let the exception propagate. The pipeline stops and the caller sees which step failed.
+- **Skip-and-log**: Wrap individual steps in try/except, log the error, and skip the failing record. Use this only for non-critical data where partial results are acceptable.
+- **Never silently swallow errors** — at minimum log which record failed and why.
+
+Choose fail-fast unless the user explicitly requests partial results.
+
 ## State Processing Pattern
 
 For real-time systems:
