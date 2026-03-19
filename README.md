@@ -38,7 +38,8 @@ See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
 | `conftest.py` | Shared test fixtures and factories |
 | `constants.py` | Named constants and tuning parameters |
 | `.gitignore` | Multi-language gitignore |
-| `TASKS.md` | Task tracking board with starter tasks |
+| `TASKS.md` | Master task board (lead-agent owned) |
+| `TASKS-agent.md` | Per-agent plan file template (one per agent) |
 | `.claude/settings.json` | Claude Code hook configuration |
 | `.claude/hooks/` | Pre-commit test gate and post-edit linter |
 | `.github/workflows/ci.yml` | GitHub Actions CI pipeline |
