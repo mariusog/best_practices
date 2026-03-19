@@ -48,12 +48,12 @@ Read this section FIRST. These are the rules that save you from wasting tokens a
 - **NEVER use bare print/console.log for operational output** -- use the language's logging framework
 - **NEVER dump full file contents when a summary exists** -- read summaries first, drill down on demand
 - **NEVER use unseeded randomness** -- all randomized code MUST accept a `seed` parameter
-- **NEVER modify files owned by another agent** -- add a task to `TASKS.md` instead
+- **NEVER modify files owned by another agent** -- add a `BLOCKED` tag in your plan file instead
 
 ### ALWAYS Do These
 
 - **ALWAYS pipe command output through `tail`** -- bound your token consumption
-- **ALWAYS read TASKS.md before starting work** -- claim a task, set it to `in-progress`
+- **ALWAYS read TASKS.md and your plan file before starting work** -- check for assigned tasks and escalations
 - **ALWAYS run tests before committing** -- zero tolerance for test failures
 - **ALWAYS include before/after metrics** when reporting optimization results
 - **ALWAYS log the seed** in every run so results can be replicated
@@ -76,7 +76,7 @@ You are an AI agent with a finite context window. Optimize for it:
 When dropped into an unfamiliar codebase, read in this order:
 
 1. **CLAUDE.md** -- this file (project rules, structure, conventions)
-2. **TASKS.md** -- what work is in progress, what's done, what's open
+2. **TASKS.md** and your **per-agent plan file** (TASKS-core.md, TASKS-feature.md, or TASKS-qa.md) -- task assignments and detailed checklists
 3. **Project structure** -- `ls` the source and test directories
 4. **Constants file** -- all tuning parameters and configuration values
 5. **Test fixtures** -- understand the shared setup and factory functions
