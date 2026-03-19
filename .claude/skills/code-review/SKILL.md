@@ -5,7 +5,7 @@ description: Perform a thorough code review looking for correctness bugs, SOLID 
 
 # Code Review Skill
 
-Review changed code for correctness, clarity, and maintainability. Fix issues iteratively, most critical first.
+Review changed code for correctness, clarity, and maintainability. Fix issues iteratively, most critical first. Principles are language-neutral; examples use Python for illustration.
 
 ## Scope
 

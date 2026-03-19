@@ -7,7 +7,7 @@ description: Systematic debugging workflow for isolating and fixing bugs. Use wh
 
 ## Overview
 
-Debugging is a systematic process, not guesswork. Follow this workflow every time. Do NOT change code until you understand the root cause.
+Debugging is a systematic process, not guesswork. Follow this workflow every time. Do NOT change code until you understand the root cause. Principles are language-neutral; examples use Python for illustration.
 
 ## Step 1: Reproduce
 
