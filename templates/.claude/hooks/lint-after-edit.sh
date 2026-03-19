@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Run ruff on Python files after edit/write.
 # Claude Code hook: reads JSON from stdin, non-blocking (exit 0).
 
