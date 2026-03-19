@@ -111,6 +111,7 @@ Planning a new feature or major change?
 Did you write new code?
 +-- Yes: Run test-coverage (verify tests exist for new public methods)
 +-- Need integration or API tests? -> integration-testing
++-- Need browser or e2e tests? -> browser-testing
 +-- Did tests fail?
 |   +-- Yes: Run debugging skill. Do NOT proceed until green.
 |   +-- Need text-based debug tools? -> debug-visualization

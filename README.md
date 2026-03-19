@@ -23,13 +23,13 @@ Four agents designed to run as an autonomous parallel team:
 
 **Quality flow**: Agents self-review (lint + SOLID check) before handing off. QA continuously monitors commits. Lead runs `production-quality` (target score ≥ 90/100) before shipping.
 
-### Skills (`.claude/skills/`) — 26 total
+### Skills (`.claude/skills/`) — 27 total
 
 | Category | Skills |
 |----------|--------|
 | Code quality | `tdd-cycle`, `code-review`, `refactor`, `lint` |
 | Architecture | `project-architecture`, `data-pipeline`, `caching-strategies`, `error-handling`, `performance-optimization`, `improve-codebase-architecture` |
-| Testing | `test-coverage`, `integration-testing`, `reproducibility` |
+| Testing | `test-coverage`, `integration-testing`, `browser-testing`, `reproducibility` |
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
 | Shipping | `security-scan`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
