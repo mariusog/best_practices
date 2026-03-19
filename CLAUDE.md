@@ -96,6 +96,8 @@ Planning a new feature or major change?
 +-- Want to stress-test a design? -> grill-me
 +-- Need architecture guidance? -> project-architecture
 +-- Want to find refactoring opportunities? -> improve-codebase-architecture
++-- Designing a data processing workflow? -> data-pipeline
++-- Designing error handling strategy? -> error-handling
 +-- Building a new feature test-first? -> tdd-cycle
 ```
 
@@ -104,14 +106,30 @@ Planning a new feature or major change?
 ```
 Did you write new code?
 +-- Yes: Run test-coverage (verify tests exist for new public methods)
++-- Need integration or API tests? -> integration-testing
 +-- Did tests fail?
 |   +-- Yes: Run debugging skill. Do NOT proceed until green.
+|   +-- Need text-based debug tools? -> debug-visualization
 +-- Is this a performance-sensitive change?
 |   +-- Yes: Run performance-optimization
+|   +-- Need caching? -> caching-strategies
++-- Need to add or improve logging? -> logging-observability
++-- Want to clean up code structure? -> refactor
 +-- Ready to ship?
-|   +-- Yes: Run production-quality (orchestrates all quality skills)
+|   +-- Yes: Run production-quality (orchestrates lint, refactor, test-coverage, security-scan, code-review, update-documentation)
 +-- Quick quality check only?
     +-- Yes: Run lint + code-review
+```
+
+**Shipping and maintenance:**
+
+```
++-- Creating a pull request? -> pr-workflow
++-- Adding or updating dependencies? -> dependency-management
++-- Need to update docs? -> update-documentation
++-- Writing or updating README? -> readme-standards
++-- Dealing with randomness or seeds? -> reproducibility
++-- Need a security audit? -> security-scan
 ```
 
 For new features, use `tdd-cycle` (write tests first, then implement).
