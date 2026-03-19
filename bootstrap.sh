@@ -106,11 +106,17 @@ fi
 echo "[3/7] Copying templates..."
 cp -n "$SCRIPT_DIR/templates/.gitignore" "$TARGET/.gitignore" 2>/dev/null || true
 cp -n "$SCRIPT_DIR/templates/TASKS.md" "$TARGET/TASKS.md" 2>/dev/null || true
-# Copy per-agent plan file templates
+# Copy per-agent plan file templates (no-clobber: skip if already exists)
 for agent in core feature qa; do
-    sed "s/<agent-name>/${agent}-agent/g; s/<agent>/${agent}/g" \
-        "$SCRIPT_DIR/templates/TASKS-agent.md" > "$TARGET/TASKS-${agent}.md" 2>/dev/null || true
+    if [[ ! -f "$TARGET/TASKS-${agent}.md" ]]; then
+        sed "s/<agent-name>/${agent}-agent/g; s/<agent>/${agent}/g" \
+            "$SCRIPT_DIR/templates/TASKS-agent.md" > "$TARGET/TASKS-${agent}.md" 2>/dev/null || true
+    fi
 done
+
+# Copy CI pipeline
+mkdir -p "$TARGET/.github/workflows"
+cp -n "$SCRIPT_DIR/templates/.github/workflows/ci.yml" "$TARGET/.github/workflows/ci.yml" 2>/dev/null || true
 
 # Copy Claude Code hooks
 mkdir -p "$TARGET/.claude/hooks"
