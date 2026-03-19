@@ -39,6 +39,8 @@ Configure these for your language/stack. All commands throughout this file and i
 
 Read this section FIRST. These are the rules that save you from wasting tokens and making common mistakes.
 
+<important>
+
 ### NEVER Do These
 
 - **NEVER use verbose test output** -- use quiet mode and pipe through `tail`
@@ -57,6 +59,8 @@ Read this section FIRST. These are the rules that save you from wasting tokens a
 - **ALWAYS run tests before committing** -- zero tolerance for test failures
 - **ALWAYS include before/after metrics** when reporting optimization results
 - **ALWAYS log the seed** in every run so results can be replicated
+
+</important>
 
 ### Token Budget Awareness
 
@@ -133,6 +137,11 @@ Did you write new code?
 ```
 
 For new features, use `tdd-cycle` (write tests first, then implement).
+
+### Skill Design Conventions
+
+- **Description field**: Lead with the trigger condition ("Use when..."), not a summary of what the skill does. The description is how Claude decides whether to activate the skill.
+- **Gotchas section**: Every skill should accumulate a `## Gotchas` section documenting real failure patterns observed in practice. This is the highest-signal content in a skill — add entries when Claude fails at something the skill should handle. The `production-quality` self-improvement step (Step 11) is the right time to capture new Gotchas.
 
 ## Project Structure
 
