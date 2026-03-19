@@ -1,154 +1,190 @@
 ---
 name: code-review
-description: Perform a thorough code review looking for SOLID violations, Python best practices, performance issues, and code smells. Use when the user asks to review code, check for issues, or improve code quality.
+description: Perform a thorough code review looking for correctness bugs, SOLID violations, performance issues, and code smells. Use when the user asks to review code, check for issues, or improve code quality.
 ---
 
 # Code Review Skill
 
-Perform a comprehensive code review on changed files, iterating until no critical issues remain.
+Review changed code for correctness, clarity, and maintainability. Fix issues iteratively, most critical first.
 
 ## Scope
 
-This skill applies to files changed in the current branch compared to `main` (or `origin/main`).
-Identify changed files with: `git diff --name-only origin/main...HEAD`
+Review files changed on the current branch vs `main`:
 
-## Review Checklist
+```sh
+git diff --name-only origin/main...HEAD 2>/dev/null || git diff --name-only main...HEAD
+```
 
-Review the code as a top 0.01% Python developer. For each changed file, check for:
+If no branch diff exists (working on `main`), review recently modified files:
 
-### SOLID Principles
+```sh
+git diff --name-only HEAD~3
+```
 
-**Single Responsibility**
-- Does each class/module have one reason to change?
-- Are functions focused on a single task?
+## Workflow
 
-**Open/Closed**
-- Is the code open for extension but closed for modification?
-- Can behavior be extended without changing existing code?
+### Step 1: Understand Intent
 
-**Liskov Substitution**
-- Can subclasses be used interchangeably with their base classes?
-- Do overridden methods maintain expected behavior?
+Before judging code, understand what it's trying to do. Read commit messages, PR descriptions, and related tests. A reviewer who doesn't understand intent will flag correct tradeoffs as "issues."
 
-**Interface Segregation**
-- Are interfaces (ABCs/Protocols) focused and minimal?
-- Do classes depend only on methods they use?
+```sh
+# What changed and why?
+git log --oneline main..HEAD
+git diff main...HEAD --stat
+```
 
-**Dependency Inversion**
-- Do high-level modules depend on abstractions?
-- Are dependencies injected rather than hardcoded?
+For each changed file, answer: **What is this change trying to accomplish?** Then evaluate whether the implementation achieves that goal well.
 
-### Python Best Practices
+### Step 2: First Pass -- Correctness
 
-**Type Hints**
-- Public functions have type annotations
-- Complex return types are clearly annotated
-- Use `typing` module appropriately (Optional, Union, TypeAlias, etc.)
+Read the diff looking for things that are **wrong**, not things that are ugly. Correctness issues trump all style concerns.
 
-**Data Structures**
-- Appropriate use of dataclasses, NamedTuples, or TypedDicts
-- Proper use of collections (defaultdict, Counter, deque, etc.)
-- Immutable structures where mutation isn't needed (tuples, frozensets)
+#### Bugs That Hide in Plain Sight
 
-**Idioms**
-- Pythonic patterns (list comprehensions, generators, unpacking)
-- Context managers for resource handling
-- f-strings over `.format()` or `%` formatting
+| Pattern | What to look for | Why it's dangerous |
+|---|---|---|
+| **Mutable default args** | `def f(items=[])`, `def f(config={})` | Shared across calls -- silent data corruption |
+| **Mutating while iterating** | Modifying a collection while looping over it | Skips elements or raises errors |
+| **Stale closure capture** | Lambda/callback capturing a loop variable | All closures share the final value |
+| **Off-by-one in ranges** | Boundary conditions in loops and slices | Fencepost errors in any indexed logic |
+| **Identity vs equality** | Using identity checks (`is`, `===`) for value comparison | Identity and equality are different things |
+| **Swallowed exceptions** | `except: pass`, empty `catch {}` | Hides bugs; at minimum log the error |
+| **Unguarded access** | Accessing a key/index without checking existence | Runtime errors on missing data |
+| **Float equality** | `if distance == 3.0` | Float arithmetic is inexact -- use tolerance checks |
+| **Shadowed builtins** | Naming a variable the same as a built-in function | Breaks stdlib functions silently |
+| **Missing `return`** | Function returns a value on one path, falls through on another | Returns `null`/`None`/`nil` unexpectedly |
 
-**Module Organization**
-- Logical grouping of functions and classes
-- Clear public API (use `__all__` or `_` prefix for private)
-- Avoid circular imports
+#### State and Data Integrity
 
-### Performance Issues
+- **Cache invalidation**: When cached data is computed, is the cache cleared when the source data changes? Look for memoized values, module-level dicts, LRU caches.
+- **Shared mutable state**: If two functions modify the same data structure, can they interleave? Does the order matter?
+- **Incomplete updates**: If a function updates A and B together, can it fail after updating A but before B?
 
-**Algorithmic Complexity**
-- Unnecessary nested loops (O(n^2) when O(n) is possible)
-- Repeated work that could be cached or precomputed
-- Using lists where sets/dicts would give O(1) lookup
+### Step 3: Second Pass -- Structure
 
-**Memory Usage**
-- Generators instead of lists for large sequences
-- Avoid unnecessary copies of large data structures
-- Use `__slots__` for classes with many instances
+Now look at design quality. The goal is code that's easy to change next week, not code that's theoretically perfect.
 
-### Code Smells
+#### SOLID -- What to Actually Look For
 
-**Long Functions**
-- Functions longer than 30 lines should be split
-- Consider extracting smaller, focused functions
+Don't check SOLID as a checklist. Instead, ask these diagnostic questions:
 
-**Long Parameter Lists**
-- More than 4-5 parameters suggests a design issue
-- Consider using dataclasses, TypedDicts, or keyword arguments
+**Single Responsibility**: "If I needed to change the scoring logic, how many files would I touch?" If the answer is more than 1-2, responsibilities are scattered. If one file would need changes for 3 unrelated reasons, it has too many responsibilities.
 
-**Feature Envy**
-- Functions that use another object's data extensively
-- Consider moving the function to the appropriate class/module
+**Open/Closed**: "Can I add a new state or variant without modifying the dispatch code?" Look for `if/elif/elif` chains on type or state -- these require modification for every new case. Dict dispatch or method-per-variant is open for extension.
 
-**Primitive Obsession**
-- Using raw dicts where dataclasses would be clearer
-- Magic strings/numbers instead of enums or constants
+**Liskov Substitution**: "If I swap one implementation for another, do callers break?" Check that subtypes don't: narrow input types, widen output types, add preconditions callers don't know about, or skip side effects the base type guarantees.
 
-**Duplicate Code**
-- Similar logic in multiple places
-- Extract to shared functions or modules
+**Interface Segregation**: "Does this function/class depend on things it doesn't use?" A function that takes a large object but only uses one method could take a simpler interface. Look for parameters or attributes that are passed but never read.
 
-### Logging and Observability
+**Dependency Inversion**: "Does high-level orchestration code import low-level implementation details?" Orchestration importing from internal helpers instead of going through the public module API is a violation.
 
-- Uses `logging` module, never bare `print()` for operational output
-- Structured logging for key decisions and state changes
-- Diagnostic data recorded for debugging and replay
+#### Structural Smells
 
-### Reproducibility
+| Smell | Detection | Typical fix |
+|---|---|---|
+| **God class/module** | > 300 lines, multiple unrelated method clusters | Split into focused sub-modules |
+| **Shotgun surgery** | One logical change requires edits in 5+ files | Consolidate related code |
+| **Feature envy** | Method accesses another object's fields more than its own | Move method to the data's owner |
+| **Long parameter list** | > 5 parameters | Group into a config object or data structure |
+| **Deep nesting** | 4+ indent levels | Extract helper, use early returns |
+| **Duplicate logic** | Same 5+ line pattern in 3+ places | Extract to shared function |
+| **Primitive obsession** | Raw tuples/dicts passed everywhere for structured data | Introduce a type alias or data class |
 
-- Randomized processes accept `seed` parameters
-- Deterministic output for deterministic input
-- Seeds logged for result replication
+### Step 4: Third Pass -- Performance (Hot Paths Only)
 
-### Error Handling
+Only flag performance issues in code that runs frequently (inner loops, per-request handlers, hot paths). Don't optimize cold paths.
 
-**System Boundaries**
-- External API calls wrapped in proper error handling
-- User input validated appropriately
-- File operations handle missing files
+| Issue | Spot it | Fix |
+|---|---|---|
+| **O(n) lookup in a loop** | Linear search inside a loop | Convert to set/map before the loop |
+| **Repeated computation** | Same expensive call with same args, multiple times | Cache or compute once and pass the result |
+| **Unnecessary allocation** | Building a collection just to check length or existence | Use a lazy check or generator |
+| **Construction in hot loop** | Rebuilding a data structure every iteration | Lift to outer scope if inputs don't change |
+| **String concatenation in loop** | Appending strings one at a time in a loop | Use a builder or join pattern |
 
-**Graceful Degradation**
-- Reasonable fallback behavior
-- Informative error messages
-- Proper logging of errors
+### Step 5: Fix and Verify
 
-## Review Loop Process
+Process issues in severity order. For each fix:
 
-1. **Review**: Read through all changed files
-2. **Identify**: List critical issues found
-3. **Fix**: Address the most critical issue
-4. **Test**: Run tests to verify no regressions
-5. **Commit**: Commit the fix with a clear message
-6. **Repeat**: Continue until no critical issues remain
+1. **Fix** the issue (minimal change -- don't refactor adjacent code)
+2. **Test**: Run the fast test command from the Tooling table
+3. **Lint**: Run the linter on changed files
 
-### Issue Priority
+Stop when no critical or major issues remain. Don't pursue minor style nits -- the linter handles those.
 
-**Critical** (must fix):
-- Security vulnerabilities
-- Data integrity issues
-- Algorithmic correctness bugs
-- Missing error handling at system boundaries
-- Non-deterministic behavior in deterministic contexts
+## Severity Classification
 
-**Major** (should fix):
-- SOLID violations that impact maintainability
-- Performance issues in hot paths
-- Missing type hints on public APIs
-- Missing logging for key operations
+### Critical (must fix before merge)
 
-**Minor** (nice to fix):
-- Style inconsistencies (if not caught by linter)
-- Minor refactoring opportunities
+These cause **incorrect behavior, data loss, or security holes**:
 
-## Completion
+- Logic bug that produces wrong results
+- Unsafe operation that could cause a runtime penalty or crash
+- Cache that's never invalidated -- stale data across runs
+- Unbounded loop/recursion without depth limit -- hang
+- Exception swallowed silently -- bug hidden from detection
+- Command injection, path traversal, or unsanitized external input
 
-Report:
-- Number of issues found by category
-- Number of issues fixed
-- Any remaining items for future consideration
+### Major (should fix)
+
+These cause **maintenance burden or performance regression**:
+
+- SOLID violation that makes the next change harder (god class, tight coupling)
+- Missing type annotations on public API -- callers can't reason about contracts
+- Performance issue on a hot path -- measurable impact
+- Duplicated logic in 3+ places -- future changes will miss a copy
+- Test that doesn't assert anything meaningful -- false confidence
+
+### Minor (fix if convenient)
+
+These are **style or clarity** improvements:
+
+- Naming that could be clearer (but isn't misleading)
+- Comment that restates the code
+- Import ordering
+- Opportunity to use a more idiomatic pattern
+
+**Rule**: Never block a review on minor issues. Mention them if you fix them, don't chase them if you don't.
+
+## Review Judgment Calls
+
+Real reviews require judgment, not just rules. Guidelines for common gray areas:
+
+**"Should I flag this style issue?"**
+Only if it hurts readability for the *next* person. If two styles are equally clear, respect the existing convention in the file.
+
+**"Is this abstraction premature?"**
+If there's only one implementation and no concrete plan for a second, the abstraction is premature. Exception: if the abstraction makes testing dramatically easier.
+
+**"Should I suggest a refactor?"**
+Only if the current structure will make the *stated goal of this change* harder. Don't suggest refactors that serve hypothetical future changes.
+
+**"This works but I'd do it differently."**
+Not a review finding. Multiple correct approaches exist. Only flag it if your approach is measurably better (faster, clearer, more correct) -- not just different.
+
+**"This violates a project convention."**
+Check CLAUDE.md for the convention. If it's documented, flag it as major. If it's just your preference, skip it.
+
+## Output Format
+
+Report findings grouped by severity, with file locations:
+
+```
+## Code Review: <branch or description>
+
+### Critical
+- `src/data/distance.py:45` -- Cache never cleared when source data changes; stale results after update
+
+### Major
+- `src/logic/planner.py:120` -- Method is 52 lines, exceeds 30-line limit; extract helper for route selection
+- `src/logic/delivery.py:33` -- Missing type annotation on return value
+
+### Minor
+- `src/algorithms/search.py:88` -- Could use dict.get(key, default) instead of try/except KeyError
+
+### Summary
+- Files reviewed: 4
+- Issues found: 1 critical, 2 major, 1 minor
+- Issues fixed: 1 critical, 1 major
+- Tests: all passing
+```
