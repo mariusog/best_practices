@@ -303,9 +303,9 @@ When multiple agents run in parallel (via worktrees), they MUST follow this prot
 
 1. Lead creates tasks in `TASKS.md` and writes detailed checklists in the appropriate agent plan file
 2. Agents read `TASKS.md` for assignments, then work from their own plan file
-3. Agents check off items and write results in their plan file as they progress
-4. Lead validates by reading agent plan files and running quality checks
-5. Lead updates `TASKS.md` with final results after validation
+3. Agents check off items (using `- [x]` checkboxes) and write results in their plan file as they progress
+4. Lead validates by reading agent plan files, running `code-review`, and verifying metrics
+5. Lead marks the task as `done` in `TASKS.md` after validation — a task is not officially complete until this step
 
 ### Task Result Format
 
@@ -318,8 +318,19 @@ Every completed task MUST report in the agent's plan file:
 
 - If blocked by another agent's code, mark the task as **BLOCKED** in your plan file with a description
 - If QA finds a critical issue (data loss, security hole, crash), mark as **CRITICAL** in `TASKS-qa.md`
-- Lead-agent monitors plan files and triages blockers and escalations
+- Lead-agent monitors plan files, triages blockers, and updates plan files when resolved
 - Do NOT silently stall -- always surface the blocker
+
+Escalation entry format in your plan file:
+
+```
+### T5: Implement retry logic
+**Status**: BLOCKED
+**Blocker**: core-agent — `src/data/connection.py` missing `retry()` method needed by handler
+**Since**: 2025-03-19
+```
+
+Include: which agent/file is blocking, what's missing, and when you escalated.
 
 ### Conflict Prevention
 
