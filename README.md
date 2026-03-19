@@ -22,9 +22,10 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 | Category | Skills |
 |----------|--------|
 | Code quality | `tdd-cycle`, `code-review`, `refactor`, `lint` |
-| Architecture | `python-architecture`, `data-pipeline`, `caching-strategies`, `error-handling`, `performance-optimization` |
+| Architecture | `project-architecture`, `data-pipeline`, `caching-strategies`, `error-handling`, `performance-optimization`, `improve-codebase-architecture` |
 | Testing | `test-coverage`, `integration-testing`, `reproducibility` |
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
+| Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
 | Shipping | `security-scan`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation` |
 
 ### Templates (`templates/`)
