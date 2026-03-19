@@ -119,6 +119,19 @@ async def page(browser, base_url):
     page = await context.new_page()
     yield page
     await context.close()
+
+@pytest.fixture
+async def authenticated_page(browser, base_url):
+    """Page with a logged-in user session. Adapt login flow to your app."""
+    context = await browser.new_context(base_url=base_url)
+    page = await context.new_page()
+    await page.goto("/login")
+    await page.fill("[data-testid=email]", "test@example.com")
+    await page.fill("[data-testid=password]", "test-password")
+    await page.click("[data-testid=submit]")
+    await page.wait_for_url("**/dashboard")
+    yield page
+    await context.close()
 ```
 
 ### Environment Configuration
