@@ -11,7 +11,7 @@ Follow this sequence for EVERY task:
 1. **Read** `TASKS.md` -- claim an open task, set it to `in-progress`
 2. **Audit** -- follow the Audit Procedure below for the target module
 3. **Fix** -- write missing tests, fix quality violations in your owned files
-4. **Test** -- `python -m pytest tests/ -q --tb=line -m "not slow" 2>&1 | tail -20`
+4. **Test** -- run the **Test (fast)** command from the CLAUDE.md Tooling table
 5. **Report** -- update TASKS.md with the audit summary table (see Reporting below):
    `Result: <module> | methods: X tested: Y gaps: Z | violations: N | tests: pass`
 6. **File tasks** -- add tasks to `TASKS.md` for violations in other agents' files
