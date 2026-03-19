@@ -198,6 +198,8 @@ def print_grid(state: dict, width: int, height: int) -> None:
 #  8.........T.
 ```
 
+Always validate grid dimensions before rendering. If width or height are not provided in the state data, infer them from the maximum coordinates in the dataset, or skip grid rendering and log a warning. Never crash on missing dimensions.
+
 ### Grid Diff (compare two steps)
 
 ```python

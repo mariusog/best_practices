@@ -27,7 +27,7 @@ description: Structured error handling patterns including custom exceptions, err
 
 ## Custom Exception Hierarchy
 
-Define project-specific exceptions. Keep the hierarchy shallow (2 levels max).
+Define project-specific exceptions. Keep the hierarchy shallow (2 levels max: one base exception, then specific exceptions that inherit from it). You can have many specific exceptions at the same level — the constraint is depth, not breadth.
 
 ```python
 class ProjectError(Exception):
@@ -166,6 +166,13 @@ def search(start, goal, grid):
 ```
 
 ## Recovery Patterns
+
+### Choosing a Recovery Strategy
+
+- Error is **transient** (network timeout, rate limit, temporary unavailability) → **Retry** with exponential backoff
+- Error is **permanent** but a degraded result is acceptable (cache miss, optional feature unavailable) → **Fallback** to a default or cached value
+- Error is **permanent** and no degraded result is acceptable (missing required data, auth failure) → **Propagate** the error to the caller
+- Error could be either → **Retry once**, then **fallback** if retry fails
 
 ### Retry with Backoff (for transient failures only)
 
