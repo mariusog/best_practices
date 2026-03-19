@@ -80,7 +80,19 @@ echo ""
 
 # 1. Copy .claude directory (agents + skills)
 echo "[1/7] Copying .claude/ (agents and skills)..."
-cp -rn "$SCRIPT_DIR/.claude" "$TARGET/" 2>/dev/null || cp -r "$SCRIPT_DIR/.claude" "$TARGET/"
+if [[ -d "$TARGET/.claude" ]]; then
+    # Merge into existing .claude/ without overwriting files
+    find "$SCRIPT_DIR/.claude" -type f | while read -r src; do
+        rel="${src#"$SCRIPT_DIR/"}"
+        dest="$TARGET/$rel"
+        if [[ ! -f "$dest" ]]; then
+            mkdir -p "$(dirname "$dest")"
+            cp "$src" "$dest"
+        fi
+    done
+else
+    cp -r "$SCRIPT_DIR/.claude" "$TARGET/"
+fi
 
 # 2. Copy CLAUDE.md
 echo "[2/7] Copying CLAUDE.md..."
