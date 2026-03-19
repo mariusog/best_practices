@@ -123,6 +123,12 @@ If tests fail after refactoring:
 3. If the test was brittle (testing implementation details rather than behavior): fix the test to assert on behavior
 4. Never commit with failing tests
 
+## Gotchas
+
+- **Changing behavior during refactoring**: Refactoring must preserve behavior. If a test fails after refactoring, the refactor changed something it shouldn't have — revert and try again.
+- **Over-extracting constants**: Not every number needs to be a named constant. `range(len(items))` doesn't need `ITEM_RANGE_START = 0`. Extract only values that represent tunable thresholds or business rules.
+- **Removing "unnecessary" comments that explain WHY**: Comments that restate WHAT the code does should go. Comments that explain WHY a non-obvious choice was made must stay.
+
 ## Scoring (0-100)
 
 Evaluate code clarity across five dimensions. Award up to 20 points each:

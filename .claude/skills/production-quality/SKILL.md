@@ -1,6 +1,6 @@
 ---
 name: production-quality
-description: Brings code up to production quality level by orchestrating lint, refactor, test-coverage, security-scan, code-review, and update-documentation skills. Use when the user asks to clean up code, improve code quality, prepare code for production, or run the production quality routine.
+description: Use when the user asks to clean up code, improve code quality, prepare code for production, or run the production quality routine. Orchestrates lint, refactor, test-coverage, security-scan, code-review, and update-documentation skills to bring code to production quality.
 ---
 
 # Production Quality Code Routine
@@ -128,6 +128,11 @@ Review this run and improve the skills themselves:
 - Are there steps that consistently yield no findings and can be removed?
 - Can multiple steps be consolidated?
 
+### Capture Gotchas
+- Did any skill fail to catch an issue it should have? Add it to that skill's `## Gotchas` section
+- Did Claude make a predictable mistake (e.g., testing implementation details, over-refactoring)? Document the pattern
+- Gotchas are the highest-signal content in a skill — they prevent repeated failures
+
 ### Capture New Patterns
 - New refactoring patterns worth adding as examples
 - New anti-patterns to warn against
@@ -140,6 +145,12 @@ If improvements are identified:
 3. Add concrete examples where helpful
 
 If the run was smooth and no gaps were found, skip this step.
+
+## Gotchas
+
+- **Skipping steps for "simple" changes**: Even small changes can introduce regressions. Run the full routine — the steps that feel unnecessary are often the ones that catch surprises.
+- **Markdown-only changes still need review**: Configuration, documentation, and skill files can contain stale references, broken links, or inconsistent guidance. The code review step applies to all file types.
+- **Scoring N/A skills as 100**: When a sub-skill is not applicable (e.g., no source code to lint), redistribute its weight rather than giving it a perfect score — otherwise the aggregate is inflated.
 
 ## Scoring (0-100)
 

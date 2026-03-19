@@ -182,6 +182,12 @@ Start at 100. Deduct points for each **unresolved** issue (after fixes in Step 5
 | 50-69 | Significant issues -- multiple major or critical problems |
 | 0-49 | Not ready -- critical issues unresolved |
 
+## Gotchas
+
+- **Over-flagging style as "major"**: Claude tends to classify naming and formatting issues as Major when they're Minor. Only flag style issues as Major if they actively mislead the reader.
+- **Missing state mutation bugs**: Claude is better at spotting syntactic issues than semantic ones. Pay extra attention to cache invalidation, shared mutable state, and incomplete updates — these require reasoning about execution order, not just reading code.
+- **Reviewing test code with production standards**: Test files have different conventions (longer functions, more repetition is OK). Don't flag test helpers for SRP violations.
+
 ## Output Format
 
 Report findings grouped by severity, with file locations:

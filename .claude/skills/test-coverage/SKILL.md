@@ -106,6 +106,12 @@ Score across two dimensions:
 | 50-69 | Incomplete -- significant coverage or quality gaps |
 | 0-49 | Insufficient -- major public methods lack tests |
 
+## Gotchas
+
+- **Testing implementation details**: Writing tests that assert on internal variable names, private method calls, or specific data structures instead of observable behavior. These tests break on every refactor.
+- **Ignoring edge cases for "simple" functions**: Even a function that returns a boolean needs tests for null input, empty collections, and boundary values.
+- **Copy-paste test bodies**: Duplicating test logic across scenarios instead of using parameterized tests. This leads to tests that silently drift out of sync.
+
 ## Completion
 
 Report:

@@ -132,6 +132,12 @@ Result: Fixed <root cause> | added regression test | tests: N pass
 | Assertion error with correct-looking values | Float comparison, type mismatch, off-by-one | Use approximate comparison for floats, check types |
 | Import error or attribute error | Circular import, renamed function, missing module export | Check import chain, recent renames |
 
+## Gotchas
+
+- **Fixing the symptom instead of the root cause**: Adding a null check to suppress a crash instead of understanding why the value is null. Always ask "why is this state reachable?" before adding a guard.
+- **Changing multiple things at once**: When debugging, change ONE variable at a time. If you change the input AND the function AND the test simultaneously, you can't isolate which change fixed (or broke) things.
+- **Assuming the bug is in the code you're looking at**: The actual bug is often in the caller, the setup, or the test fixture — not the function under investigation.
+
 ## Anti-Patterns
 
 - **Shotgun debugging**: Changing random things and rerunning. Follow the workflow.

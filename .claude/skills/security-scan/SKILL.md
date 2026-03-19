@@ -77,6 +77,12 @@ Ensure sensitive files are excluded:
 
 Re-run all scans to confirm issues are resolved.
 
+## Gotchas
+
+- **Grep patterns miss obfuscated secrets**: Base64-encoded tokens, split strings, and environment variable names that don't match common patterns (`MY_TOKEN` vs `password`) evade regex-based scanning. Check config files manually.
+- **Dismissing warnings as false positives too quickly**: If a security tool flags something, investigate before dismissing. Many "false positives" are actually real issues in edge cases.
+- **Ignoring transitive dependency vulnerabilities**: `pip-audit` and `npm audit` may flag vulnerabilities in deep dependencies you don't directly control. These still need assessment — the vulnerability is in your runtime regardless of who wrote it.
+
 ## Scoring (0-100)
 
 Start at 100. Deduct points for each **unresolved** finding (after fixes in Steps 1-3):

@@ -66,6 +66,12 @@ Fix type errors properly:
 
 Run linter and formatter one final time to confirm all issues are resolved.
 
+## Gotchas
+
+- **Auto-fix removing re-exported imports**: Ruff's auto-fix may remove imports that look unused but are re-exported for external consumers (e.g., `from .module import SomeClass` in `__init__.py`). Verify before accepting.
+- **Suppressing instead of fixing**: When a lint rule is hard to satisfy, the temptation is to add an ignore comment. Fix the code instead — ignore comments accumulate and erode lint value over time.
+- **Type annotations that lie**: Adding `-> None` to a function that sometimes returns a value, or `str` to a parameter that also accepts `None`. Wrong annotations are worse than missing ones.
+
 ## Scoring (0-100)
 
 Start at 100. Deduct points for each **unresolved** offense (after auto-fix and manual fixes):
