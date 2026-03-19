@@ -332,7 +332,7 @@ The lead-agent has cross-cutting authority -- it may modify any file when a fix 
 ./bootstrap.sh /path/to/new-project --lang python
 ```
 
-This copies the full structure, creates directories, and sets up language-specific config. Supported languages: `python`, `typescript`, `go`, `rust`.
+This copies the full structure, creates directories, and sets up language-specific config. Supported languages: `python`, `typescript`, `go`, `rust`, `ruby`.
 
 ### Manual Setup
 

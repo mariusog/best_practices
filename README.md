@@ -26,7 +26,7 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 | Testing | `test-coverage`, `integration-testing`, `reproducibility` |
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
-| Shipping | `security-scan`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation` |
+| Shipping | `security-scan`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
 
 ### Templates (`templates/`)
 
