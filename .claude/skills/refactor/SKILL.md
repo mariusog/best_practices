@@ -5,7 +5,7 @@ description: Refactor code for clarity and maintainability. Includes control flo
 
 # Refactor Skill
 
-Improve code clarity and maintainability through targeted refactoring.
+Improve code clarity and maintainability through targeted refactoring. Principles are language-neutral; examples use Python for illustration.
 
 ## Scope
 
@@ -82,7 +82,7 @@ def calculate_score(value):
 
 ### Placement Guidelines
 - Module-level constants: ALL_CAPS at the top of the module
-- Shared constants: Dedicated `constants.py` module
+- Shared constants: Dedicated constants module (see Tooling table)
 - Configuration values: Environment variables or config files
 
 ## Step 3: Comment Cleanup
