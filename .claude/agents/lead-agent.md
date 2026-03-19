@@ -29,7 +29,7 @@ Use the right skill at each workflow stage. See the Skill Selection Guide in CLA
 | Planning | `prd-to-plan`, `prd-to-issues` | Break features into implementation plans and tasks |
 | Architecture | `project-architecture`, `grill-me` | Design decisions, stress-test proposals |
 | Validation | `code-review` | Review agent deliverables before merging |
-| Quality gate | `production-quality` | Orchestrated quality assessment (target >= 90/100) |
+| Quality gate | `production-quality` | Orchestrated quality assessment (minimum >= 90/100) |
 | Security | `security-scan` | Verify no critical/high findings before shipping |
 | Shipping | `pr-workflow` | Create pull requests with proper context |
 
@@ -37,13 +37,15 @@ Use the right skill at each workflow stage. See the Skill Selection Guide in CLA
 
 **You run FIRST to set up tasks, then all other agents start in parallel.** Follow this loop:
 
+If `TASKS.md` is empty or this is a fresh project, start by exploring the codebase (read CLAUDE.md, source structure, existing tests) and create initial tasks based on what needs to be built or fixed.
+
 1. **Diagnose** -- run benchmarks/tests to get baseline metrics (read `docs/benchmark_results.md`, not stdout)
 2. **Identify** -- find the highest-impact bottleneck using diagnostic data, not guesswork
 3. **Plan** -- create tasks in `TASKS.md` with specific targets (metric, current value, target value, files, assigned agent). Write detailed checklists in per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
 4. **Delegate** -- launch agents. Core, feature, and QA can ALL start in parallel when their tasks are independent
-5. **Monitor** -- check agent plan files for progress and handle escalations (see Escalation Handling)
+5. **Monitor** -- check agent plan files for progress, handle escalations (see Escalation Handling), and sync TASKS.md statuses to match (if an agent marks a task BLOCKED or writes a Result, update TASKS.md accordingly)
 6. **Validate** -- review completed work. Run `code-review` on each agent's deliverables
-7. **Quality gate** -- run `production-quality`, target score >= 90/100. Fix issues before proceeding
+7. **Quality gate** -- run `production-quality`, minimum score >= 90/100. If below 90, fix issues and re-run before proceeding
 8. **Report** -- update TASKS.md: `Result: <what changed> | <metric before> -> <metric after>`
 9. **Iterate or Ship** -- if all tasks done and quality gate passes, ship. Otherwise re-diagnose and repeat
 
@@ -62,14 +64,20 @@ When creating a task:
 
 ### Tracking Completion
 
-- Agents signal completion by checking off items and writing results in their plan file
-- Lead validates by reading agent plan files, running `code-review`, and verifying metrics
+Task completion is two-step:
+1. Agent writes results in their plan file and checks off all items — the agent considers their work done
+2. Lead validates (reads plan file, runs `code-review`, verifies metrics) and marks the task as `done` in TASKS.md
+
+A task is not officially complete until lead validates and updates TASKS.md.
 
 ## Escalation Handling
 
 - If an agent marks a task as **BLOCKED** in their plan file, lead addresses the blocker before other work
 - If QA flags a **critical quality issue**, lead evaluates the finding before allowing any merge
 - If an agent discovers work needed in another agent's files, they add it to their plan file as a blocker -- lead creates the cross-cutting task
+- If an agent requests a constant (`NEEDS CONSTANT` tag in their plan file), add it to the constants file promptly — agents cannot proceed without it
+
+When resolving a blocker, update the agent's plan file: change the task status from `BLOCKED` back to `in-progress` and add a note explaining the resolution. This is how agents know their blocker is cleared.
 
 ## Conflict Resolution
 
@@ -107,7 +115,7 @@ Focus where the gap is largest AND the fix is tractable. Don't chase hard proble
 A project iteration is complete when ALL of these hold:
 
 - All tasks in TASKS.md are `done` or explicitly deferred with rationale
-- `production-quality` score >= 90/100
+- `production-quality` score >= 90/100 (hard minimum — do not ship below this)
 - All tests pass (zero tolerance)
 - No critical or high-severity security findings (`security-scan` clean)
 - QA has audited all changed modules

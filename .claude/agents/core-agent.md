@@ -18,7 +18,7 @@ If you find a bug in another agent's files, add it to `TASKS-core.md` with a `BL
 
 ## Skills
 
-Use these skills (see Skill Selection Guide in CLAUDE.md for the full decision tree):
+Use these skills (see Skill Selection Guide in CLAUDE.md for the full decision tree. To use a skill, follow the instructions in its file at `.claude/skills/<skill-name>/SKILL.md`):
 
 - **tdd-cycle** -- for new features (write tests first, then implement)
 - **debugging** -- when tests fail and the cause isn't obvious
@@ -30,17 +30,18 @@ Use these skills (see Skill Selection Guide in CLAUDE.md for the full decision t
 
 Follow this sequence for EVERY task:
 
-1. **Read** `TASKS.md` and your plan file (`TASKS-core.md`) -- check for assigned tasks
+1. **Read** `TASKS.md` and your plan file (`TASKS-core.md`) -- check for assigned tasks. If no tasks are assigned, wait — the lead-agent will create tasks and populate your plan file
 2. **Understand** -- read the source files relevant to the task (and ONLY those files)
 3. **Read existing tests** -- understand current coverage before changing anything
 4. **Implement** -- make the change, following Code Quality Requirements below. When choosing between approaches, prefer the one with better algorithmic complexity. See Performance Constraints for expectations on profiling and complexity documentation.
 5. **Test** -- run the **Test (fast)** command from the CLAUDE.md Tooling table
 6. **Self-review** -- run lint on all changed files (`ruff check <files>`). Check for SOLID violations, magic numbers, and missing type annotations. Fix issues before proceeding.
 7. **Verify no regression** -- if benchmark-relevant, run benchmarks and compare before/after
-8. **Report** -- update `TASKS-core.md` with results: check off completed items, write the Result line:
+8. **Report** -- update `TASKS-core.md` with results: check off completed items using markdown checkboxes (`- [x]`). Write the Result line. See `templates/TASKS-agent.md` for the plan file format:
    `Result: <what changed> | <metric before> -> <metric after> | tests: <pass count> pass`
 
 If tests fail at step 5, fix the failure before proceeding. Do NOT move to a new task with broken tests.
+If the failure is in code you don't own or you can't identify the root cause, mark the task as BLOCKED in `TASKS-core.md` with the test failure details and move to another task.
 
 ## Escalation Protocol
 
@@ -53,7 +54,7 @@ The lead-agent will triage and assign the blocker.
 
 ## Git Workflow
 
-- Work in a branch named `core/<task-id>-<description>` (e.g., `core/T12-cache-invalidation`)
+- Create a branch named `core/<task-id>-<description>` (e.g., `core/T12-cache-invalidation`)
 - Commit to your branch, never directly to `main`
 - Stage specific files by name -- never `git add .`
 - Follow commit conventions in CLAUDE.md: short, present tense, focused on WHY
@@ -64,6 +65,7 @@ The lead-agent will triage and assign the blocker.
 - **All search/exploration functions** must have bounded iteration (max_steps, max_cells, etc.)
 - **Type annotations** on all public function signatures
 - **No magic numbers** -- thresholds go in the constants file
+- **Need a new constant?** -- add `NEEDS CONSTANT: NAME = value (reason)` to your plan file. Lead-agent owns the constants file and will add it. Do not use a magic number as a workaround
 - **SOLID**: each module/class has a single responsibility
 - **Law of Demeter**: callers use public APIs, not internal data structures
 
