@@ -10,12 +10,18 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 
 ### Agents (`.claude/agents/`)
 
-| Agent | Role |
-|-------|------|
-| `lead-agent` | Architecture, cross-cutting changes, task design |
-| `core-agent` | Algorithms, data structures, computation |
-| `feature-agent` | Business logic, decision workflows |
-| `qa-agent` | Testing, benchmarking, SOLID enforcement |
+Four agents designed to run as an autonomous parallel team:
+
+| Agent | Role | Runs |
+|-------|------|------|
+| `lead-agent` | Coordination, architecture, quality gates | First — plans tasks, then launches others |
+| `core-agent` | Algorithms, data structures, performance | In parallel after lead |
+| `feature-agent` | Business logic, decision workflows | In parallel after lead |
+| `qa-agent` | Testing, auditing, security enforcement | In parallel after lead (proactive review) |
+
+**Coordination model**: The lead-agent owns `TASKS.md` exclusively and creates per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`). Each agent works from their own plan file — no shared-file contention. Agents escalate blockers via `BLOCKED`/`CRITICAL` tags in their plan files; the lead monitors and triages.
+
+**Quality flow**: Agents self-review (lint + SOLID check) before handing off. QA continuously monitors commits. Lead runs `production-quality` (target score ≥ 90/100) before shipping.
 
 ### Skills (`.claude/skills/`) — 26 total
 
@@ -71,7 +77,7 @@ See the Bootstrapping section at the bottom of `CLAUDE.md` for full details.
 - **AI-agent-friendly**: Token-efficient log formats (CSV over JSON lines), bounded command output, text-only visualization, three-tier log architecture (summary first, drill down on demand).
 - **Reproducible**: All randomized code requires seeds. Benchmarks use fixed seed lists. Same seeds = same results.
 - **Quality-gated**: Hooks block commits if tests fail. CI mirrors local checks. Every public method must have a test.
-- **Multi-agent safe**: Task board, file ownership, conflict prevention protocol for parallel agent work.
+- **Multi-agent safe**: Per-agent plan files eliminate contention. File ownership prevents conflicts. Lead-agent orchestrates quality gates and merges.
 
 ## License
 
