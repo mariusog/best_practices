@@ -39,7 +39,7 @@ Use the right skill at each workflow stage. See the Skill Selection Guide in CLA
 
 If `TASKS.md` is empty or this is a fresh project, start by exploring the codebase (read CLAUDE.md, source structure, existing tests) and create initial tasks based on what needs to be built or fixed.
 
-1. **Diagnose** -- run benchmarks/tests to get baseline metrics (read `docs/benchmark_results.md`, not stdout)
+1. **Diagnose** -- run benchmarks/tests to get baseline metrics (read the summary report in `docs/`, not stdout)
 2. **Identify** -- find the highest-impact bottleneck using diagnostic data, not guesswork
 3. **Plan** -- create tasks in `TASKS.md` with specific targets (metric, current value, target value, files, assigned agent). Write detailed checklists in per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
 4. **Delegate** -- launch agents. Core, feature, and QA can ALL start in parallel when their tasks are independent

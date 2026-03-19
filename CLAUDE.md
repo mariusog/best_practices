@@ -12,8 +12,8 @@ Configure these for your language/stack. All commands throughout this file and i
 | **Format** | `ruff format <files>` | Check only: `ruff format --check <files>` |
 | **Type check** | `mypy <files>` | |
 | **Security scan** | `bandit -r . -ll` | Dependencies: `pip-audit` |
-| **Log analysis** | `python analyze.py <log> --brief 2>&1 \| tail -15` | See Log-Reading Workflow below. |
-| **Benchmark** | `python benchmark.py --diagnostics` | Results go to `docs/benchmark_results.md`. |
+| **Log analysis** | `<your-tool> <log> --brief 2>&1 \| tail -15` | Configure per-project. See Log-Reading Workflow below. |
+| **Benchmark** | `<your-tool> --diagnostics` | Configure per-project. Results go to `docs/`. |
 | **Constants file** | `src/constants.py` | All magic numbers and tuning parameters. |
 | **Test fixtures** | `tests/conftest.py` | Shared factories and setup/teardown. |
 | **Source extension** | `.py` | |
@@ -44,7 +44,7 @@ Read this section FIRST. These are the rules that save you from wasting tokens a
 ### NEVER Do These
 
 - **NEVER use verbose test output** -- use quiet mode and pipe through `tail`
-- **NEVER read raw CSV log files** -- read `docs/benchmark_results.md` first, use the analysis tool for drill-down
+- **NEVER read raw CSV log files** -- read the summary report first (see Benchmarking section), use the analysis tool for drill-down
 - **NEVER parse stdout to extract results** -- read the generated report files instead
 - **NEVER use JSON lines for high-volume data** -- use CSV (4x more token-efficient)
 - **NEVER use bare print/console.log for operational output** -- use the language's logging framework
@@ -69,11 +69,10 @@ You are an AI agent with a finite context window. Optimize for it:
 | Action | Token-Efficient Way | Token-Wasteful Way |
 |--------|--------------------|--------------------|
 | Check test results | Fast test command from Tooling table | Verbose test output (unbounded) |
-| Read benchmark results | `cat docs/benchmark_results.md` | Parse stdout from benchmark run |
+| Read benchmark results | Read the summary report in `docs/` | Parse stdout from benchmark run |
 | Inspect a log | Analysis tool with `--brief` | Read the raw CSV file |
 | Compare two runs | Analysis tool with `--compare` | Read both files and diff manually |
-| Understand entity behavior | `--entity <id> --brief` (compressed) | Read 200 rows of per-step data |
-| Check for problems | `--problems` (anomalies only) | Read full summary + all data |
+| Check for problems | Analysis tool with `--problems` | Read full summary + all data |
 
 ### Codebase Orientation (when starting in a new project)
 
@@ -157,7 +156,7 @@ your_project/
 |   +-- fixtures/helpers        # Shared test setup and factories
 |   +-- ...                     # Mirror source structure exactly
 +-- logs/                       # Runtime logs and debug data
-+-- docs/                       # Generated reports (benchmark_results.md)
++-- docs/                       # Generated reports
 +-- CLAUDE.md                   # This file
 +-- TASKS.md                    # Task tracking board
 ```
@@ -245,12 +244,12 @@ Use the **Test (fast)** command from the Tooling table. When debugging a failure
 | Pre-computed summaries | **Markdown** | Agents read directly as files |
 
 - **NEVER** use JSON lines for high-volume per-step data (keys repeat every row)
-- Use short CSV column names: `s,eid,x,y,act,score` not `step_number,entity_id,...`
+- Use short CSV column names: `ts,id,op,val` not `timestamp,entity_id,operation,value`
 - Log files go in `logs/` with timestamps: `<name>_<YYYY-MM-DD_HH-MM-SS>.{csv,json}`
 
 ### Three-Tier Log Architecture
 
-1. **Tier 1 -- Summary report** (agents read this FIRST): Pre-computed markdown in `docs/benchmark_results.md`. Contains scores, key metrics, auto-detected problems. Under 40 lines.
+1. **Tier 1 -- Summary report** (agents read this FIRST): Pre-computed markdown in `docs/` (e.g., `benchmark_results.md`). Contains scores, key metrics, auto-detected problems. Under 40 lines.
 2. **Tier 2 -- CSV detail log**: Per-step data in `logs/`. Agents drill into this ONLY when Tier 1 flags a problem. Never read raw CSV directly -- use the analysis tool.
 3. **Tier 3 -- JSON metadata**: Config, seed, environment. One file per run.
 
@@ -258,13 +257,13 @@ Use the **Test (fast)** command from the Tooling table. When debugging a failure
 
 ```sh
 # Step 1: Read the summary FIRST (5-15 lines)
-cat docs/benchmark_results.md
+cat docs/<summary_report>.md
 
 # Step 2: If problems, get the anomaly list (use Log analysis command from Tooling table)
 <log_analysis_command> <log> --problems 2>&1 | tail -20
 
-# Step 3: Drill into a specific entity
-<log_analysis_command> <log> --entity 3 --brief 2>&1 | tail -15
+# Step 3: Drill into a specific record or category
+<log_analysis_command> <log> --filter <id> --brief 2>&1 | tail -15
 
 # Step 4: Only if still unclear, look at raw step range
 <log_analysis_command> <log> --steps 40-50 2>&1 | tail -20
@@ -277,11 +276,11 @@ Agents should almost NEVER need to go past Step 2.
 - **Text-only**: ASCII grids, markdown tables, compact summaries
 - Agents can't open browsers or view images -- all debug tools must work in terminal
 - Visualization reads from log files -- never couple to runtime
-- Run-length encode timelines: `move x12 | pickup | move x5 | deliver x3`
+- Run-length encode timelines: `retry x3 | success | idle x12 | timeout x2`
 
 ## Benchmarking
 
-- Write results to `docs/benchmark_results.md` -- agents read the file, NEVER parse stdout
+- Write results to a summary report in `docs/` -- agents read the file, NEVER parse stdout
 - Always run with `--diagnostics` after optimization changes
 - Include before/after scores and problem counts in task notes
 - Use multiple seeds for statistical comparison (10+ seeds recommended)
@@ -365,7 +364,7 @@ The lead-agent has cross-cutting authority -- it may modify any file when a fix 
 ### Commit Messages
 
 - Short, single-sentence, present tense: `Fix cache invalidation on round reset`
-- Focus on WHY, not WHAT: `Prevent stale distances after entity moves` not `Change line 42 in distance.py`
+- Focus on WHY, not WHAT: `Prevent stale cache after config reload` not `Change line 42 in cache.py`
 - One logical change per commit
 
 ### Staging

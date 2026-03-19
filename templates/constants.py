@@ -41,17 +41,14 @@ OPERATION_TIMEOUT = 2.0
 #
 # SCORE_MULTIPLIER = 1.15
 # BASE_BONUS = 5
-# IDLE_THRESHOLD = 10    # steps idle before flagging as anomaly
+# RETRY_LIMIT = 3
 
 # ---------------------------------------------------------------------------
 # Logging and diagnostics
 # ---------------------------------------------------------------------------
 
-# Steps idle before diagnostic tracker flags an anomaly
-IDLE_THRESHOLD = 10
-
-# State flip-flops before flagging as oscillation
-OSCILLATION_THRESHOLD = 5
-
-# Steps without score progress before flagging as a gap
-SCORE_GAP_THRESHOLD = 20
+# Example diagnostic thresholds. Replace with your project's needs.
+#
+# IDLE_THRESHOLD = 10          # steps idle before flagging as anomaly
+# OSCILLATION_THRESHOLD = 5   # state flip-flops before flagging
+# SCORE_GAP_THRESHOLD = 20    # steps without progress before flagging
