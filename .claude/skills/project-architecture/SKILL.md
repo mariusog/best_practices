@@ -50,7 +50,7 @@ Use the decision frameworks below to choose the right structural pattern.
 After restructuring, verify:
 
 - No circular imports (try importing the top-level package)
-- Tests still pass (run fast test command from Tooling table)
+- Tests still pass (run the **Test (fast)** command from the CLAUDE.md Tooling table)
 - No new lint issues (run linter on changed files)
 
 ## Decision Framework: Where Does This Code Go?

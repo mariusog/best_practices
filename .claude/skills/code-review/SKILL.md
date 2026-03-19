@@ -107,7 +107,7 @@ Only flag performance issues in code that runs frequently (inner loops, per-requ
 Process issues in severity order. For each fix:
 
 1. **Fix** the issue (minimal change -- don't refactor adjacent code)
-2. **Test**: Run the fast test command from the Tooling table
+2. **Test**: Run the **Test (fast)** command from the CLAUDE.md Tooling table
 3. **Lint**: Run the linter on changed files
 
 Stop when no critical or major issues remain. Don't pursue minor style nits -- the linter handles those.

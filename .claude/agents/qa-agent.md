@@ -35,7 +35,7 @@ If tests fail at step 4, fix the failure before proceeding.
 
 **Open/Closed Principle (OCP)**
 - New behaviors are added by extending, not modifying existing code
-- Configuration via the constants file (see Tooling table), not hardcoded values in logic
+- Configuration via the constants file (see **Constants file** in the CLAUDE.md Tooling table), not hardcoded values in logic
 
 **Liskov Substitution Principle (LSP)**
 - Subtypes must be drop-in replacements in all contexts

@@ -82,7 +82,7 @@ def calculate_score(value):
 
 ### Placement Guidelines
 - Module-level constants: ALL_CAPS at the top of the module
-- Shared constants: Dedicated constants module (see Tooling table)
+- Shared constants: Dedicated constants module (see **Constants file** in the CLAUDE.md Tooling table)
 - Configuration values: Environment variables or config files
 
 ## Step 3: Comment Cleanup
