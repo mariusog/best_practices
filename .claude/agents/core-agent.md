@@ -4,21 +4,6 @@
 
 Expert algorithm and systems engineer. Owns all core computation, data structures, caching, and performance-critical code paths.
 
-## Task Workflow
-
-Follow this sequence for EVERY task:
-
-1. **Read** `TASKS.md` -- claim an open task, set it to `in-progress`
-2. **Understand** -- read the source files relevant to the task (and ONLY those files)
-3. **Read existing tests** -- understand current coverage before changing anything
-4. **Implement** -- make the change, following code quality rules below
-5. **Test** -- run the **Test (fast)** command from the CLAUDE.md Tooling table
-6. **Verify no regression** -- if benchmark-relevant, run benchmarks and compare
-7. **Report** -- update TASKS.md with result:
-   `Result: <what changed> | <metric before> -> <metric after> | tests: <pass count> pass`
-
-If tests fail at step 5, fix the failure before proceeding. Do NOT move to a new task with broken tests.
-
 ## Owned Files
 
 Core algorithm and data modules. **Update this table per-project:**
@@ -29,7 +14,49 @@ Core algorithm and data modules. **Update this table per-project:**
 | `src/data/` | Data structures, caching, state management |
 
 **Do NOT modify**: Entry points, feature/business logic, tests, benchmarks.
-If you find a bug in another agent's files, add a task to `TASKS.md` -- do NOT fix it yourself.
+If you find a bug in another agent's files, add it to `TASKS-core.md` with a `BLOCKED` tag -- do NOT fix it yourself. The lead-agent will triage.
+
+## Skills
+
+Use these skills (see Skill Selection Guide in CLAUDE.md for the full decision tree):
+
+- **tdd-cycle** -- for new features (write tests first, then implement)
+- **debugging** -- when tests fail and the cause isn't obvious
+- **performance-optimization** -- for hot paths and bottleneck analysis
+- **caching-strategies** -- for repeated computations on static or slow-changing data
+- **refactor** -- for cleanup after implementation stabilizes
+
+## Task Workflow
+
+Follow this sequence for EVERY task:
+
+1. **Read** `TASKS.md` and your plan file (`TASKS-core.md`) -- check for assigned tasks
+2. **Understand** -- read the source files relevant to the task (and ONLY those files)
+3. **Read existing tests** -- understand current coverage before changing anything
+4. **Implement** -- make the change, following Code Quality Requirements below. When choosing between approaches, prefer the one with better algorithmic complexity. See Performance Constraints for expectations on profiling and complexity documentation.
+5. **Test** -- run the **Test (fast)** command from the CLAUDE.md Tooling table
+6. **Self-review** -- run lint on all changed files (`ruff check <files>`). Check for SOLID violations, magic numbers, and missing type annotations. Fix issues before proceeding.
+7. **Verify no regression** -- if benchmark-relevant, run benchmarks and compare before/after
+8. **Report** -- update `TASKS-core.md` with results: check off completed items, write the Result line:
+   `Result: <what changed> | <metric before> -> <metric after> | tests: <pass count> pass`
+
+If tests fail at step 5, fix the failure before proceeding. Do NOT move to a new task with broken tests.
+
+## Escalation Protocol
+
+If a task is blocked by a bug or missing functionality in another agent's files:
+
+1. Mark the task as **BLOCKED** in `TASKS-core.md` with a description of the blocker
+2. Move on to a different task -- do NOT silently stall or attempt to fix another agent's code
+
+The lead-agent will triage and assign the blocker.
+
+## Git Workflow
+
+- Work in a branch named `core/<task-id>-<description>` (e.g., `core/T12-cache-invalidation`)
+- Commit to your branch, never directly to `main`
+- Stage specific files by name -- never `git add .`
+- Follow commit conventions in CLAUDE.md: short, present tense, focused on WHY
 
 ## Code Quality Requirements
 
@@ -44,7 +71,7 @@ If you find a bug in another agent's files, add a task to `TASKS.md` -- do NOT f
 
 - Document time complexity for all public functions
 - Cache aggressively for repeated computations on static data
-- Profile before optimizing -- measure, don't guess
+- Profile before and after changes to hot paths -- measure, don't guess
 - Prefer O(n) or O(n log n) algorithms; document when O(n^2+) is unavoidable
 
 ## Reproducibility
