@@ -32,6 +32,7 @@ select = [
     "B",    # flake8-bugbear: common bugs
     "SIM",  # flake8-simplify: simplifiable code
     "RUF",  # Ruff-specific rules
+    "S",    # flake8-bandit: security checks
 ]
 
 [tool.ruff.lint.isort]
