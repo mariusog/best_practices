@@ -176,8 +176,11 @@ esac
 echo ""
 echo "Next steps:"
 echo "  1. cd $TARGET"
+STEP=2
 if [[ "$LANG" != "python" ]]; then
-    echo "  2. Update the Project Tooling table in CLAUDE.md for $LANG"
+    echo "  $STEP. Update the Project Tooling table in CLAUDE.md for $LANG"
+    STEP=$((STEP + 1))
 fi
-echo "  2. Update the File Ownership table in CLAUDE.md with your file paths"
-echo "  3. Start working -- agents will read CLAUDE.md and TASKS.md automatically"
+echo "  $STEP. Update the File Ownership table in CLAUDE.md with your file paths"
+STEP=$((STEP + 1))
+echo "  $STEP. Start working -- agents will read CLAUDE.md and TASKS.md automatically"
