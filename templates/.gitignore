@@ -38,6 +38,18 @@ env/
 htmlcov/
 .pytest_cache/
 
+# Data and model files
+data/
+weights/
+*.npy
+*.pt
+*.onnx
+*.engine
+*.safetensors
+
+# Run artifacts
+runs/
+
 # Linting and type checking
 .ruff_cache/
 .mypy_cache/
