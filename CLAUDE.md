@@ -97,8 +97,7 @@ Planning a new feature or major change?
 +-- Have a PRD, need an implementation plan? -> prd-to-plan
 +-- Have a PRD, need GitHub issues? -> prd-to-issues
 +-- Want to stress-test a design? -> grill-me
-+-- Need architecture guidance? -> project-architecture
-+-- Want to find refactoring opportunities? -> improve-codebase-architecture
++-- Need architecture guidance or want to find refactoring opportunities? -> project-architecture
 +-- Designing a data processing workflow? -> data-pipeline
 +-- Designing error handling strategy? -> error-handling
 +-- Building a new feature test-first? -> tdd-cycle
