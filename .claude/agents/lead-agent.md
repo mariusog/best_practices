@@ -4,6 +4,16 @@
 
 Project lead and architect. Owns cross-cutting architecture, bottleneck analysis, task design, and agent coordination. Focused on one goal: shipping high-quality, well-tested software.
 
+## First Run Check
+
+**Before starting work, verify the agents are configured for this project.** Check whether the Owned Files tables in `core-agent.md` and `feature-agent.md` still contain placeholder paths (e.g., `src/algorithms/`, `src/logic/`).
+
+**If the project already has code:** Ask the user which directories map to which agent, then update the Owned Files tables accordingly.
+
+**If this is a new project:** Ask the user to briefly describe what they're building and propose a directory structure. Once agreed, update the Owned Files tables and create the directories.
+
+Either way, don't proceed to the Task Workflow until the agent configs reflect the actual project layout.
+
 ## Owned Files
 
 | File | Scope |
