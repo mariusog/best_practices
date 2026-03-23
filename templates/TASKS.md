@@ -9,30 +9,65 @@ Each agent has a separate plan file with detailed checklists:
 
 ## Format
 
-Each task has: ID, status, agent, title, details, and optional dependencies.
+<!-- TASKS.md Schema
+     ==============
+     Lead-agent maintains this file. All other agents READ ONLY.
 
-**Statuses**: `open`, `in-progress`, `done`, `blocked`, `deferred`
+     Task IDs:   T1, T2, T3, ... (sequential, never reuse IDs)
+     Agents:     lead-agent, core-agent, feature-agent, qa-agent, researcher-agent
+     Statuses:   open, in-progress, done, blocked, deferred
+     Depends on: comma-separated task IDs (e.g. "T2, T3") or "-" for none
 
-## Open Tasks
+     Workflow:
+       1. Lead creates tasks here and writes detailed checklists in per-agent plan files
+       2. Agents read this file for assignments, then work from their own plan file
+       3. Agents report results in their plan file (TASKS-core.md, etc.)
+       4. Lead validates results and updates status/result here
 
-| ID | Agent | Title | Details | Depends on |
-|----|-------|-------|---------|------------|
-| T1 | qa-agent | Set up test infrastructure | Create conftest.py with shared fixtures, configure pytest | - |
-| T2 | core-agent | Implement core algorithms | Build core computation modules with type annotations | - |
-| T3 | feature-agent | Implement business logic | Build decision/workflow logic on top of core modules | T2 |
-| T4 | qa-agent | Write unit tests | Cover all public methods with unit tests | T2, T3 |
-| T5 | lead-agent | Set up logging infrastructure | Structured logging, log directory, diagnostic mode | - |
-| T6 | qa-agent | Set up benchmarking | Reproducible benchmark runner with seed management | T2, T3 |
-| T7 | lead-agent | Build log analysis tool | CLI tool for log inspection and problem detection | T5 |
+     A task is NOT done until lead validates and moves it to the Done section.
+-->
+
+Each task has: **ID**, **Agent**, **Title**, **Status**, **Depends on**, and (when done) a **Result**.
+
+**Statuses**: `open` | `in-progress` | `done` | `blocked` | `deferred`
+
+**Depends on**: Other task IDs that must be `done` before this task can start. Agents must check dependencies before beginning work.
+
+## Open
+
+| ID | Agent | Title | Status | Depends on |
+|----|-------|-------|--------|------------|
+| T1 | qa-agent | Set up test infrastructure | open | - |
+| T2 | core-agent | Implement core algorithms | open | - |
+| T3 | feature-agent | Implement business logic | open | T2 |
 
 ## In Progress
 
-| ID | Agent | Title | Status | Notes |
-|----|-------|-------|--------|-------|
-| - | - | - | - | - |
+| ID | Agent | Title | Status | Depends on | Notes |
+|----|-------|-------|--------|------------|-------|
+<!-- Move tasks here when an agent begins work. Add notes for blockers or context. -->
 
 ## Done
 
 | ID | Agent | Title | Result |
 |----|-------|-------|--------|
-| - | - | - | - |
+<!-- Result format: <what changed> | <metric before> -> <metric after> | tests: <pass count> pass -->
+<!-- Example: -->
+<!-- | T1 | qa-agent | Set up test infrastructure | Created conftest.py with 5 fixtures | n/a -> 12 tests pass | tests: 12 pass | -->
+
+## Blocked / Deferred
+
+| ID | Agent | Title | Status | Blocked by | Notes |
+|----|-------|-------|--------|------------|-------|
+<!-- Tasks that cannot proceed. Include the blocker (task ID or description) and when it was escalated. -->
+<!-- Example: -->
+<!-- | T3 | feature-agent | Implement business logic | blocked | T2 | Waiting on core algorithms (escalated 2025-03-19) | -->
+
+## Constants Requested
+
+Agents tag `NEEDS CONSTANT: NAME = value (reason)` in their plan files. Lead-agent tracks and resolves them here.
+
+| Requested by | Constant | Value | Reason | Status |
+|--------------|----------|-------|--------|--------|
+<!-- Example: -->
+<!-- | core-agent | MAX_RETRIES | 3 | Connection retry limit for data fetcher | added | -->
