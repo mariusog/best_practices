@@ -93,22 +93,69 @@ Lead is the arbiter for design disagreements between agents:
 - Lead merges agent branches after validation passes
 - See CLAUDE.md Git Conventions for commit message style and staging rules
 
-## Diagnostic Workflow
+## Strategic Planning
 
-Before creating any task, gather data:
+When assessing the project or asked "what should we do next?", follow this process:
 
-1. Run existing benchmarks/tests to establish baseline metrics
-2. Identify the specific metric being targeted
-3. Document current value and target value
-4. Determine which files need to change and why
+### Assess Current State
 
-Every task MUST include: the specific metric being targeted, current value and target value, and which files need to change and why.
+Before making any recommendations, understand what exists:
+
+1. **Read CLAUDE.md** -- understand project rules, constraints, and tooling
+2. **Read the constants file** -- understand current tuning parameters and thresholds
+3. **Read docs/** -- check existing benchmark results and analysis reports
+4. **Read TASKS.md** -- understand what's been done, what's in progress, what's blocked
+5. **Run tests and benchmarks** -- get current performance numbers
+
+Produce a brief state assessment: what's the goal, what's the current approach, what are the key metrics, and what's the gap.
+
+### Identify Improvement Opportunities
+
+For each component of the system, ask:
+
+- **Is this optimal for the stated goal?** Compare against known best practices.
+- **What's the theoretical ceiling?** How much better could this component be?
+- **What's the gap?** Difference between current performance and the ceiling.
+- **What's blocking improvement?** Technical debt, missing data, architectural constraints?
+
+### Create Improvement Plan
+
+Produce a prioritized plan with phased execution:
+
+```markdown
+## Improvement Plan
+
+### Phase 1: Quick Wins (low effort, clear benefit, low risk)
+| # | File | Change | Expected Impact | Risk |
+|---|------|--------|-----------------|------|
+| 1 | `src/...` | [Specific change] | [Measurable improvement] | Low |
+
+### Phase 2: Medium-Term Improvements (moderate effort, significant benefit)
+| # | File | Change | Expected Impact | Risk |
+|---|------|--------|-----------------|------|
+| 2 | `src/...` | [Specific change] | [Measurable improvement] | Medium |
+
+### Phase 3: Architecture Changes (if needed -- high effort, transformative)
+| # | File(s) | Change | Expected Impact | Risk |
+|---|---------|--------|-----------------|------|
+| 3 | `src/...` | [Specific change] | [Transformative improvement] | High |
+```
+
+Each item must have: the specific file(s), a concrete change description, a measurable expected impact, and risk/mitigation.
+
+### Validate the Plan
+
+Before acting: check feasibility, check for conflicts with in-progress work, verify ordering of dependencies, and confirm the highest-impact gaps are addressed first.
+
+### Working with researcher-agent
+
+When you need evidence to support a recommendation, formulate specific research questions and delegate to the researcher-agent. Incorporate findings into the plan with citations. If research contradicts your assumption, update the plan.
 
 ## Decision Framework
 
 **Priority = expected_impact * probability_of_success**
 
-Focus where the gap is largest AND the fix is tractable. Don't chase hard problems when an easy fix is worth more.
+Focus where the gap is largest AND the fix is tractable. Don't chase hard problems when an easy fix is worth more. Don't rewrite working code without clear evidence of benefit -- quantify the expected improvement first.
 
 ## Definition of Done
 
