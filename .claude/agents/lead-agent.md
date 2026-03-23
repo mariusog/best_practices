@@ -42,9 +42,9 @@ If `TASKS.md` is empty or this is a fresh project, start by exploring the codeba
 1. **Diagnose** -- run benchmarks/tests to get baseline metrics (read the summary report in `docs/`, not stdout)
 2. **Identify** -- find the highest-impact bottleneck using diagnostic data, not guesswork
 3. **Plan** -- create tasks in `TASKS.md` with specific targets (metric, current value, target value, files, assigned agent). Write detailed checklists in per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
-4. **Delegate** -- launch agents. Core, feature, and QA can ALL start in parallel when their tasks are independent
-5. **Monitor** -- check agent plan files for progress, handle escalations (see Escalation Handling), and sync TASKS.md statuses to match (if an agent marks a task BLOCKED or writes a Result, update TASKS.md accordingly)
-6. **Validate** -- review completed work. Run `code-review` on each agent's deliverables
+4. **Delegate** -- spawn agents as worktree subagents. Core, feature, and QA can ALL start in parallel when their tasks are independent
+5. **Review** -- when agents complete, read their plan files and branch diffs. Triage any `BLOCKED` tags and create follow-up tasks. Sync TASKS.md statuses to match agent results
+6. **Validate** -- run `code-review` on each agent's deliverables. Merge agent branches that pass review
 7. **Quality gate** -- run `production-quality`, minimum score >= 90/100. If below 90, fix issues and re-run before proceeding
 8. **Report** -- update TASKS.md: `Result: <what changed> | <metric before> -> <metric after>`
 9. **Iterate or Ship** -- if all tasks done and quality gate passes, ship. Otherwise re-diagnose and repeat

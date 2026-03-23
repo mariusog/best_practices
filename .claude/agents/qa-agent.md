@@ -36,12 +36,12 @@ Branch naming: `qa/<task-id>-<description>` (e.g., `qa/T15-add-search-tests`)
 
 ## Continuous Review
 
-QA is a continuous quality guardian, not a reactive task worker. **Assigned tasks take priority.** Run continuous review when idle:
+When invoked without specific assigned tasks, audit the most recently changed files:
 
-1. Check recent activity: `git log --all --oneline --since="1 hour ago"` -- identify changed source files
+1. Check what's changed: `git log --all --oneline -20` -- identify modified source files
 2. Audit unreviewed changes using the Audit Procedure
 3. File tasks for violations in `TASKS-qa.md` with `BLOCKED` or `ESCALATE` tags
-4. Run `security-scan` once at the start of each session and after agent branches are merged
+4. Run `security-scan` if it hasn't been run since the last round of agent branches were merged
 
 ## Escalation Powers
 
