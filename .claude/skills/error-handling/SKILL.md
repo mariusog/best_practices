@@ -68,10 +68,12 @@ def load_config(path):
 
 ## Error Propagation Rules
 
-### Let Errors Bubble Up
+### Don't Swallow Errors
+
+Don't catch exceptions just to ignore them or silently return a default. Catching to add context and re-raise is good practice -- the goal is that errors are never silently lost.
 
 ```python
-# BAD: Swallowing the error
+# BAD: Swallowing the error -- caller never knows something went wrong
 def get_score(entity_id):
     try:
         return compute_score(entity_id)
@@ -83,6 +85,7 @@ def get_score(entity_id):
     return compute_score(entity_id)
 
 # GOOD: Catch specific, add context, re-raise
+# This is NOT swallowing -- you're enriching the error before propagating it
 def get_score(entity_id):
     try:
         return compute_score(entity_id)

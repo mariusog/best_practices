@@ -17,7 +17,7 @@ Identify changed files with: `git diff --name-only origin/main...HEAD`
 1. Fix all linter warnings -- do NOT suppress them with ignore comments
 2. Format all changed files consistently
 3. Fix type errors with real type annotations, not suppression comments
-4. Do NOT disable any rules
+4. Do not disable rules to avoid fixing real issues. Per-file ignores for genuinely inapplicable rules (e.g., `S101` assert warnings in test files) are acceptable when documented with a comment explaining why
 5. Do NOT remove any test functions
 
 ## Step 1: Identify Changed Files

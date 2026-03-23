@@ -57,9 +57,21 @@ git log --oneline -10
 git diff HEAD~1 -- src/
 ```
 
-### Isolate with Print (temporarily)
+### Isolate with Targeted Logging
 
-If you need to see intermediate values, use a temporary debug test -- NOT print statements in source code:
+If you need to see intermediate values, add targeted logging at DEBUG level -- NOT bare print/console.log statements (which violate the project's logging standards). Remove debug logging after the bug is fixed.
+
+```python
+import logging
+logger = logging.getLogger(__name__)
+
+# Add temporary DEBUG-level logging to trace values
+logger.debug("step_a input: %s", state)
+result_a = step_a(state)
+logger.debug("step_a output: %s", result_a)
+```
+
+Alternatively, write a temporary debug test that calls sub-functions individually:
 
 ```python
 def test_debug_specific_case():

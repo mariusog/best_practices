@@ -9,7 +9,8 @@ Orchestrates multiple quality skills to bring all changed files up to production
 
 ## Scope
 
-This routine applies to all files changed in the current branch compared to `main` (or `origin/main`).
+By default, scope all checks to files changed since the base branch (`git diff --name-only origin/main...HEAD`). Only expand to the full codebase if the user explicitly requests it or if the change is architectural (touching >20 files). This keeps token usage manageable.
+
 Identify changed files with: `git diff --name-only origin/main...HEAD`
 
 ### File Type Considerations
