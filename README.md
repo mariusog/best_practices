@@ -10,20 +10,21 @@ The main configuration file. Contains a **Project Tooling** table (swap commands
 
 ### Agents (`.claude/agents/`)
 
-Four agents designed to run as an autonomous parallel team:
+Five agents designed to run as an autonomous parallel team:
 
 | Agent | Role | Runs |
 |-------|------|------|
-| `lead-agent` | Coordination, architecture, quality gates | First — plans tasks, then launches others |
+| `lead-agent` | Coordination, architecture, strategic planning, quality gates | First — plans tasks, then launches others |
 | `core-agent` | Algorithms, data structures, performance | In parallel after lead |
 | `feature-agent` | Business logic, decision workflows | In parallel after lead |
 | `qa-agent` | Testing, auditing, security enforcement | In parallel after lead (proactive review) |
+| `researcher-agent` | Domain research, external references, technique evaluation | On demand |
 
 **Coordination model**: The lead-agent owns `TASKS.md` exclusively and creates per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`). Each agent works from their own plan file — no shared-file contention. Agents escalate blockers via `BLOCKED`/`CRITICAL` tags in their plan files; the lead monitors and triages.
 
 **Quality flow**: Agents self-review (lint + SOLID check) before handing off. QA continuously monitors commits. Lead runs `production-quality` (target score ≥ 90/100) before shipping.
 
-### Skills (`.claude/skills/`) — 27 total
+### Skills (`.claude/skills/`) — 29 total
 
 | Category | Skills |
 |----------|--------|
@@ -32,7 +33,8 @@ Four agents designed to run as an autonomous parallel team:
 | Testing | `test-coverage`, `integration-testing`, `browser-testing`, `reproducibility` |
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
-| Shipping | `security-scan`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
+| Shipping | `security-scan`, `open-source-audit`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
+| Meta | `skill-creator` |
 
 See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
 

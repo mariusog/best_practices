@@ -1,6 +1,6 @@
 ---
 name: update-documentation
-description: Update project documentation to reflect code changes. Reviews README, docstrings, and technical documentation. Use when the user asks to update docs, document changes, or sync documentation.
+description: Use when the user asks to update docs, document changes, or sync documentation. Reviews README, docstrings, and technical documentation to reflect code changes.
 ---
 
 # Update Documentation Skill

@@ -134,6 +134,8 @@ Did you write new code?
 +-- Writing or updating README? -> readme-standards
 +-- Dealing with randomness or seeds? -> reproducibility
 +-- Need a security audit? -> security-scan
++-- Preparing a repo for open-source release? -> open-source-audit
++-- Creating or improving a skill? -> skill-creator
 ```
 
 For new features, use `tdd-cycle` (write tests first, then implement).
@@ -356,6 +358,7 @@ Include: which agent/file is blocking, what's missing, and when you escalated.
 | core-agent | Core algorithm and data modules, `TASKS-core.md` (fills out) | Algorithms, data structures, computation |
 | feature-agent | Feature/business logic modules, `TASKS-feature.md` (fills out) | Decision logic, workflows, rules |
 | qa-agent | `tests/`, benchmarks, `docs/`, `TASKS-qa.md` (fills out) | Testing, benchmarking, quality enforcement |
+| researcher-agent | Domain research, external references, technique evaluation |
 
 The lead-agent has cross-cutting authority -- it may modify any file when a fix spans multiple agents' boundaries.
 
