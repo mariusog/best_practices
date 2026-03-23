@@ -2,6 +2,33 @@
 
 A reusable template for bootstrapping projects with AI-agent-friendly tooling, structured workflows, and quality gates.
 
+**Repo:** `https://github.com/mariusog/best_practices`
+
+## Getting Started
+
+### New project
+
+Open Claude Code and paste:
+
+```
+Clone https://github.com/mariusog/best_practices and use it to bootstrap
+a new project for me. Ask me about what I'm building, my preferred
+language/stack, and where to put it -- then set everything up.
+```
+
+### Existing project
+
+Open Claude Code in your project directory and paste:
+
+```
+Review the best_practices template at https://github.com/mariusog/best_practices
+and help me integrate what's useful into this project. Look at the CLAUDE.md,
+agents, skills, CI workflow, hooks, and gitignore. Ask me what I want to
+adopt -- then adapt it to fit our existing structure and conventions.
+```
+
+The agents will prompt for any remaining project-specific details on first use.
+
 ## What's Inside
 
 ### Project Instructions (`CLAUDE.md`)
