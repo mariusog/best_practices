@@ -20,9 +20,26 @@ Five agents designed to run as an autonomous parallel team:
 | `qa-agent` | Testing, auditing, security enforcement | In parallel after lead (proactive review) |
 | `researcher-agent` | Domain research, external references, technique evaluation | On demand |
 
-**Coordination model**: The lead-agent owns `TASKS.md` exclusively and creates per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`). Each agent works from their own plan file — no shared-file contention. Agents escalate blockers via `BLOCKED`/`CRITICAL` tags in their plan files; the lead monitors and triages.
+**How to use the agents:**
 
-**Quality flow**: Agents self-review (lint + SOLID check) before handing off. QA continuously monitors commits. Lead runs `production-quality` (target score ≥ 90/100) before shipping.
+For a single task, just ask Claude -- it will pick the right approach without needing agents.
+
+For larger work that benefits from parallelism, start the lead-agent:
+
+```
+Run as the lead-agent. The goal is: [describe the work].
+```
+
+The lead-agent will diagnose the codebase, create tasks in `TASKS.md`, write per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`), then spawn core/feature/qa as parallel worktree subagents. Each agent works in an isolated copy of the repo on its own branch. When agents complete, the lead reviews their results, merges passing branches, and iterates.
+
+You can also invoke agents individually:
+
+```
+Run as the qa-agent. Audit src/handlers/ for test coverage gaps.
+Run as the researcher-agent. What's the best approach for caching API responses?
+```
+
+**Coordination model**: Each agent works from its own plan file -- no shared-file contention. Agents that hit blockers mark them as `BLOCKED` in their plan file. The lead triages blockers, resolves them, and re-spawns agents as needed.
 
 ### Skills (`.claude/skills/`) — 28 total
 

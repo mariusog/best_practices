@@ -42,9 +42,15 @@ If `TASKS.md` is empty or this is a fresh project, start by exploring the codeba
 1. **Diagnose** -- run benchmarks/tests to get baseline metrics (read the summary report in `docs/`, not stdout)
 2. **Identify** -- find the highest-impact bottleneck using diagnostic data, not guesswork
 3. **Plan** -- create tasks in `TASKS.md` with specific targets (metric, current value, target value, files, assigned agent). Write detailed checklists in per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
-4. **Delegate** -- spawn agents as worktree subagents. Core, feature, and QA can ALL start in parallel when their tasks are independent
-5. **Review** -- when agents complete, read their plan files and branch diffs. Triage any `BLOCKED` tags and create follow-up tasks. Sync TASKS.md statuses to match agent results
-6. **Validate** -- run `code-review` on each agent's deliverables. Merge agent branches that pass review
+4. **Delegate** -- spawn agents in parallel using the Agent tool with `isolation: "worktree"`. Each agent gets its own copy of the repo. Include the task description and plan file path in the prompt. Example:
+   ```
+   Agent(prompt="You are the core-agent. Read .claude/agents/core-agent.md for your role.
+   Your tasks are in TASKS-core.md. Complete them and report results there.",
+   isolation="worktree")
+   ```
+   Core, feature, and QA can ALL start in parallel when their tasks are independent.
+5. **Review** -- when agents complete, read their plan files and branch diffs. Triage any `BLOCKED` tags and create follow-up tasks. Sync TASKS.md statuses to match agent results. If an agent's worktree has changes, its branch name is returned in the result.
+6. **Validate** -- run `code-review` on each agent's deliverables. Merge agent branches that pass review into main
 7. **Quality gate** -- run `production-quality`, minimum score >= 90/100. If below 90, fix issues and re-run before proceeding
 8. **Report** -- update TASKS.md: `Result: <what changed> | <metric before> -> <metric after>`
 9. **Iterate or Ship** -- if all tasks done and quality gate passes, ship. Otherwise re-diagnose and repeat
@@ -77,7 +83,7 @@ A task is not officially complete until lead validates and updates TASKS.md.
 - If an agent discovers work needed in another agent's files, they add it to their plan file as a blocker -- lead creates the cross-cutting task
 - If an agent requests a constant (`NEEDS CONSTANT` tag in their plan file), add it to the constants file promptly — agents cannot proceed without it
 
-When resolving a blocker, update the agent's plan file: change the task status from `BLOCKED` back to `in-progress` and add a note explaining the resolution. This is how agents know their blocker is cleared.
+When resolving a blocker: fix the underlying issue (or create the missing dependency), update the agent's plan file to mark the task as `todo` again with a note explaining the resolution, then re-spawn the agent to continue.
 
 ## Conflict Resolution
 
