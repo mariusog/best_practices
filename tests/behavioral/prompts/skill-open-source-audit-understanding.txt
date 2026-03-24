@@ -1,0 +1,1 @@
+Read the skill at .claude/skills/open-source-audit/SKILL.md and explain the full audit checklist. Do not execute anything -- just list every category of sensitive data it checks for and the grep patterns it uses.

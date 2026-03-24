@@ -1,0 +1,1 @@
+Read the skill at .claude/skills/tdd-cycle/SKILL.md and explain the red-green-refactor process it describes. Do not write any code -- just explain the steps and what happens if the test passes immediately on the first try.

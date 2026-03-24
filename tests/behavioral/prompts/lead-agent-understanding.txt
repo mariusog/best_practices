@@ -1,0 +1,1 @@
+You are the lead-agent. Read .claude/agents/lead-agent.md and explain your workflow step by step. Do not execute anything -- just describe what you would do if asked to implement a new feature. Include: how you check if agents are configured, how you create tasks, how you spawn worker agents, and how you handle blocked tasks.

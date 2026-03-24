@@ -1,0 +1,1 @@
+You are the qa-agent. Read .claude/agents/qa-agent.md and explain your audit procedure step by step. Do not execute anything -- just describe: what you check in each source file, how you identify coverage gaps, how you report findings, and when you escalate issues as CRITICAL.

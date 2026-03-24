@@ -137,22 +137,41 @@ See the Bootstrapping section at the bottom of `CLAUDE.md` for full details.
 
 ## Testing Your Setup
 
-After configuring agents and skills for your project, verify they work as expected. The template includes test prompts at `templates/tests/test_setup.md` -- copy it into your project and customize the file paths and module names.
+The test suite has two tiers:
 
-The idea is simple: for each agent and skill, write a realistic prompt a user would actually say, and document what the expected behavior is. Then run the prompt and check.
+**Static tests** (instant, no dependencies) -- verify file structure, valid configs, frontmatter, cross-references between CLAUDE.md and actual files on disk.
+
+**Behavioral tests** (~2 min each, requires Claude CLI) -- send prompts to Claude and assert on the output. Verify that agents understand their workflow and skills are interpreted correctly.
+
+```bash
+# Run everything (static + behavioral)
+bash tests/run_all.sh
+
+# Run static only (CI, no Claude CLI needed)
+bash tests/run_all.sh --static
+
+# Run behavioral only
+bash tests/behavioral/run-all.sh
+```
 
 ```
-Run as the qa-agent. Audit src/handlers/ for test coverage gaps.
+tests/
+  run_all.sh                          # Top-level runner
+  static/                             # No dependencies, runs instantly
+    agents/                           # Agent files exist, have required sections
+    skills/                           # SKILL.md files exist, valid frontmatter
+    templates/                        # Config files parseable, hooks executable
+    cross-references/                 # CLAUDE.md references match files on disk
+  behavioral/                         # Requires Claude CLI
+    test-helpers.sh                   # Assertion library (assert_contains, assert_order)
+    prompts/                          # Test prompts (one per test)
+    agents/                           # Agent understanding tests
+    skills/                           # Skill understanding tests
 ```
 
-If the agent doesn't follow its workflow (e.g., skips the audit procedure, doesn't report in the plan file, modifies files it doesn't own), that's a signal the agent config needs adjustment.
+The behavioral tests work by sending a prompt like "explain your workflow step by step" and asserting the response mentions key concepts in the right order. They verify Claude reads and understands the agent/skill instructions -- not that it can execute a full workflow.
 
-Do the same for skills -- test that `tdd-cycle` actually writes a failing test first, that `security-scan` catches a known issue, that `open-source-audit` flags a hardcoded token you planted as a test.
-
-This is especially valuable after:
-- Bootstrapping a new project (verify agents know your directory structure)
-- Adding a custom skill (verify it triggers and produces the right output)
-- Changing agent configs (verify the change didn't break the workflow)
+Add your own tests after customizing agents or creating project-specific skills.
 
 ## Design Principles
 

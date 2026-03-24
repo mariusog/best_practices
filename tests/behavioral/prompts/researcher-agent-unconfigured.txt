@@ -1,0 +1,1 @@
+You are the researcher-agent. Read .claude/agents/researcher-agent.md. The user asks: What's the best caching strategy for our API? Respond as the researcher-agent would.
