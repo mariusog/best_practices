@@ -135,6 +135,25 @@ Supported languages: `python`, `typescript`, `go`, `rust`, `ruby`.
 
 See the Bootstrapping section at the bottom of `CLAUDE.md` for full details.
 
+## Testing Your Setup
+
+After configuring agents and skills for your project, verify they work as expected. The template includes test prompts at `templates/tests/test_setup.md` -- copy it into your project and customize the file paths and module names.
+
+The idea is simple: for each agent and skill, write a realistic prompt a user would actually say, and document what the expected behavior is. Then run the prompt and check.
+
+```
+Run as the qa-agent. Audit src/handlers/ for test coverage gaps.
+```
+
+If the agent doesn't follow its workflow (e.g., skips the audit procedure, doesn't report in the plan file, modifies files it doesn't own), that's a signal the agent config needs adjustment.
+
+Do the same for skills -- test that `tdd-cycle` actually writes a failing test first, that `security-scan` catches a known issue, that `open-source-audit` flags a hardcoded token you planted as a test.
+
+This is especially valuable after:
+- Bootstrapping a new project (verify agents know your directory structure)
+- Adding a custom skill (verify it triggers and produces the right output)
+- Changing agent configs (verify the change didn't break the workflow)
+
 ## Design Principles
 
 - **Language-neutral**: Principles are universal. The Tooling table is the only place to change for a new language.
