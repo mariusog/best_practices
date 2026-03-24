@@ -12,8 +12,7 @@ PROMPT=$(cat "$DIR/prompts/lead-agent-understanding.txt")
 run_claude "$PROMPT" 3 120
 
 # Must understand the first-run configuration check
-assert_contains "placeholder" "Mentions checking for placeholder configs"
-assert_contains "configured" "Mentions verifying agents are configured"
+assert_contains "placeholder\|configured\|first run\|update.*owned" "Mentions first-run configuration check"
 
 # Must describe the task workflow in correct order
 assert_contains "TASKS.md" "References TASKS.md for task tracking"

@@ -8,17 +8,16 @@ FAIL_COUNT=0
 TEST_NAME=""
 
 # Run a prompt against Claude and capture output.
-# Usage: run_claude "prompt text" [max_turns]
+# Usage: run_claude "prompt text" [max_turns] [timeout]
 run_claude() {
     local prompt="$1"
     local max_turns="${2:-3}"
-    local timeout="${3:-120}"
+    local timeout_s="${3:-120}"
 
-    OUTPUT=$(timeout "$timeout" claude -p "$prompt" \
-        --output-format stream-json \
+    OUTPUT=$(timeout "$timeout_s" claude -p "$prompt" \
+        --output-format text \
         --max-turns "$max_turns" \
-        --dangerously-skip-permissions \
-        2>/dev/null) || true
+        2>&1) || true
 }
 
 # Assert that Claude's output contains a pattern.

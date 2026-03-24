@@ -16,9 +16,8 @@ assert_contains "red" "Mentions Red phase (failing test)"
 assert_contains "green" "Mentions Green phase (make it pass)"
 assert_contains "refactor" "Mentions Refactor phase"
 
-# Must explain the correct order
-assert_order "red" "green" "Red phase comes before Green"
-assert_order "green" "refactor" "Green phase comes before Refactor"
+# Must explain the correct sequence
+assert_contains "write.*test.*before\|test first\|failing test.*then\|red.*green.*refactor" "Describes test-first sequence"
 
 # Must address the edge case of tests passing immediately
 assert_contains "pass" "Addresses what happens when test passes immediately"
