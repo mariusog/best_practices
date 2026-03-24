@@ -189,3 +189,9 @@ The user might ask you to update a skill rather than create one from scratch. In
 3. Test              → 2-3 realistic prompts, examine results
 4. Iterate           → Generalize, stay lean, explain why
 ```
+
+## Gotchas
+
+- **Skill descriptions that are too narrow will under-trigger**: Err on the side of being slightly pushy about when to activate. A skill that never triggers is worse than one that occasionally triggers when not needed.
+- **Test prompts that are too simple won't trigger skill invocation**: Claude handles trivial tasks without consulting skills. Use realistic, moderately complex prompts that would genuinely benefit from the skill's guidance.
+- **Iterating on the skill body without re-testing leads to drift**: Always re-run test prompts after significant changes. The skill may look better on paper but perform worse in practice if you skip validation.
