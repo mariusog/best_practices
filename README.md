@@ -105,7 +105,7 @@ A ready-to-use devcontainer config with Claude Code, GitHub CLI, and Node LTS pr
 - **TypeScript/Node project:** Remove the Python feature, keep Node. Add your package manager.
 - **Go/Rust/other:** Replace the Python feature with the appropriate [devcontainer feature](https://containers.dev/features). Remove the Python-specific VS Code extensions.
 
-The Node version is pinned to `"lts"` because the devcontainer feature defaults to Node 18 (EOL), which caused issues during our competition projects.
+The Node version is pinned to `"lts"` because the devcontainer feature defaults to Node 18 (EOL), which can cause compatibility issues with Claude Code and other modern tooling.
 
 ### Bootstrap Script (`bootstrap.sh`)
 
