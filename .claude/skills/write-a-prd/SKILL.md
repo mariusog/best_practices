@@ -85,6 +85,40 @@ A description of the things that are out of scope for this PRD.
 Any further notes about the feature.
 ```
 
+## Scoring (0-100)
+
+Additive rubric -- start at 0, earn points for each criterion met:
+
+| Criterion | Points |
+|-----------|--------|
+| Problem statement is concrete and specific | 20 |
+| User stories cover primary use cases | 20 |
+| Scope boundaries defined (what's NOT included) | 15 |
+| Technical constraints identified | 15 |
+| Success metrics defined | 15 |
+| Module sketch or architecture direction included | 15 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Complete PRD -- ready for planning and implementation |
+| 70-89 | Solid PRD -- minor gaps in metrics or scope boundaries |
+| 50-69 | Needs work -- missing user stories or unclear problem statement |
+| 0-49 | Incomplete -- too vague to act on or missing critical sections |
+
+## Completion
+
+Report using this template:
+
+```
+## PRD: <Feature Name>
+
+- **Location**: <GitHub issue URL or file path>
+- **Scope summary**: <one-sentence description of what the PRD covers>
+- **User stories**: <N> stories defined
+- **Out of scope items**: <N> items explicitly excluded
+- **Score: X/100**
+```
+
 ## Gotchas
 
 - **Writing solutions instead of problems**: A PRD that specifies "build a REST API with endpoints X, Y, Z" has already decided the solution. Start with the problem: what user need is unmet? The implementation approach should emerge from the requirements, not the other way around.

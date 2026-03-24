@@ -249,6 +249,42 @@ Agent C: qa/T15-coverage  ─── PR #3 ──┘
 | Rebasing public branches | Use merge to update from main |
 | Committing review fixes as amends | New commits preserve review context |
 
+## Scoring (0-100)
+
+Start at 100. Deduct points for each issue found:
+
+| Criterion | Deduction |
+|-----------|-----------|
+| PR lacks clear title and description | -15 |
+| CI checks failing | -20 |
+| Changes mix multiple concerns | -10 |
+| Branch not up to date with base | -5 |
+| Unrelated files in diff | -10 per file |
+| Unresolved review comments | -10 per comment |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Ready to merge -- clean PR with passing CI |
+| 70-89 | Needs minor fixes -- small scope or CI issues |
+| 50-69 | Needs rework -- multiple concerns mixed or significant review feedback |
+| 0-49 | Not ready -- failing CI, unclear scope, or major unresolved feedback |
+
+## Completion
+
+Report using this template:
+
+```
+## PR Workflow: <branch or PR title>
+
+- **PR URL**: <url>
+- **CI status**: <passing / failing (details)>
+- **Review status**: <approved / changes requested / pending>
+- **Scope**: <one-sentence summary of what the PR does>
+- **Issues found**:
+  - <list any scoring deductions>
+- **Score: X/100**
+```
+
 ## Gotchas
 
 - **Describing WHAT changed but not WHY**: "Updated user.py" tells the reviewer nothing. The PR description should explain the motivation: what problem this solves and why this approach was chosen.

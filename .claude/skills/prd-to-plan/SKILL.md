@@ -107,6 +107,42 @@ A concise description of this vertical slice. Describe the end-to-end behavior, 
 <!-- Repeat for each phase -->
 ```
 
+## Scoring (0-100)
+
+Additive rubric -- start at 0, earn points for each criterion met:
+
+| Criterion | Points |
+|-----------|--------|
+| Phases are vertical slices (each delivers working functionality) | 25 |
+| Dependencies between phases are explicit | 20 |
+| Each phase has clear acceptance criteria | 20 |
+| Risk assessment included | 15 |
+| Plan is scoped to what's known (no speculative phases) | 10 |
+| File saved to `./plans/` | 10 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Comprehensive plan -- ready to execute |
+| 70-89 | Solid plan -- minor gaps in criteria or risk assessment |
+| 50-69 | Needs work -- missing acceptance criteria or speculative phases |
+| 0-49 | Incomplete -- phases are not vertical slices or plan is too vague |
+
+## Completion
+
+Report using this template:
+
+```
+## Plan: <Feature Name>
+
+- **Plan file**: <path to saved plan file>
+- **Number of phases**: <N>
+- **Phases**:
+  - Phase 1: <title>
+  - Phase 2: <title>
+  - ...
+- **Score: X/100**
+```
+
 ## Gotchas
 
 - **Including implementation details that will change**: File paths, function names, and specific class structures don't belong in a plan — they'll change during implementation. Focus on responsibilities, interfaces, and data flow.

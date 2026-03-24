@@ -89,6 +89,42 @@ Reference by number from the parent PRD:
 
 Do NOT close or modify the parent PRD issue.
 
+## Scoring (0-100)
+
+Additive rubric -- start at 0, earn points for each criterion met:
+
+| Criterion | Points |
+|-----------|--------|
+| Issues are independently implementable | 25 |
+| Each issue has acceptance criteria | 20 |
+| Dependencies/blockers specified | 20 |
+| Issues ordered by dependency (blockers first) | 15 |
+| Labels and milestones applied | 10 |
+| Issue bodies follow template | 10 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Issues are ready to work -- clear scope, criteria, and dependencies |
+| 70-89 | Solid breakdown -- minor gaps in labels or template adherence |
+| 50-69 | Needs improvement -- missing acceptance criteria or unclear dependencies |
+| 0-49 | Incomplete -- issues are not independently implementable or lack structure |
+
+## Completion
+
+Report using this template:
+
+```
+## PRD to Issues: <PRD title>
+
+- **Issues created**: <N>
+- **Issue URLs**:
+  - #<number>: <title> -- <url>
+  - #<number>: <title> -- <url>
+  - ...
+- **Dependency chain**: <brief description of issue ordering>
+- **Score: X/100**
+```
+
 ## Gotchas
 
 - **Creating issues that are too large**: An issue should be completable in a single focused session. If the description has more than 5-7 checklist items, split it into smaller issues.

@@ -406,6 +406,45 @@ Justify it: Does it have a distinct responsibility? Will multiple other modules 
 - **Internal pure functions**: let exceptions propagate. Don't add try/except inside domain logic -- the caller decides how to handle failure.
 - **Between layers**: convert low-level exceptions to domain-meaningful ones at layer boundaries
 
+## Scoring (0-100)
+
+Additive rubric -- start at 0, earn points for each criterion met:
+
+| Criterion | Points |
+|-----------|--------|
+| Modules have clear single responsibility | 20 |
+| Import depth within healthy range (<=4) | 15 |
+| No circular dependencies | 15 |
+| Dependency direction is correct (high->low) | 15 |
+| Deep modules (simple interface, complex implementation) | 15 |
+| Composition preferred over inheritance where appropriate | 10 |
+| Anti-patterns identified and addressed | 10 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Healthy architecture -- no structural issues, clear module boundaries |
+| 70-89 | Minor issues -- some coupling or shallow modules to address |
+| 50-69 | Needs attention -- circular dependencies or unclear responsibilities |
+| 0-49 | Significant problems -- deep structural issues requiring major refactoring |
+
+## Completion
+
+Report using this template:
+
+```
+## Architecture Review: <project or area>
+
+- **Modules analyzed**: <N>
+- **Issues found**:
+  - <category>: <description>
+  - ...
+- **Recommendations**:
+  - <recommendation 1>
+  - <recommendation 2>
+  - ...
+- **Score: X/100**
+```
+
 ## Gotchas
 
 - **Recommending patterns the team doesn't know**: Introducing hexagonal architecture to a team that writes simple CRUD apps adds complexity without benefit. Match the architecture to the team's capabilities and the project's actual complexity.
