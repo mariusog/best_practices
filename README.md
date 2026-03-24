@@ -95,7 +95,17 @@ See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
 | `.claude/settings.json` | Claude Code hook configuration |
 | `.claude/hooks/` | Pre-commit test gate and post-edit linter |
 | `.github/workflows/ci.yml` | GitHub Actions CI pipeline |
-| `.devcontainer/` | Devcontainer with Python, Claude Code, GitHub CLI, Node LTS |
+| `.devcontainer/` | Devcontainer (see below) |
+
+### Devcontainer (`templates/.devcontainer/`)
+
+A ready-to-use devcontainer config with Claude Code, GitHub CLI, and Node LTS pre-installed. The template defaults to Python 3.12 -- **adjust for your stack:**
+
+- **Python project:** Works as-is. Change the Python version if needed.
+- **TypeScript/Node project:** Remove the Python feature, keep Node. Add your package manager.
+- **Go/Rust/other:** Replace the Python feature with the appropriate [devcontainer feature](https://containers.dev/features). Remove the Python-specific VS Code extensions.
+
+The Node version is pinned to `"lts"` because the devcontainer feature defaults to Node 18 (EOL), which caused issues during our competition projects.
 
 ### Bootstrap Script (`bootstrap.sh`)
 
