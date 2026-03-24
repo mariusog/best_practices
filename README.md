@@ -99,7 +99,14 @@ See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
 
 ### Devcontainer (`templates/.devcontainer/`)
 
-A ready-to-use devcontainer config with Claude Code, GitHub CLI, and Node LTS pre-installed. The template defaults to Python 3.12 -- **adjust for your stack:**
+Devcontainers give you a reproducible development environment that works identically for every contributor -- no "works on my machine" issues. This is especially valuable when working with AI coding agents:
+
+- **Consistent tooling** -- The agent gets the exact same environment every time: right language version, right dependencies, right CLI tools. No debugging environment drift.
+- **Safe sandbox** -- Agents can install packages, run tests, and execute code inside the container without affecting your host machine.
+- **Zero setup** -- New contributors (human or AI) go from `git clone` to a working environment in one step. No setup guides, no missing dependencies.
+- **Works everywhere** -- GitHub Codespaces, VS Code Dev Containers, and any tool that supports the [devcontainer spec](https://containers.dev/).
+
+The template includes Claude Code, GitHub CLI, and Node LTS pre-installed. It defaults to Python 3.12 -- **adjust for your stack:**
 
 - **Python project:** Works as-is. Change the Python version if needed.
 - **TypeScript/Node project:** Remove the Python feature, keep Node. Add your package manager.
