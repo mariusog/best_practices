@@ -181,6 +181,10 @@ Add your own tests after customizing agents or creating project-specific skills.
 - **Quality-gated**: Hooks block commits if tests fail. CI mirrors local checks. Every public method must have a test.
 - **Multi-agent safe**: Per-agent plan files eliminate contention. File ownership prevents conflicts. Lead-agent orchestrates quality gates and merges.
 
+## Related Projects
+
+- **[autoresearch](https://github.com/karpathy/autoresearch)** -- Autonomous ML research agent by Andrej Karpathy. Iterates on training code in a constrained loop: modify `train.py`, run a time-boxed experiment, evaluate metrics, accept or discard. Uses a `program.md` file to steer agent strategy -- a pattern similar to our agent .md files. Worth studying if you want to extend the researcher-agent into autonomous experimentation.
+
 ## License
 
 Unlicensed. Use freely.
