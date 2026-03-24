@@ -74,6 +74,26 @@ If dependencies changed:
 - Constants have comments explaining their purpose and tuning
 - Magic numbers are named and documented
 
+## Scoring (0-100)
+
+Start at 100. Deduct points for each unresolved documentation gap:
+
+| Issue | Deduction |
+|-------|-----------|
+| Outdated docstring not updated | -10 per function |
+| README not updated for new feature/API change | -15 |
+| Missing parameter documentation | -5 per parameter |
+| Stale code example | -10 |
+
+If no documentation changes are needed (verified by reviewing all changed code), the score is **100/100**.
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Documentation is current -- all changes reflected |
+| 70-89 | Minor gaps -- some docstrings or parameters undocumented |
+| 50-69 | Significant gaps -- README or major docstrings outdated |
+| 0-49 | Documentation is stale -- multiple functions and docs out of sync |
+
 ## Gotchas
 
 - **Updating docs for your change but not side effects**: If you rename a function, check for references in the README, docstrings in other modules, and comments that mention the old name. Ripple effects are easy to miss.
@@ -82,9 +102,22 @@ If dependencies changed:
 
 ## Completion
 
-Report directly to the user (as a message, not written to a file) listing:
-- Documentation files updated
-- Docstrings added or updated
-- Areas that may need future documentation work
+Report directly to the user (as a message, not written to a file):
 
-If no documentation changes are needed (e.g., internal refactoring with no API or behavior changes), report that explicitly: "No documentation updates required — changes are internal only." This is a valid outcome.
+```
+## Documentation Update Report
+
+### Files Updated
+- <file path> -- <what was updated>
+
+### Docstrings Fixed
+- <module.function> -- <what was added/corrected>
+
+### Summary
+- Documentation files updated: <count>
+- Docstrings added or corrected: <count>
+- Areas needing future documentation work: <list or "none">
+- **Score: X/100** (<deduction breakdown or "no changes needed, verified">)
+```
+
+If no documentation changes are needed (e.g., internal refactoring with no API or behavior changes), report that explicitly: "No documentation updates required -- changes are internal only. **Score: 100/100**." This is a valid outcome.

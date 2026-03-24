@@ -233,6 +233,25 @@ async def test_checkout_flow(page, authenticated_page):
 
 These are your highest-value tests. Invest time in making them stable and fast.
 
+## Scoring (0-100)
+
+Additive scoring based on test quality:
+
+| Criterion | Points |
+|-----------|--------|
+| Page object model or equivalent abstraction used | 20 |
+| Stable selectors (`data-testid`, not CSS classes) | 20 |
+| Tests independent (no shared state between tests) | 20 |
+| Error states and edge cases tested | 20 |
+| Tests pass reliably (no flakiness) | 20 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Production-grade e2e suite -- stable, well-abstracted, comprehensive |
+| 70-89 | Good coverage -- minor gaps in abstraction or edge cases |
+| 50-69 | Functional but fragile -- missing page objects or unstable selectors |
+| 0-49 | Unreliable -- flaky tests, shared state, or no abstraction |
+
 ## Gotchas
 
 - **Flaky selectors**: Tests that use CSS classes or DOM structure break on every styling change. Use `data-testid` attributes exclusively for test selectors. If the app doesn't have them, add them — it's the single highest-ROI investment for e2e stability.
@@ -243,9 +262,27 @@ These are your highest-value tests. Invest time in making them stable and fast.
 
 ## Completion
 
-Report:
-- Number of e2e tests written or updated
-- Critical paths covered (list the flows)
-- Flaky tests identified and stabilized
-- MCP tools configured (if applicable)
-- Console errors found during test runs
+Report directly to the user (as a message, not written to a file):
+
+```
+## Browser Testing Report
+
+### Tests Written/Updated
+- <test name> -- <what flow it covers>
+
+### Pages Covered
+- <page object> -- <page/component it abstracts>
+
+### Critical Paths
+- <flow name> -- <pass/fail>
+
+### Issues Found
+- Flaky tests identified and stabilized: <count>
+- Console errors found during test runs: <list or "none">
+- MCP tools configured: <yes/no>
+
+### Summary
+- E2e tests written or updated: <count>
+- Pages covered: <count>
+- **Score: X/100** (<points breakdown>)
+```

@@ -133,6 +133,54 @@ Run the **Test (fast)** command from the CLAUDE.md Tooling table. All tests must
 5. **Mystery data**: Make test data explicit and visible in each test
 6. **Non-deterministic tests**: Always use fixed seeds for randomized behavior
 
+## Scoring (0-100)
+
+Checklist-based scoring, 10 points each:
+
+| Criterion | Points |
+|-----------|--------|
+| Test written before implementation | 10 |
+| Test fails on first run (red) | 10 |
+| Implementation is minimal to pass test | 10 |
+| All tests pass after implementation (green) | 10 |
+| Refactor step performed (or explicitly skipped with reason) | 10 |
+| Test name follows convention (`test_method_scenario`) | 10 |
+| Edge cases covered | 10 |
+| No test interdependence | 10 |
+| Arrange-Act-Assert pattern used | 10 |
+| Final test suite passes | 10 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Full TDD discipline -- all steps followed, clean cycle |
+| 70-89 | Good TDD -- minor gaps (e.g., skipped refactor, missing edge case) |
+| 50-69 | Partial TDD -- tests exist but cycle not fully followed |
+| 0-49 | Not TDD -- tests written after implementation or major gaps |
+
+## Completion
+
+Report directly to the user (as a message, not written to a file):
+
+```
+## TDD Cycle Report
+
+### Tests Written
+- <test name> -- <what it verifies>
+- <test name> -- <what it verifies>
+
+### Methods/Functions Covered
+- <module.function> -- <test count> tests
+
+### Cycle Summary
+- Red-Green-Refactor cycles completed: <count>
+- Edge cases covered: <list>
+- Refactoring performed: <yes/no, description>
+
+### Final State
+- All tests pass: yes/no
+- **Score: X/100** (<checklist breakdown>)
+```
+
 ## Gotchas
 
 - **Writing tests after implementation and calling it TDD**: TDD means the test exists BEFORE the code. If you write the code first, you're writing regression tests — which is fine, but it's not TDD and you lose the design benefits.

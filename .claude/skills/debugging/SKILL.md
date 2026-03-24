@@ -144,6 +144,52 @@ Result: Fixed <root cause> | added regression test | tests: N pass
 | Assertion error with correct-looking values | Float comparison, type mismatch, off-by-one | Use approximate comparison for floats, check types |
 | Import error or attribute error | Circular import, renamed function, missing module export | Check import chain, recent renames |
 
+## Scoring (0-100)
+
+Additive scoring based on methodology quality:
+
+| Criterion | Points |
+|-----------|--------|
+| Root cause identified with evidence | 40 |
+| Fix is minimal and targeted (not a workaround) | 20 |
+| Regression test added | 20 |
+| No collateral changes to unrelated code | 10 |
+| Fix verified (tests pass) | 10 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Textbook debugging -- root cause found, minimal fix, regression test, clean |
+| 70-89 | Solid fix -- root cause found but minor methodology gaps |
+| 50-69 | Fix works but methodology issues (e.g., no regression test, workaround) |
+| 0-49 | Incomplete -- root cause unclear or fix not verified |
+
+## Completion
+
+Report directly to the user (as a message, not written to a file):
+
+```
+## Debugging Report
+
+### Bug
+- <one-sentence description of the observed bug>
+
+### Root Cause
+- <one-sentence root cause statement: "X because Y, which results in Z">
+
+### Fix Applied
+- <file:line> -- <what was changed and why>
+
+### Regression Test
+- <test name> -- <what it verifies>
+
+### Verification
+- Regression test: pass/fail
+- Full suite: N tests pass, M fail
+
+### Summary
+- **Score: X/100** (<points breakdown>)
+```
+
 ## Gotchas
 
 - **Fixing the symptom instead of the root cause**: Adding a null check to suppress a crash instead of understanding why the value is null. Always ask "why is this state reachable?" before adding a guard.

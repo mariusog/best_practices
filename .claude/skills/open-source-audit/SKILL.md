@@ -222,6 +222,49 @@ find . \( -name "*.py" -o -name "*.yaml" -o -name "*.json" \) \
   -exec sed -i 's/actual-project-id/${GCP_PROJECT_ID}/g' {} +
 ```
 
+## Scoring (0-100)
+
+Start at 100. Deduct points for each finding by severity:
+
+| Severity | Examples | Deduction per finding |
+|----------|----------|-----------------------|
+| Critical | Hardcoded secrets, API keys, JWT tokens | -20 |
+| High | Cloud project IDs, personal emails, internal URLs | -10 |
+| Medium | Tracked cache files, operational logs, hardcoded paths | -5 |
+| Low | Missing gitignore patterns, git history leaks | -2 |
+
+| Score | Interpretation |
+|-------|---------------|
+| 90-100 | Release-ready -- no critical findings, minimal high-severity issues |
+| 70-89 | Needs cleanup -- some high-severity findings remain |
+| 50-69 | Significant exposure -- multiple high or critical findings |
+| 0-49 | Not safe to release -- critical secrets or credentials exposed |
+
+## Completion
+
+Report directly to the user (as a message, not written to a file):
+
+```
+## Open-Source Audit: <repo or description>
+
+### Findings
+- Critical: <count> (list files)
+- High: <count> (list files)
+- Medium: <count> (list files)
+- Low: <count> (list files)
+
+### Files Affected
+- <total count> files contain sensitive data
+
+### Actions Taken
+- <list of replacements or removals performed>
+
+### Summary
+- Total findings: <count>
+- Files affected: <count>
+- **Score: X/100** (<deduction breakdown>)
+```
+
 ## Gotchas
 
 Real issues discovered during production repository audits:
