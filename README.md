@@ -95,6 +95,7 @@ See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
 | `.claude/settings.json` | Claude Code hook configuration |
 | `.claude/hooks/` | Pre-commit test gate and post-edit linter |
 | `.github/workflows/ci.yml` | GitHub Actions CI pipeline |
+| `.devcontainer/` | Devcontainer with Python, Claude Code, GitHub CLI, Node LTS |
 
 ### Bootstrap Script (`bootstrap.sh`)
 
