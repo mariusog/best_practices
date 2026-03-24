@@ -131,6 +131,19 @@ Skills must not contain malware, exploit code, or content that could compromise 
 
 Every skill should include a `## Gotchas` section documenting real failure patterns observed in practice. This is often the highest-signal content in a skill — add entries when you discover things the skill should handle but doesn't, or common mistakes the model makes when following the instructions.
 
+#### Scoring and Completion (for executable skills)
+
+Skills that evaluate or audit code should produce a **Score: X/100** so results are comparable across runs and across skills. The `production-quality` orchestrator aggregates these scores.
+
+Two scoring patterns work well:
+
+- **Deduction-based** (start at 100, subtract per issue): Good for audit skills like `code-review`, `security-scan`, `lint`. Use severity-based deductions (Critical -20, High -10, Medium -5, Low -2).
+- **Additive rubric** (sum points across criteria): Good for process skills like `tdd-cycle`, `refactor`, `test-coverage`. Define 5-10 criteria that total 100.
+
+Every executable skill should also have a `## Completion` section defining what to report when done — files changed, issues found, and the score with breakdown. This is how the agent knows what "done" looks like.
+
+Reference skills that teach patterns (e.g., `caching-strategies`, `data-pipeline`) don't need scoring — they provide knowledge, not evaluation. But consider adding a checklist of patterns to verify.
+
 ---
 
 ## Step 3: Test It
