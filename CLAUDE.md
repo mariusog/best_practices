@@ -118,10 +118,18 @@ Did you write new code?
 |   +-- Need caching? -> caching-strategies
 +-- Need to add or improve logging? -> logging-observability
 +-- Want to clean up code structure? -> refactor
++-- Want to review UI consistency? -> ui-design
 +-- Ready to ship?
 |   +-- Yes: Run production-quality (orchestrates lint, refactor, test-coverage, security-scan, code-review, update-documentation)
 +-- Quick quality check only?
     +-- Yes: Run lint + code-review
+```
+
+**Product and design review:**
+
+```
++-- Need product consistency or strategy review? -> product-review
++-- Need UI consistency review? -> ui-design
 ```
 
 **Shipping and maintenance:**
