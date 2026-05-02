@@ -78,6 +78,7 @@ Run as the researcher-agent. What's the best approach for caching API responses?
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
 | Shipping | `security-scan`, `open-source-audit`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
+| Product/Design | `product-review`, `ui-design` |
 | Meta | `skill-creator` |
 
 See the **Skill Selection Guide** in `CLAUDE.md` for when to use each skill.
