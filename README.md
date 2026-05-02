@@ -68,7 +68,7 @@ Run as the researcher-agent. What's the best approach for caching API responses?
 
 **Coordination model**: Each agent works from its own plan file -- no shared-file contention. Agents that hit blockers mark them as `BLOCKED` in their plan file. The lead triages blockers, resolves them, and re-spawns agents as needed.
 
-### Skills (`.claude/skills/`) — 29 total
+### Skills (`.claude/skills/`) — 31 total
 
 | Category | Skills |
 |----------|--------|
