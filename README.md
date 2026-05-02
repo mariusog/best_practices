@@ -68,12 +68,12 @@ Run as the researcher-agent. What's the best approach for caching API responses?
 
 **Coordination model**: Each agent works from its own plan file -- no shared-file contention. Agents that hit blockers mark them as `BLOCKED` in their plan file. The lead triages blockers, resolves them, and re-spawns agents as needed.
 
-### Skills (`.claude/skills/`) — 28 total
+### Skills (`.claude/skills/`) — 29 total
 
 | Category | Skills |
 |----------|--------|
 | Code quality | `tdd-cycle`, `code-review`, `refactor`, `lint` |
-| Architecture | `project-architecture`, `data-pipeline`, `caching-strategies`, `error-handling`, `performance-optimization` |
+| Architecture | `project-architecture`, `improve-codebase-architecture`, `data-pipeline`, `caching-strategies`, `error-handling`, `performance-optimization` |
 | Testing | `test-coverage`, `integration-testing`, `browser-testing`, `reproducibility` |
 | Debugging | `debugging`, `debug-visualization`, `logging-observability` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
@@ -184,6 +184,7 @@ Add your own tests after customizing agents or creating project-specific skills.
 ## Related Projects
 
 - **[autoresearch](https://github.com/karpathy/autoresearch)** -- Autonomous ML research agent by Andrej Karpathy. Iterates on training code in a constrained loop: modify `train.py`, run a time-boxed experiment, evaluate metrics, accept or discard. Uses a `program.md` file to steer agent strategy -- a pattern similar to our agent .md files. Worth studying if you want to extend the researcher-agent into autonomous experimentation.
+- **[mattpocock/skills](https://github.com/mattpocock/skills)** -- Matt Pocock's collection of Claude skills for engineering, design, and writing. The `improve-codebase-architecture` skill in this repo is adapted from the [version there](https://github.com/mattpocock/skills/tree/main/skills/engineering/improve-codebase-architecture), with its `LANGUAGE.md` glossary kept as a bundled reference. Worth browsing for additional skills to port.
 
 ## License
 
