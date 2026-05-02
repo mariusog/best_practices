@@ -94,15 +94,15 @@ Borrowed from `project-architecture` -- when you reach Step 3 and need to decide
 
 1. **In-process** -- pure computation, in-memory state, no I/O. Always deepenable: just merge and test directly.
 2. **Local-substitutable** -- dependencies with local stand-ins (PGLite for Postgres, in-memory filesystem). Deepenable if the substitute exists.
-3. **Remote but Owned (Ports & Adapters)** -- your own services across a network. Define a port at the module boundary. The deep module owns logic; transport is injected. Tests use an in-memory adapter.
-4. **True External (Mock)** -- third-party services you don't control (Stripe, Twilio). Mock at the boundary; deepened module takes the dependency as an injected port.
+3. **Remote but Owned (Ports & Adapters)** -- your own services across a network. Define a port at the seam. The deep module owns logic; transport is injected. Tests use an in-memory adapter.
+4. **True External (Mock)** -- third-party services you don't control (Stripe, Twilio). Mock at the seam; deepened module takes the dependency as an injected port.
 
 ## Testing Strategy
 
 Core principle: **replace, don't layer.**
 
-- Old unit tests on shallow modules are waste once boundary tests exist -- delete them.
-- Write new tests at the deepened module's interface boundary.
+- Old unit tests on shallow modules are waste once tests at the new seam exist -- delete them.
+- Write new tests at the deepened module's seam (its interface).
 - Tests assert on observable outcomes through the public interface, not internal state.
 - Tests should survive internal refactors -- they describe behaviour, not implementation.
 
