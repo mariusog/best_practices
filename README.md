@@ -68,15 +68,16 @@ Run as the researcher-agent. What's the best approach for caching API responses?
 
 **Coordination model**: Each agent works from its own plan file -- no shared-file contention. Agents that hit blockers mark them as `BLOCKED` in their plan file. The lead triages blockers, resolves them, and re-spawns agents as needed.
 
-### Skills (`.claude/skills/`) — 31 total
+### Skills (`.claude/skills/`) — 33 total
 
 | Category | Skills |
 |----------|--------|
 | Code quality | `tdd-cycle`, `code-review`, `refactor`, `lint` |
 | Architecture | `project-architecture`, `improve-codebase-architecture`, `data-pipeline`, `caching-strategies`, `error-handling`, `performance-optimization` |
 | Testing | `test-coverage`, `integration-testing`, `browser-testing`, `reproducibility` |
-| Debugging | `debugging`, `debug-visualization`, `logging-observability` |
+| Debugging | `debugging`, `debug-visualization`, `logging-observability`, `fix-flaky-spec` |
 | Planning | `write-a-prd`, `prd-to-plan`, `prd-to-issues`, `grill-me` |
+| Orchestration | `preferred-workflow` |
 | Shipping | `security-scan`, `open-source-audit`, `production-quality`, `pr-workflow`, `dependency-management`, `update-documentation`, `readme-standards` |
 | Product/Design | `product-review`, `ui-design` |
 | Meta | `skill-creator` |
