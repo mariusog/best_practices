@@ -46,6 +46,15 @@ Every repo in this pipeline already requires green CI (Phase 5) before a PR ship
 - **CI (Phase 5) is the authoritative full-suite gate.** Once scoped tests are green and lint/architecture/review pass, open or push to the PR and let CI confirm the rest.
 - This doesn't relax "zero tolerance for test failures" — it only changes which tests run locally versus which CI is trusted to run.
 
+## Code Comments — Self-Documenting Over Explained
+
+Default to no comments. Name things so the comment is unnecessary — a well-chosen function, variable, or class name replaces the sentence that would otherwise have explained it.
+
+A comment earns its place only when it records a **why** that cannot live in a name: a constraint, a rejected alternative, a bug it guards against. Never restate what the line already does — that's what reading the code is for.
+
+- **Longer than a sentence → it isn't a comment, it's documentation.** Put the rationale in `docs/` (or an ADR) and have the code point at it, not the reverse. A comment block that reads like a design doc is a sign the doc should exist on its own and be linked, not inlined.
+- This applies throughout Phases 2–4: write self-documenting code as you implement (Phase 2), and when `/project-architecture` or `/production-quality` (Phases 3–4) flag a comment-heavy area, prefer renaming over re-explaining.
+
 ## Phase 1 — Plan
 
 Goal: convert an idea into independently-grabbable GitHub issues.
@@ -161,3 +170,4 @@ Then **stop**. Merging is the user's call.
 - **Don't merge for the user.** Stop at the ping step.
 - **One concurrent PR through this pipeline at a time** unless the user explicitly says otherwise. Parallel PRs multiply context cost without speeding up the human review bottleneck.
 - **Don't re-run the full local suite as a habit.** Scope test runs to the changed code. Phase 5's CI run is the full-suite gate — running the whole suite locally too, "just to be safe," is double work for the same signal, not double safety. This applies throughout Phases 2–4, not just once before opening the PR.
+- **Don't over-comment.** Self-documenting code beats explained code (see Code Comments). A comment earns its place only for a non-obvious *why* — a constraint, a rejected alternative, a bug it guards against — never a restatement of what the line does. Rationale longer than a sentence belongs in `docs/` or an ADR, with the code pointing at it, not the reverse.
