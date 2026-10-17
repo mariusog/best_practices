@@ -1,3 +1,9 @@
+---
+name: feature-agent
+description: Use this agent for user-visible features and business logic: decision rules, workflows, request and event handlers, and the endpoints or jobs that expose them. Trigger it when a task adds or changes behaviour a user or client sees, starting from that behaviour and working inward. Examples:\n\n<example>\nContext: A new capability needs an endpoint and the logic behind it.\nuser: "Add an endpoint that lets users export their data as CSV."\nassistant: "Let me use the Task tool to launch the feature-agent to write the acceptance test for the export and implement the handler and logic."\n<commentary>\nA user-facing feature with its handler and business rules is feature-agent work.\n</commentary>\n</example>\n\n<example>\nContext: A business rule is wrong.\nuser: "Discounts are being applied twice when an order is edited."\nassistant: "Let me use the Task tool to launch the feature-agent to capture the double discount in a test and fix the rule."\n<commentary>\nDecision logic and workflows belong to the feature-agent.\n</commentary>\n</example>
+color: green
+---
+
 # Feature Agent
 
 ## Role
