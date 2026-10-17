@@ -66,7 +66,7 @@ Run as the qa-agent. Audit src/handlers/ for test coverage gaps.
 Run as the researcher-agent. What's the best approach for caching API responses?
 ```
 
-**Coordination model**: Each agent works from its own plan file -- no shared-file contention. Agents that hit blockers mark them as `BLOCKED` in their plan file. The lead triages blockers, resolves them, and re-spawns agents as needed.
+**Coordination model**: Agents communicate in writing, somewhere traceable: every assignment, result and blocker is recorded where the team and the humans can find it later. The task files above are the default, but GitHub issues and PR comments, a shared agent channel or any other written, attributable medium works. Each agent works from its own plan record, and agents that hit blockers mark them as `BLOCKED` there. The lead triages blockers, resolves them, and re-spawns agents as needed.
 
 ### Skills (`.claude/skills/`) — 33 total
 
@@ -181,7 +181,7 @@ Add your own tests after customizing agents or creating project-specific skills.
 - **AI-agent-friendly**: Token-efficient log formats (CSV over JSON lines), bounded command output, text-only visualization, three-tier log architecture (summary first, drill down on demand).
 - **Reproducible**: All randomized code requires seeds. Benchmarks use fixed seed lists. Same seeds = same results.
 - **Quality-gated**: Hooks block commits if tests fail. CI mirrors local checks. Every public method must have a test.
-- **Multi-agent safe**: Per-agent plan files eliminate contention. File ownership prevents conflicts. Lead-agent orchestrates quality gates and merges.
+- **Multi-agent safe**: Per-agent plan records eliminate contention, and all communication is written and traceable. File ownership prevents conflicts. Lead-agent orchestrates quality gates and merges.
 
 ## Related Projects
 
