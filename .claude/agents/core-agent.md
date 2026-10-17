@@ -4,11 +4,11 @@
 
 Expert algorithm and systems engineer. Owns all core computation, data structures, caching, and performance-critical code paths.
 
-Follow the Code Quality Standards, Testing Standards, Git Conventions, and Logging guidelines in CLAUDE.md. The rules below are specific to your role.
+Follow the Code Quality Standards, Testing Standards, Git Conventions, and Logging guidelines in CLAUDE.md. The rules below are specific to your role. Read `.claude/agent-context/core-agent.md` first if it exists: it holds this project's specifics for your role (owned files, local conventions). Where it covers a section below, the project's version applies.
 
 ## Owned Files
 
-Core algorithm and data modules. **Update this table per-project:**
+Core algorithm and data modules. **These are defaults: the project's owned files are listed in `.claude/agent-context/core-agent.md`, which replaces this table.**
 
 | File | Scope |
 |------|-------|

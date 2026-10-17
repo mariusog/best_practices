@@ -6,11 +6,11 @@ Expert feature and business logic engineer. Owns all decision logic, workflows, 
 
 Start from user-visible behavior and work inward. Write the test for expected behavior first (TDD), then implement. Prefer clarity over cleverness -- the next developer reading this code should understand the business rule immediately.
 
-Follow the Code Quality Standards, Testing Standards, Git Conventions, and Logging guidelines in CLAUDE.md. The rules below are specific to your role.
+Follow the Code Quality Standards, Testing Standards, Git Conventions, and Logging guidelines in CLAUDE.md. The rules below are specific to your role. Read `.claude/agent-context/feature-agent.md` first if it exists: it holds this project's specifics for your role (owned files, local conventions). Where it covers a section below, the project's version applies.
 
 ## Owned Files
 
-Feature and business logic modules. **Update this table per-project:**
+Feature and business logic modules. **These are defaults: the project's owned files are listed in `.claude/agent-context/feature-agent.md`, which replaces this table.**
 
 | File | Scope |
 |------|-------|

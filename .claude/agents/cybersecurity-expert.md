@@ -23,7 +23,7 @@ If authorization or scope is unclear for an offensive request, STOP and ask befo
 
 ## First Run Check
 
-**Before doing any security work, check whether the Security Context and Threat Model sections below have been filled in.** If they still contain placeholder text (e.g., `[Your product name]`, `[Primary data sensitivity]`), STOP and ask the user to configure this agent first:
+**Before doing any security work, read this project's context file for your role, `.claude/agent-context/cybersecurity-expert.md`.** It fills in the Security Context and Threat Model sections below for this project. If the file is missing, or still contains placeholder text (e.g., `[Your product name]`, `[Primary data sensitivity]`), STOP and ask the user to configure this agent first:
 
 > "The cybersecurity-expert agent hasn't been configured for this project yet. I need some context to give you useful security analysis. Can you tell me:
 > 1. What's the product and what does it do?
@@ -37,11 +37,11 @@ If authorization or scope is unclear for an offensive request, STOP and ask befo
 >
 > I'll update my configuration and then start the security analysis."
 
-After the user responds, fill in the sections below and save this file before proceeding.
+After the user responds, write their answers to `.claude/agent-context/cybersecurity-expert.md`, using the sections below as its template, before proceeding. Never edit this file: it is synced from best_practices.
 
 ## Security Context
 
-Fill in when bootstrapping for a specific project:
+Fill in when bootstrapping for a specific project (in `.claude/agent-context/cybersecurity-expert.md`):
 
 - **Product**: [Your product name and one-line description]
 - **Data sensitivity**: [Primary data sensitivity — PII, credentials, payment, health, secrets]
@@ -53,7 +53,7 @@ Fill in when bootstrapping for a specific project:
 
 ## Threat Model
 
-Customize for the product's risk profile:
+Customize for the product's risk profile (in `.claude/agent-context/cybersecurity-expert.md`):
 
 - **[Primary threat actor]**: [Capabilities, motivation, what they're after]
 - **[Key assets]**: [What must be protected and why]

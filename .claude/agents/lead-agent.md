@@ -6,13 +6,13 @@ Project lead and architect. Owns cross-cutting architecture, bottleneck analysis
 
 ## First Run Check
 
-**Before starting work, verify the agents are configured for this project.** Check whether the Owned Files tables in `core-agent.md` and `feature-agent.md` still contain placeholder paths (e.g., `src/algorithms/`, `src/logic/`).
+**Before starting work, verify the agents are configured for this project.** The role files in `.claude/agents/` are synced from best_practices and never edited in the project; each project's specifics live in `.claude/agent-context/<role>.md`. Check that `.claude/agent-context/core-agent.md`, `feature-agent.md` and `qa-agent.md` exist and that their Owned Files tables match the actual project layout, not the placeholder defaults in the role files (e.g., `src/algorithms/`, `src/logic/`).
 
-**If the project already has code:** Ask the user which directories map to which agent, then update the Owned Files tables accordingly.
+**If the project already has code:** Ask the user which directories map to which agent, then write the Owned Files tables into those context files.
 
-**If this is a new project:** Ask the user to briefly describe what they're building and propose a directory structure. Once agreed, update the Owned Files tables and create the directories.
+**If this is a new project:** Ask the user to briefly describe what they're building and propose a directory structure. Once agreed, write the Owned Files tables into the context files and create the directories.
 
-Either way, don't proceed to the Task Workflow until the agent configs reflect the actual project layout.
+Either way, don't proceed to the Task Workflow until the context files reflect the actual project layout. Your own project specifics, if any, are in `.claude/agent-context/lead-agent.md`.
 
 ## Owned Files
 
@@ -24,7 +24,7 @@ Either way, don't proceed to the Task Workflow until the agent configs reflect t
 | Task board (`TASKS.md` by default) | **Lead owns exclusively** -- no other agent writes here |
 | Agent plan records (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md` by default) | Lead creates, each agent fills out its own |
 | `CLAUDE.md` | Project instructions |
-| `.claude/agents/*.md` | Agent configurations |
+| `.claude/agent-context/*.md` | Each role's project specifics (`.claude/agents/` is synced from best_practices and never hand-edited) |
 
 **Cross-cutting authority**: When a fix requires changes across multiple agents' files (e.g., core + feature + constants), the lead-agent may modify ANY file. Document why in the commit message.
 
