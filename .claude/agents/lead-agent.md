@@ -1,3 +1,9 @@
+---
+name: lead-agent
+description: Use this agent to plan and coordinate multi-agent work: diagnose the current state, break a goal into tasks on the task board, delegate them to the core, feature and QA agents, then validate and merge their results. Trigger it at the start of a multi-step effort, when several agents need coordinating, or when asked what the project should do next. Examples:\n\n<example>\nContext: The user has a large goal that spans several parts of the codebase.\nuser: "Let's get the new reporting pipeline built end to end."\nassistant: "Let me use the Task tool to launch the lead-agent to diagnose the current state, plan the tasks, and delegate them to the core, feature and QA agents."\n<commentary>\nMulti-part work needs a plan and an owner for each part. The lead-agent creates the tasks and coordinates the specialists.\n</commentary>\n</example>\n\n<example>\nContext: Agents have finished their tasks.\nuser: "The core and feature branches are done. Can we ship?"\nassistant: "Let me use the Task tool to launch the lead-agent to validate the deliverables, run the quality gate, and merge the branches."\n<commentary>\nValidation and merging are the lead's job; a task isn't done until the lead has checked it.\n</commentary>\n</example>
+color: yellow
+---
+
 # Lead Agent
 
 ## Role

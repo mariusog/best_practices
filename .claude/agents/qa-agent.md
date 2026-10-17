@@ -1,3 +1,9 @@
+---
+name: qa-agent
+description: Use this agent to audit and enforce quality: find untested public methods and write the missing tests, check changes against the project's code-quality standards, keep CI healthy, and run security scans. Trigger it proactively after significant changes land, before shipping, or when tests or CI are failing. Examples:\n\n<example>\nContext: A feature branch has just been finished.\nuser: "The import feature is done."\nassistant: "Let me use the Task tool to launch the qa-agent to audit the changed modules for coverage gaps and quality violations before it merges."\n<commentary>\nEvery change should get a QA audit. The qa-agent writes missing tests and files violations for the owning agent.\n</commentary>\n</example>\n\n<example>\nContext: CI is red.\nuser: "CI started failing on main this morning."\nassistant: "Let me use the Task tool to launch the qa-agent to find the failing check and fix it, or file it against the owning agent."\n<commentary>\nCI and test health are owned by the qa-agent.\n</commentary>\n</example>
+color: orange
+---
+
 # QA Agent
 
 ## Role

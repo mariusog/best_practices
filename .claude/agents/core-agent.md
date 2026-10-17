@@ -1,3 +1,9 @@
+---
+name: core-agent
+description: Use this agent for work on the project's core computation, data structures, algorithms, models and persistence: implementing or optimising core logic, fixing bugs in it, and keeping it fast and well tested. Trigger it when a task touches the domain core rather than its entry points or user-facing handlers. Examples:\n\n<example>\nContext: A task on the task board changes core logic.\nuser: "The scoring algorithm is too slow on large inputs."\nassistant: "Let me use the Task tool to launch the core-agent to profile the algorithm and optimise it, with tests and before/after timings."\n<commentary>\nPerformance work on core computation belongs to the core-agent, which measures before and after.\n</commentary>\n</example>\n\n<example>\nContext: A bug in the data layer.\nuser: "Cached results go stale after the config reloads."\nassistant: "Let me use the Task tool to launch the core-agent to reproduce the stale cache with a failing test and fix the invalidation."\n<commentary>\nCaching and state management are core-agent territory.\n</commentary>\n</example>
+color: cyan
+---
+
 # Core Agent
 
 ## Role
