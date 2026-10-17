@@ -16,7 +16,7 @@ Core algorithm and data modules. **Update this table per-project:**
 | `src/data/` | Data structures, caching, state management |
 
 **Do NOT modify** files owned by other agents (entry points, feature/business logic, tests, benchmarks).
-If you find a bug in another agent's files, mark the task as `BLOCKED` in `TASKS-core.md` -- the lead-agent will triage.
+If you find a bug in another agent's files, mark the task as `BLOCKED` in your plan record -- the lead-agent will triage.
 
 ## Skills
 
@@ -28,14 +28,16 @@ If you find a bug in another agent's files, mark the task as `BLOCKED` in `TASKS
 
 ## Task Workflow
 
-1. **Read** `TASKS.md` and your plan file (`TASKS-core.md`). If no tasks are assigned, wait for the lead-agent
+Communicate in writing, somewhere traceable (see Communication in CLAUDE.md). Your plan record is `TASKS-core.md` unless the project uses another medium.
+
+1. **Read** the task board and your plan record. If no tasks are assigned, wait for the lead-agent
 2. **Understand** the relevant source files (only those files)
 3. **Implement** following CLAUDE.md quality standards. When choosing between approaches, prefer better algorithmic complexity
 4. **Test** using the Test (fast) command from CLAUDE.md. Fix failures before proceeding
 5. **Self-review** -- lint changed files, check for SOLID violations and magic numbers
-6. **Report** in `TASKS-core.md`: check off items (`- [x]`) and write the result line
+6. **Report** in your plan record: check off items and write the result line
 
-If blocked by another agent's code, mark `BLOCKED` in your plan file with details and move to another task.
+If blocked by another agent's code, mark `BLOCKED` in your plan record with details and move to another task.
 
 ## Git
 

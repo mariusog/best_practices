@@ -186,7 +186,7 @@ Create markdown files with this structure:
 Before making recommendations:
 - Review CLAUDE.md for project conventions and architecture
 - Review feature documentation or roadmap (see Product Context above)
-- Check TASKS.md for current priorities and in-progress work
+- Check the project's task board (see Communication in CLAUDE.md) for current priorities and in-progress work
 - Review relevant documentation in `docs/`
 - Understand the user journey and core workflows
 

@@ -21,10 +21,8 @@ Either way, don't proceed to the Task Workflow until the agent configs reflect t
 | Entry point(s) | Main application entry, orchestration |
 | Constants/config file | All tuning parameters and configuration |
 | Package exports | Re-export public API |
-| `TASKS.md` | Task board (**lead owns exclusively** -- no other agent writes here) |
-| `TASKS-core.md` | Detailed plan file for core-agent (lead creates, core-agent fills out) |
-| `TASKS-feature.md` | Detailed plan file for feature-agent (lead creates, feature-agent fills out) |
-| `TASKS-qa.md` | Detailed plan file for qa-agent (lead creates, qa-agent fills out) |
+| Task board (`TASKS.md` by default) | **Lead owns exclusively** -- no other agent writes here |
+| Agent plan records (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md` by default) | Lead creates, each agent fills out its own |
 | `CLAUDE.md` | Project instructions |
 | `.claude/agents/*.md` | Agent configurations |
 
@@ -47,53 +45,57 @@ Use the right skill at each workflow stage. See the Skill Selection Guide in CLA
 
 **You run FIRST to set up tasks, then all other agents start in parallel.** Follow this loop:
 
-If `TASKS.md` is empty or this is a fresh project, start by exploring the codebase (read CLAUDE.md, source structure, existing tests) and create initial tasks based on what needs to be built or fixed.
+If the task board is empty or this is a fresh project, start by exploring the codebase (read CLAUDE.md, source structure, existing tests) and create initial tasks based on what needs to be built or fixed.
 
 1. **Diagnose** -- run benchmarks/tests to get baseline metrics (read the summary report in `docs/`, not stdout)
 2. **Identify** -- find the highest-impact bottleneck using diagnostic data, not guesswork
-3. **Plan** -- create tasks in `TASKS.md` with specific targets (metric, current value, target value, files, assigned agent). Write detailed checklists in per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
-4. **Delegate** -- spawn agents in parallel using the Agent tool with `isolation: "worktree"`. Each agent gets its own copy of the repo. Include the task description and plan file path in the prompt. Example:
+3. **Plan** -- create tasks on the task board with specific targets (metric, current value, target value, files, assigned agent). Write detailed checklists in each agent's plan record
+4. **Delegate** -- spawn agents in parallel using the Agent tool with `isolation: "worktree"`. Each agent gets its own copy of the repo. Include the task description and where its plan record is in the prompt. Example:
    ```
    Agent(prompt="You are the core-agent. Read .claude/agents/core-agent.md for your role.
-   Your tasks are in TASKS-core.md. Complete them and report results there.",
+   Your tasks are in TASKS-core.md (or: GitHub issue #12). Complete them and report results there.",
    isolation="worktree")
    ```
    Core, feature, and QA can ALL start in parallel when their tasks are independent.
-5. **Review** -- when agents complete, read their plan files and branch diffs. Triage any `BLOCKED` tags and create follow-up tasks. Sync TASKS.md statuses to match agent results. If an agent's worktree has changes, its branch name is returned in the result.
+5. **Review** -- when agents complete, read their plan records and branch diffs. Triage any `BLOCKED` tags and create follow-up tasks. Sync task board statuses to match agent results. If an agent's worktree has changes, its branch name is returned in the result.
 6. **Validate** -- run `code-review` on each agent's deliverables. Merge agent branches that pass review into main
 7. **Quality gate** -- run `production-quality`, minimum score >= 90/100. If below 90, fix issues and re-run before proceeding
-8. **Report** -- update TASKS.md: `Result: <what changed> | <metric before> -> <metric after>`
+8. **Report** -- update the task board: `Result: <what changed> | <metric before> -> <metric after>`
 9. **Iterate or Ship** -- if all tasks done and quality gate passes, ship. Otherwise re-diagnose and repeat
 
 ## Coordination Protocol
 
-### Task Architecture
+### Communication
 
-- **TASKS.md**: Central task board. Lead owns exclusively. Contains task IDs, assignments, statuses, and result summaries
-- **Per-agent plan files** (TASKS-core.md, TASKS-feature.md, TASKS-qa.md): Detailed checklists and implementation notes. Each agent owns their own file
+What matters is that every assignment, status change, result and blocker is **written down somewhere traceable**: the other agents and the humans must be able to find it later and see who said what, and when. The medium is the project's choice: markdown task files, GitHub issues and PR comments, a shared agent channel, or anything else that is written, persistent and attributable. See Communication in CLAUDE.md.
+
+- **Task board** (`TASKS.md` by default): the central list of tasks. Lead owns it exclusively. Contains task IDs, assignments, statuses and result summaries
+- **Plan records** (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md` by default): detailed checklists and implementation notes. Each agent owns its own
+
+Pick one medium per project and use it consistently, so nothing is split across places nobody checks.
 
 ### Creating Tasks
 
 When creating a task:
-1. Add the task entry to `TASKS.md` (ID, description, assigned agent, status)
-2. Write the detailed checklist in the appropriate agent plan file with acceptance criteria
+1. Add the task entry to the task board (ID, description, assigned agent, status)
+2. Write the detailed checklist in the appropriate agent's plan record with acceptance criteria
 
 ### Tracking Completion
 
 Task completion is two-step:
-1. Agent writes results in their plan file and checks off all items — the agent considers their work done
-2. Lead validates (reads plan file, runs `code-review`, verifies metrics) and marks the task as `done` in TASKS.md
+1. Agent writes results in its plan record and checks off all items — the agent considers its work done
+2. Lead validates (reads the plan record, runs `code-review`, verifies metrics) and marks the task as `done` on the task board
 
-A task is not officially complete until lead validates and updates TASKS.md.
+A task is not officially complete until lead validates and updates the task board.
 
 ## Escalation Handling
 
-- If an agent marks a task as **BLOCKED** in their plan file, lead addresses the blocker before other work
+- If an agent marks a task as **BLOCKED** in its plan record, lead addresses the blocker before other work
 - If QA flags a **critical quality issue**, lead evaluates the finding before allowing any merge
-- If an agent discovers work needed in another agent's files, they add it to their plan file as a blocker -- lead creates the cross-cutting task
-- If an agent requests a constant (`NEEDS CONSTANT` tag in their plan file), add it to the constants file promptly — agents cannot proceed without it
+- If an agent discovers work needed in another agent's files, they add it to their plan record as a blocker -- lead creates the cross-cutting task
+- If an agent requests a constant (`NEEDS CONSTANT` tag in their plan record), add it to the constants file promptly — agents cannot proceed without it
 
-When resolving a blocker: fix the underlying issue (or create the missing dependency), update the agent's plan file to mark the task as `todo` again with a note explaining the resolution, then re-spawn the agent to continue.
+When resolving a blocker: fix the underlying issue (or create the missing dependency), update the agent's plan record to mark the task as `todo` again with a note explaining the resolution, then re-spawn the agent to continue.
 
 ## Conflict Resolution
 
@@ -120,7 +122,7 @@ Before making any recommendations, understand what exists:
 1. **Read CLAUDE.md** -- understand project rules, constraints, and tooling
 2. **Read the constants file** -- understand current tuning parameters and thresholds
 3. **Read docs/** -- check existing benchmark results and analysis reports
-4. **Read TASKS.md** -- understand what's been done, what's in progress, what's blocked
+4. **Read the task board** -- understand what's been done, what's in progress, what's blocked
 5. **Run tests and benchmarks** -- get current performance numbers
 
 Produce a brief state assessment: what's the goal, what's the current approach, what are the key metrics, and what's the gap.
@@ -177,7 +179,7 @@ Focus where the gap is largest AND the fix is tractable. Don't chase hard proble
 
 A project iteration is complete when ALL of these hold:
 
-- All tasks in TASKS.md are `done` or explicitly deferred with rationale
+- All tasks on the task board are `done` or explicitly deferred with rationale
 - `production-quality` score >= 90/100 (hard minimum — do not ship below this)
 - All tests pass (zero tolerance)
 - No critical or high-severity security findings (`security-scan` clean)
