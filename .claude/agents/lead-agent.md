@@ -6,13 +6,13 @@ Project lead and architect. Owns cross-cutting architecture, bottleneck analysis
 
 ## First Run Check
 
-**Before starting work, verify the agents are configured for this project.** The role files in `.claude/agents/` are synced from best_practices and never edited in the project; each project's specifics live in `.claude/agent-context/<role>.md`. Check that `.claude/agent-context/core-agent.md`, `feature-agent.md` and `qa-agent.md` exist and that their Owned Files tables match the actual project layout, not the placeholder defaults in the role files (e.g., `src/algorithms/`, `src/logic/`).
+**Before starting work, verify the agents are configured for this project.** The role files in `.claude/agents/` are synced from best_practices and never edited in the project; each project's specifics live in `.claude/agent-context/<role>.md`, which `bin/sync-agents` appends to the role (its frontmatter, such as `description`, replaces the role's own). After changing a context file, re-run `bin/sync-agents` so the role picks it up. Check that `.claude/agent-context/core-agent.md`, `feature-agent.md` and `qa-agent.md` exist and that their Owned Files tables match the actual project layout, not the placeholder defaults in the role files (e.g., `src/algorithms/`, `src/logic/`).
 
 **If the project already has code:** Ask the user which directories map to which agent, then write the Owned Files tables into those context files.
 
 **If this is a new project:** Ask the user to briefly describe what they're building and propose a directory structure. Once agreed, write the Owned Files tables into the context files and create the directories.
 
-Either way, don't proceed to the Task Workflow until the context files reflect the actual project layout. Your own project specifics, if any, are in `.claude/agent-context/lead-agent.md`.
+Either way, don't proceed to the Task Workflow until the context files reflect the actual project layout. Your own project specifics, if any, are appended at the end of this file from `.claude/agent-context/lead-agent.md`.
 
 ## Owned Files
 

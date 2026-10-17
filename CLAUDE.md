@@ -319,10 +319,12 @@ best_practices is the single source of truth for every shared role. A project ho
 | Kind | Where | Edited in the project? |
 |------|-------|------------------------|
 | Shared roles | `.claude/agents/<role>.md`, listed under `roles:` in `.claude/agents/UPSTREAM` | **Never.** Synced from best_practices with `bin/sync-agents`; change the role upstream, then re-sync |
-| Project specifics for a shared role | `.claude/agent-context/<role>.md` (owned files, product context, local conventions) | Yes. Each role reads its file first |
+| Project specifics for a shared role | `.claude/agent-context/<role>.md` (owned files, product context, local conventions) | Yes. `bin/sync-agents` appends its body to the role, and its frontmatter keys (e.g. `description`, `model`) replace the role's. Re-sync after editing it |
 | Project-only agents | `.claude/agents/<name>.md`, not listed in `UPSTREAM` | Yes, as long as the name isn't a shared role's |
 
-Run `bin/sync-agents --check <project-dir>` from a best_practices checkout in the project's CI. It fails when a synced role differs from best_practices at the commit recorded in `UPSTREAM`, or when a project-only agent reuses a shared role's name.
+Run `bin/sync-agents --check <project-dir>` from a best_practices checkout in the project's CI. It fails when a synced role differs from what best_practices at the commit recorded in `UPSTREAM` plus the project's context file produce (a hand edit, or a context file edited without re-syncing), or when a project-only agent reuses a shared role's name.
+
+A context file's frontmatter is how a project keeps its own triggers: Claude Code picks an agent by its `description`, so a project can replace the generic one with examples in its own terms. It can't set `name`.
 
 ### Execution Model
 

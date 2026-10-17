@@ -15,13 +15,24 @@ set -euo pipefail
 #   roles: lead-agent core-agent qa-agent
 #
 # Synced roles are never edited in the project. Project specifics for a role
-# go in .claude/agent-context/<role>.md. Agents in .claude/agents/ that are not
-# listed under `roles:` are the project's own and are left alone, as long as
-# they don't reuse a shared role's name.
+# go in .claude/agent-context/<role>.md, and each synced role is composed from
+# best_practices plus that file: keys in the context file's frontmatter (such as
+# a project-specific `description`) replace the role's, everything else in the
+# role is copied verbatim, and the context file's body is appended at the end.
+# A role without a context file is copied byte for byte. Agents in
+# .claude/agents/ that are not listed under `roles:` are the project's own and
+# are left alone, as long as they don't reuse a shared role's name.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SOURCE="mariusog/best_practices"
 AGENTS_DIR=".claude/agents"
+CONTEXT_DIR=".claude/agent-context"
+# Top-level keys Claude Code reads from agent frontmatter. A line starting with
+# any other word (e.g. `user:` inside a description's <example>) continues the
+# key above it.
+FRONTMATTER_KEYS="name description tools disallowedTools model color permissionMode skills hooks mcpServers memory effort maxTurns background isolation initialPrompt"
+WORK="$(mktemp -d)"
+trap 'rm -rf "$WORK"' EXIT
 
 usage() {
     sed -n '4,9p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
@@ -38,6 +49,66 @@ roles_at() {
 
 role_body() {
     git -C "$ROOT" show "$1:$AGENTS_DIR/$2.md"
+}
+
+# Prints a role file's frontmatter (without its --- fences) or its body.
+part() {
+    awk -v want="$1" '
+        NR == 1 && $0 == "---" { infront = 1; next }
+        infront && $0 == "---" { infront = 0; next }
+        (infront ? "front" : "body") == want { print }
+    ' "$2"
+}
+
+# Prints the upstream frontmatter with each key the context sets replaced, and
+# the context's other keys added at the end.
+merge_front() {
+    awk -v ctx="$1" -v keys="$FRONTMATTER_KEYS" '
+        function keyof(line,   k) {
+            if (!match(line, /^[A-Za-z]+:/)) return ""
+            k = substr(line, 1, RLENGTH - 1)
+            return (k in KEYS) ? k : ""
+        }
+        BEGIN { n = split(keys, list, " "); for (i = 1; i <= n; i++) KEYS[list[i]] = 1 }
+        FILENAME == ctx {
+            if ((k = keyof($0)) != "") { cur = k; if (!(k in over)) order[++count] = k }
+            if (cur != "") over[cur] = over[cur] $0 "\n"
+            next
+        }
+        {
+            if ((k = keyof($0)) != "") cur = k
+            seen[cur] = 1
+            if (!(cur in over)) print
+            else if (!(cur in done)) { printf "%s", over[cur]; done[cur] = 1 }
+        }
+        END { for (i = 1; i <= count; i++) if (!(order[i] in seen)) printf "%s", over[order[i]] }
+    ' "$1" "$2"
+}
+
+# Prints the role as the project should hold it: best_practices at <sha>,
+# composed with the project's context file for the role if there is one.
+compose() {
+    local sha="$1" role="$2" ctx="$3/$CONTEXT_DIR/$2.md"
+    role_body "$sha" "$role" > "$WORK/role" 2>/dev/null || return 1
+    if [[ ! -f "$ctx" ]]; then cat "$WORK/role"; return; fi
+    part front "$WORK/role" > "$WORK/up"
+    part front "$ctx" > "$WORK/ctx"
+    part body "$ctx" | sed '/./,$!d' > "$WORK/ctx-body"
+    if grep -q '^name:' "$WORK/ctx"; then
+        echo "sync-agents: $ctx can't set name:; the role's name comes from best_practices" >&2
+        return 2
+    fi
+    if [[ -s "$WORK/up" || -s "$WORK/ctx" ]]; then
+        echo "---"
+        [[ -s "$WORK/up" ]] || echo "name: $role"
+        merge_front "$WORK/ctx" "$WORK/up"
+        echo "---"
+    fi
+    part body "$WORK/role"
+    if [[ -s "$WORK/ctx-body" ]]; then
+        printf '\n<!-- Project specifics, appended by bin/sync-agents from %s. Edit that file and re-sync; never edit this one. -->\n\n' "$CONTEXT_DIR/$role.md"
+        cat "$WORK/ctx-body"
+    fi
 }
 
 resolve() {
@@ -58,10 +129,11 @@ sync() {
 
     mkdir -p "$target/$AGENTS_DIR"
     for role in $roles; do
-        role_body "$sha" "$role" > "$target/$AGENTS_DIR/$role.md" 2>/dev/null || {
-            echo "sync-agents: role '$role' does not exist at $sha" >&2
+        compose "$sha" "$role" "$target" > "$WORK/out" || {
+            [[ $? -eq 1 ]] && echo "sync-agents: role '$role' does not exist at $sha" >&2
             exit 1
         }
+        cp "$WORK/out" "$target/$AGENTS_DIR/$role.md"
     done
     for role in $old_roles; do
         case " $roles " in *" $role "*) ;; *) rm -f "$target/$AGENTS_DIR/$role.md" ;; esac
@@ -81,8 +153,10 @@ check() {
         if ! role_body "$sha" "$role" > /dev/null 2>&1; then
             echo "$role: not a role at $SOURCE@${sha:0:7}"
             status=1
-        elif ! role_body "$sha" "$role" | cmp -s - "$target/$AGENTS_DIR/$role.md"; then
-            echo "$role: differs from $SOURCE@${sha:0:7}. Change the role in best_practices, or put project specifics in .claude/agent-context/$role.md"
+        elif ! compose "$sha" "$role" "$target" > "$WORK/out"; then
+            status=1
+        elif ! cmp -s "$WORK/out" "$target/$AGENTS_DIR/$role.md"; then
+            echo "$role: differs from $SOURCE@${sha:0:7} composed with $CONTEXT_DIR/$role.md. Change the role in best_practices, or edit the context file and re-run bin/sync-agents"
             status=1
         fi
     done
