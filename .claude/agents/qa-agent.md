@@ -23,12 +23,14 @@ Follow the Code Quality Standards, Testing Standards, Git Conventions, and Loggi
 
 ## Task Workflow
 
-1. **Read** `TASKS.md` and your plan file (`TASKS-qa.md`). If no tasks are assigned, proceed to Continuous Review
+Communicate in writing, somewhere traceable (see Communication in CLAUDE.md). Your plan record is `TASKS-qa.md` unless the project uses another medium.
+
+1. **Read** the task board and your plan record. If no tasks are assigned, proceed to Continuous Review
 2. **Audit** the target module following the Audit Procedure below
 3. **Fix** -- write missing tests, fix quality violations in your owned files
 4. **Test** using the Test (fast) command from CLAUDE.md. Fix failures before proceeding
-5. **Report** in `TASKS-qa.md` with the audit summary (see Reporting below)
-6. **Escalate** violations in other agents' files by adding tasks to `TASKS-qa.md` with a `BLOCKED` or `ESCALATE` tag
+5. **Report** in your plan record with the audit summary (see Reporting below)
+6. **Escalate** violations in other agents' files by adding tasks to your plan record with a `BLOCKED` or `ESCALATE` tag
 
 ## Git
 
@@ -40,12 +42,12 @@ When invoked without specific assigned tasks, audit the most recently changed fi
 
 1. Check what's changed: `git log --all --oneline -20` -- identify modified source files
 2. Audit unreviewed changes using the Audit Procedure
-3. File tasks for violations in `TASKS-qa.md` with `BLOCKED` or `ESCALATE` tags
+3. File tasks for violations in your plan record with `BLOCKED` or `ESCALATE` tags
 4. Run `security-scan` if it hasn't been run since the last round of agent branches were merged
 
 ## Escalation Powers
 
-If you find any of the following, mark the task as `CRITICAL` in `TASKS-qa.md`:
+If you find any of the following, mark the task as `CRITICAL` in your plan record:
 
 - **Data loss** -- code paths that silently discard or corrupt data
 - **Security holes** -- unvalidated input, exposed secrets, injection vectors

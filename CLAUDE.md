@@ -50,12 +50,12 @@ Read this section FIRST. These are the rules that save you from wasting tokens a
 - **NEVER use bare print/console.log for operational output** -- use the language's logging framework
 - **NEVER dump full file contents when a summary exists** -- read summaries first, drill down on demand
 - **NEVER use unseeded randomness** -- all randomized code MUST accept a `seed` parameter
-- **NEVER modify files owned by another agent** -- add a `BLOCKED` tag in your plan file instead
+- **NEVER modify files owned by another agent** -- add a `BLOCKED` tag in your plan record instead
 
 ### ALWAYS Do These
 
 - **ALWAYS pipe command output through `tail`** -- bound your token consumption
-- **ALWAYS read TASKS.md and your plan file before starting work** -- check for assigned tasks and escalations
+- **ALWAYS read the task board and your plan record before starting work** (`TASKS.md` and `TASKS-<agent>.md` by default) -- check for assigned tasks and escalations
 - **ALWAYS run tests before committing** -- zero tolerance for test failures
 - **ALWAYS include before/after metrics** when reporting optimization results
 - **ALWAYS log the seed** in every run so results can be replicated
@@ -79,7 +79,7 @@ You are an AI agent with a finite context window. Optimize for it:
 When dropped into an unfamiliar codebase, read in this order:
 
 1. **CLAUDE.md** -- this file (project rules, structure, conventions)
-2. **TASKS.md** and your **per-agent plan file** (TASKS-core.md, TASKS-feature.md, or TASKS-qa.md) -- task assignments and detailed checklists
+2. **The task board** and your **plan record** (by default `TASKS.md` and TASKS-core.md, TASKS-feature.md or TASKS-qa.md; see Communication) -- task assignments and detailed checklists
 3. **Project structure** -- `ls` the source and test directories
 4. **Constants file** -- all tuning parameters and configuration values
 5. **Test fixtures** -- understand the shared setup and factory functions
@@ -301,13 +301,24 @@ Agents should almost NEVER need to go past Step 2.
 
 When multiple agents run in parallel (via worktrees), they MUST follow this protocol.
 
+### Communication
+
+The rule that matters is that **agents communicate in writing, somewhere traceable**. Every assignment, status change, result, blocker and escalation is written down where the other agents and the humans can find it later and see who said what, and when. Nothing lives only in an agent's head or a session that ends.
+
+The medium is the project's choice. It can be the markdown task files described below, GitHub issues and PR comments, a shared agent channel, or anything else that is written, persistent and attributable. This protocol uses two terms for whatever the project picks:
+
+- **Task board** — the single shared list of tasks, assignments and statuses. The lead-agent owns it.
+- **Plan record** — each agent's own record of its checklists, progress, results and blockers. Each agent writes only to its own.
+
+If the project hasn't chosen a medium, use the default task files below.
+
 ### Execution Model
 
 1. **Lead-agent runs first** -- diagnoses, plans, creates tasks
 2. **Core, feature, and QA agents start in parallel** -- each works on assigned tasks independently
-3. **Lead-agent monitors and validates** -- reads agent plan files, handles escalations, merges branches
+3. **Lead-agent monitors and validates** -- reads agent plan records, handles escalations, merges branches
 
-### Task Architecture
+### Default Medium: Task Files
 
 | File | Owner | Purpose |
 |------|-------|---------|
@@ -316,31 +327,31 @@ When multiple agents run in parallel (via worktrees), they MUST follow this prot
 | `TASKS-feature.md` | feature-agent | Detailed checklists, progress, and results for feature tasks |
 | `TASKS-qa.md` | qa-agent | Detailed checklists, audit reports, and escalations |
 
-**Each agent only writes to their own plan file.** This eliminates merge conflicts on shared files.
+**Each agent writes only to its own plan record.** With files, this avoids merge conflicts on shared files; with other media, it keeps each agent's trail separate.
 
 ### Task Workflow
 
-1. Lead creates tasks in `TASKS.md` and writes detailed checklists in the appropriate agent plan file
-2. Agents read `TASKS.md` for assignments, then work from their own plan file
-3. Agents check off items (using `- [x]` checkboxes) and write results in their plan file as they progress
-4. Lead validates by reading agent plan files, running `code-review`, and verifying metrics
-5. Lead marks the task as `done` in `TASKS.md` after validation — a task is not officially complete until this step
+1. Lead creates tasks on the task board and writes detailed checklists in the appropriate agent's plan record
+2. Agents read the task board for assignments, then work from their own plan record
+3. Agents check off items and write results in their plan record as they progress
+4. Lead validates by reading agent plan records, running `code-review`, and verifying metrics
+5. Lead marks the task as `done` on the task board after validation — a task is not officially complete until this step
 
 ### Task Result Format
 
-Every completed task MUST report in the agent's plan file:
+Every completed task MUST report in the agent's plan record:
 - **What changed**: One sentence describing the code change
 - **Metrics**: Before/after numbers for the targeted metric
 - **Tests**: Pass count, any new tests added
 
 ### Escalation
 
-- If blocked by another agent's code, mark the task as **BLOCKED** in your plan file with a description
-- If QA finds a critical issue (data loss, security hole, crash), mark as **CRITICAL** in `TASKS-qa.md`
-- Lead-agent monitors plan files, triages blockers, and updates plan files when resolved
+- If blocked by another agent's code, mark the task as **BLOCKED** in your plan record with a description
+- If QA finds a critical issue (data loss, security hole, crash), mark it as **CRITICAL** in its plan record (`TASKS-qa.md` by default)
+- Lead-agent monitors plan records, triages blockers, and updates them when resolved
 - Do NOT silently stall -- always surface the blocker
 
-Escalation entry format in your plan file:
+Escalation entry format in your plan record (shown as markdown; keep the same fields in any medium):
 
 ```
 ### T5: Implement retry logic
@@ -354,7 +365,7 @@ Include: which agent/file is blocking, what's missing, and when you escalated.
 ### Conflict Prevention
 
 - Each agent only modifies their owned files -- never touch another agent's code
-- If you discover work needed in another agent's files, add it to your plan file with a `BLOCKED` tag
+- If you discover work needed in another agent's files, add it to your plan record with a `BLOCKED` tag
 - One task at a time -- finish or abandon before claiming another
 - Lead-agent handles all cross-cutting changes
 
@@ -406,7 +417,7 @@ This copies the full structure, creates directories, and sets up language-specif
 2. Copy this CLAUDE.md -- update the **Project Tooling** table for your language/stack
 3. Replace the **Project Structure** section with your actual layout
 4. Copy `templates/.gitignore` (adapt language-specific patterns)
-5. Copy `templates/TASKS.md` for task tracking and `templates/TASKS-agent.md` to create per-agent plan files (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`)
+5. Copy `templates/TASKS.md` for task tracking and `templates/TASKS-agent.md` to create per-agent plan records (`TASKS-core.md`, `TASKS-feature.md`, `TASKS-qa.md`), unless the project tracks work in another written, traceable medium such as GitHub issues
 6. If Python: copy `templates/pyproject.toml`, `templates/conftest.py`, `templates/constants.py`
 7. If other language: create equivalent config, test fixtures, and constants files
 8. If using Claude Code hooks: copy `templates/.claude/settings.json` and `templates/.claude/hooks/`

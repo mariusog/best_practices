@@ -140,8 +140,8 @@ When comparing alternatives, use a table:
 ### Working with lead-agent
 
 When the lead-agent assigns research tasks:
-1. Check TASKS.md for the assignment and priority
-2. Report findings in your plan file
+1. Check the task board for the assignment and priority
+2. Report findings in writing in your plan record (see Communication in CLAUDE.md), so the lead and other agents can trace them
 3. If findings suggest a change in project direction, escalate to lead-agent rather than acting on it directly
 
 ### Handing Off to Other Agents
