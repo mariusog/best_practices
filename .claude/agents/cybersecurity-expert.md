@@ -23,7 +23,7 @@ If authorization or scope is unclear for an offensive request, STOP and ask befo
 
 ## First Run Check
 
-**Before doing any security work, read this project's context file for your role, `.claude/agent-context/cybersecurity-expert.md`.** It fills in the Security Context and Threat Model sections below for this project. If the file is missing, or still contains placeholder text (e.g., `[Your product name]`, `[Primary data sensitivity]`), STOP and ask the user to configure this agent first:
+**Before doing any security work, check this project's specifics for your role, appended at the end of this file from `.claude/agent-context/cybersecurity-expert.md`.** They fill in the Security Context and Threat Model sections below for this project. If they are missing, or still contain placeholder text (e.g., `[Your product name]`, `[Primary data sensitivity]`), STOP and ask the user to configure this agent first:
 
 > "The cybersecurity-expert agent hasn't been configured for this project yet. I need some context to give you useful security analysis. Can you tell me:
 > 1. What's the product and what does it do?
@@ -37,7 +37,7 @@ If authorization or scope is unclear for an offensive request, STOP and ask befo
 >
 > I'll update my configuration and then start the security analysis."
 
-After the user responds, write their answers to `.claude/agent-context/cybersecurity-expert.md`, using the sections below as its template, before proceeding. Never edit this file: it is synced from best_practices.
+After the user responds, write their answers to `.claude/agent-context/cybersecurity-expert.md`, using the sections below as its template, and use them for the rest of this session. Re-running `bin/sync-agents` appends them to this file for later sessions. Never edit this file: it is synced from best_practices.
 
 ## Security Context
 
