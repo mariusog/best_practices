@@ -11,7 +11,7 @@ usage() {
     echo "Usage: $0 <target-directory> [--lang python|typescript|go|rust|ruby]"
     echo ""
     echo "Sets up a new project with best-practices structure:"
-    echo "  - .claude/ directory (agents, skills)"
+    echo "  - .claude/ directory (skills, plus agent roles synced via bin/sync-agents)"
     echo "  - CLAUDE.md (project instructions)"
     echo "  - TASKS.md (task tracking)"
     echo "  - .gitignore"
@@ -78,11 +78,11 @@ echo "Bootstrapping project in: $TARGET"
 echo "Language: $PROJECT_LANG"
 echo ""
 
-# 1. Copy .claude directory (agents + skills)
-echo "[1/7] Copying .claude/ (agents and skills)..."
+# 1. Copy .claude/ skills and sync the shared agent roles
+echo "[1/7] Copying .claude/ skills and syncing agent roles..."
 if [[ -d "$TARGET/.claude" ]]; then
     # Merge into existing .claude/ without overwriting files
-    find "$SCRIPT_DIR/.claude" -type f -print0 | while IFS= read -r -d '' src; do
+    find "$SCRIPT_DIR/.claude" -type f -not -path "$SCRIPT_DIR/.claude/agents/*" -print0 | while IFS= read -r -d '' src; do
         rel="${src#"$SCRIPT_DIR/"}"
         dest="$TARGET/$rel"
         if [[ ! -f "$dest" ]]; then
@@ -91,8 +91,12 @@ if [[ -d "$TARGET/.claude" ]]; then
         fi
     done
 else
-    cp -r "$SCRIPT_DIR/.claude" "$TARGET/"
+    mkdir -p "$TARGET/.claude"
+    find "$SCRIPT_DIR/.claude" -mindepth 1 -maxdepth 1 -not -name agents -exec cp -r {} "$TARGET/.claude/" \;
 fi
+# Roles are synced, never copied for editing; project specifics go in .claude/agent-context/
+"$SCRIPT_DIR/bin/sync-agents" "$TARGET"
+mkdir -p "$TARGET/.claude/agent-context"
 
 # 2. Copy CLAUDE.md
 echo "[2/7] Copying CLAUDE.md..."

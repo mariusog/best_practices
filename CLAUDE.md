@@ -312,6 +312,18 @@ The medium is the project's choice. It can be the markdown task files described 
 
 If the project hasn't chosen a medium, use the default task files below.
 
+### Agent Definitions
+
+best_practices is the single source of truth for every shared role. A project holds three kinds of agent files:
+
+| Kind | Where | Edited in the project? |
+|------|-------|------------------------|
+| Shared roles | `.claude/agents/<role>.md`, listed under `roles:` in `.claude/agents/UPSTREAM` | **Never.** Synced from best_practices with `bin/sync-agents`; change the role upstream, then re-sync |
+| Project specifics for a shared role | `.claude/agent-context/<role>.md` (owned files, product context, local conventions) | Yes. Each role reads its file first |
+| Project-only agents | `.claude/agents/<name>.md`, not listed in `UPSTREAM` | Yes, as long as the name isn't a shared role's |
+
+Run `bin/sync-agents --check <project-dir>` from a best_practices checkout in the project's CI. It fails when a synced role differs from best_practices at the commit recorded in `UPSTREAM`, or when a project-only agent reuses a shared role's name.
+
 ### Execution Model
 
 1. **Lead-agent runs first** -- diagnoses, plans, creates tasks

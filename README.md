@@ -66,6 +66,8 @@ Run as the qa-agent. Audit src/handlers/ for test coverage gaps.
 Run as the researcher-agent. What's the best approach for caching API responses?
 ```
 
+**Agent roles**: best_practices is the single source of truth for every shared role. `bootstrap.sh` syncs the roles into a project with `bin/sync-agents`, which records the commit in `.claude/agents/UPSTREAM`. The project never edits them: each role reads its project specifics (owned files, product context) from `.claude/agent-context/<role>.md`, and the project's CI runs `bin/sync-agents --check` to catch drift. A project can add agents of its own under new names.
+
 **Coordination model**: Agents communicate in writing, somewhere traceable: every assignment, result and blocker is recorded where the team and the humans can find it later. The task files above are the default, but GitHub issues and PR comments, a shared agent channel or any other written, attributable medium works. Each agent works from its own plan record, and agents that hit blockers mark them as `BLOCKED` there. The lead triages blockers, resolves them, and re-spawns agents as needed.
 
 ### Skills (`.claude/skills/`) — 33 total
