@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Copy shared agent roles from this best_practices checkout into a project, or
+# check that the project's copies still match.
+#
+# Usage:
+#   bin/sync-agents <project-dir> [--ref <git-ref>] [--roles "<role> <role> ..."]
+#   bin/sync-agents --check <project-dir>
+#
+# The project records what it takes in .claude/agents/UPSTREAM:
+#
+#   source: mariusog/best_practices
+#   ref: <full commit sha>
+#   roles: lead-agent core-agent qa-agent
+#
+# Synced roles are never edited in the project. Project specifics for a role
+# go in .claude/agent-context/<role>.md. Agents in .claude/agents/ that are not
+# listed under `roles:` are the project's own and are left alone, as long as
+# they don't reuse a shared role's name.
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SOURCE="mariusog/best_practices"
+AGENTS_DIR=".claude/agents"
+
+usage() {
+    sed -n '4,9p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+    exit 1
+}
+
+upstream_value() {
+    sed -n "s/^$2: *//p" "$1" | head -1
+}
+
+roles_at() {
+    git -C "$ROOT" ls-tree --name-only "$1" "$AGENTS_DIR/" | sed -n "s|^$AGENTS_DIR/\(.*\)\.md$|\1|p"
+}
+
+role_body() {
+    git -C "$ROOT" show "$1:$AGENTS_DIR/$2.md"
+}
+
+resolve() {
+    git -C "$ROOT" rev-parse --verify --quiet "$1^{commit}" || {
+        echo "sync-agents: unknown ref '$1' in $ROOT" >&2
+        exit 1
+    }
+}
+
+sync() {
+    local target="$1" ref="$2" roles="$3"
+    local manifest="$target/$AGENTS_DIR/UPSTREAM" sha old_roles role
+    sha="$(resolve "$ref")"
+    if [[ -z "$roles" && -f "$manifest" ]]; then roles="$(upstream_value "$manifest" roles)"; fi
+    if [[ -z "$roles" ]]; then roles="$(roles_at "$sha" | tr '\n' ' ')"; fi
+    old_roles=""
+    if [[ -f "$manifest" ]]; then old_roles="$(upstream_value "$manifest" roles)"; fi
+
+    mkdir -p "$target/$AGENTS_DIR"
+    for role in $roles; do
+        role_body "$sha" "$role" > "$target/$AGENTS_DIR/$role.md" 2>/dev/null || {
+            echo "sync-agents: role '$role' does not exist at $sha" >&2
+            exit 1
+        }
+    done
+    for role in $old_roles; do
+        case " $roles " in *" $role "*) ;; *) rm -f "$target/$AGENTS_DIR/$role.md" ;; esac
+    done
+
+    printf 'source: %s\nref: %s\nroles: %s\n' "$SOURCE" "$sha" "$(echo $roles)" > "$manifest"
+    echo "Synced $(echo $roles | wc -w | tr -d ' ') role(s) from $SOURCE@${sha:0:7} into $target/$AGENTS_DIR"
+}
+
+check() {
+    local target="$1" manifest="$1/$AGENTS_DIR/UPSTREAM" sha roles role name status=0
+    [[ -f "$manifest" ]] || { echo "sync-agents: $manifest not found" >&2; exit 1; }
+    sha="$(resolve "$(upstream_value "$manifest" ref)")"
+    roles="$(upstream_value "$manifest" roles)"
+
+    for role in $roles; do
+        if ! role_body "$sha" "$role" > /dev/null 2>&1; then
+            echo "$role: not a role at $SOURCE@${sha:0:7}"
+            status=1
+        elif ! role_body "$sha" "$role" | cmp -s - "$target/$AGENTS_DIR/$role.md"; then
+            echo "$role: differs from $SOURCE@${sha:0:7}. Change the role in best_practices, or put project specifics in .claude/agent-context/$role.md"
+            status=1
+        fi
+    done
+
+    for file in "$target/$AGENTS_DIR"/*.md; do
+        [[ -e "$file" ]] || continue
+        name="$(basename "$file" .md)"
+        case " $roles " in *" $name "*) continue ;; esac
+        if roles_at "$sha" | grep -qx "$name"; then
+            echo "$name: a project agent can't reuse the shared role name '$name'. Rename it, or add it to roles: and sync"
+            status=1
+        fi
+    done
+
+    [[ $status -eq 0 ]] && echo "Agents match $SOURCE@${sha:0:7}"
+    return $status
+}
+
+mode="sync" target="" ref="HEAD" roles=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --check) mode="check"; shift ;;
+        --ref) ref="${2:?--ref needs a value}"; shift 2 ;;
+        --roles) roles="${2:?--roles needs a value}"; shift 2 ;;
+        -h|--help) usage ;;
+        -*) echo "Unknown option: $1" >&2; usage ;;
+        *) target="$1"; shift ;;
+    esac
+done
+[[ -n "$target" && -d "$target" ]] || usage
+
+if [[ "$mode" == "check" ]]; then
+    check "$target"
+else
+    sync "$target" "$ref" "$roles"
+fi
