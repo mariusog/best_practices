@@ -3,8 +3,20 @@
 ROOT="${1:-.}"
 status=0
 
-# CI workflow must be valid YAML
-if ! python3 -c "import yaml; yaml.safe_load(open('$ROOT/templates/.github/workflows/ci.yml'))" 2>/dev/null; then
+# CI workflow must be valid YAML. PyYAML isn't in Python's standard library,
+# so fall back to Ruby's bundled Psych, and say so when neither parser exists
+# instead of reporting the file as invalid.
+ci="$ROOT/templates/.github/workflows/ci.yml"
+if python3 -c "import yaml" 2>/dev/null; then
+    yaml_check=(python3 -c "import sys, yaml; yaml.safe_load(open(sys.argv[1]))" "$ci")
+elif command -v ruby > /dev/null; then
+    yaml_check=(ruby -ryaml -e "YAML.safe_load(File.read(ARGV[0]), aliases: true)" "$ci")
+else
+    yaml_check=()
+    echo "ci.yml: no YAML parser available (install PyYAML or Ruby)"
+    status=1
+fi
+if [[ ${#yaml_check[@]} -gt 0 ]] && ! "${yaml_check[@]}" > /dev/null 2>&1; then
     echo "ci.yml: invalid YAML"
     status=1
 fi
