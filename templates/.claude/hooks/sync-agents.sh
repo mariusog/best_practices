@@ -16,6 +16,7 @@ set -uo pipefail
 
 PROJECT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 REPO_URL="${BEST_PRACTICES_URL:-https://github.com/mariusog/best_practices.git}"
+BRANCH="${BEST_PRACTICES_REF:-main}"
 CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/best_practices"
 FETCH_EVERY_SECS=600
 FETCH_TIMEOUT_SECS=20
@@ -46,11 +47,11 @@ fetched_recently() {
 
 if [[ ! -d "$CACHE/.git" ]]; then
     mkdir -p "$(dirname "$CACHE")"
-    with_timeout git clone -q --depth 1 "$REPO_URL" "$CACHE" 2> /dev/null ||
+    with_timeout git clone -q --depth 1 --branch "$BRANCH" "$REPO_URL" "$CACHE" 2> /dev/null ||
         soft_fail "can't clone $REPO_URL; no shared agent roles this session"
     touch "$CACHE/.git/FETCH_HEAD"
 elif [[ $strict -eq 1 ]] || ! fetched_recently; then
-    if with_timeout git -C "$CACHE" fetch -q --depth 1 origin main 2> /dev/null; then
+    if with_timeout git -C "$CACHE" fetch -q --depth 1 origin "$BRANCH" 2> /dev/null; then
         git -C "$CACHE" reset -q --hard FETCH_HEAD
     elif [[ $strict -eq 1 ]]; then
         soft_fail "can't fetch $REPO_URL"
