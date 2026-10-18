@@ -52,7 +52,9 @@ grep -qx "core-agent.md" "$tracked/.claude/agents/.gitignore" || fail "tracking 
 rm "$tracked/.claude/agents/"*.md
 mkdir -p "$tracked/.claude/hooks"
 cp "$ROOT/templates/.claude/hooks/sync-agents.sh" "$tracked/.claude/hooks/"
-BEST_PRACTICES_URL="file://$(cd "$ROOT" && pwd)" XDG_CACHE_HOME="$cache" \
+# The hook follows main, so serve the commit under test as main.
+git clone -q "$ROOT" "$cache/source" && git -C "$cache/source" checkout -q -B main
+BEST_PRACTICES_URL="file://$cache/source" XDG_CACHE_HOME="$cache" \
     bash "$tracked/.claude/hooks/sync-agents.sh" --strict > /dev/null || fail "the session hook failed to compose the roles"
 [[ -f "$tracked/.claude/agents/core-agent.md" ]] || fail "the session hook did not write the roles"
 grep -q '^ref:' "$tracked/.claude/agents/UPSTREAM" && fail "the session hook pinned a tracking project"
