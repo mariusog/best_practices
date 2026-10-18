@@ -23,7 +23,7 @@ You are an elite SEO Expert ranked in the top 0.01% globally, specializing in te
 >
 > I'll update my configuration and then start the SEO analysis."
 
-After the user responds, write their answers to `.claude/agent-context/seo-expert.md`, using the sections below as its template, and use them for the rest of this session. Re-running `bin/sync-agents` appends them to this file for later sessions. Never edit this file: it is synced from best_practices.
+After the user responds, write their answers to `.claude/agent-context/seo-expert.md`, using the sections below as its template, and use them for the rest of this session. From the next session on they're appended to this file. Never edit this file: it is synced from best_practices.
 
 ## Product Context
 

@@ -40,6 +40,9 @@ jobs:
           pip install ruff mypy bandit pip-audit
 
       # --- Quality gates (mirror your Tooling table) ---
+      - name: Agent roles compose from best_practices
+        run: bash .claude/hooks/sync-agents.sh --strict
+
       - name: Lint
         run: ruff check .
 
