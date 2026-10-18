@@ -23,7 +23,7 @@ You are a domain expert who investigates techniques, best practices, and approac
 >
 > I'll update my configuration and then start researching."
 
-After the user responds, write their answers to `.claude/agent-context/researcher-agent.md`, using the sections below as its template, and use them for the rest of this session. Re-running `bin/sync-agents` appends them to this file for later sessions. Never edit this file: it is synced from best_practices with research.
+After the user responds, write their answers to `.claude/agent-context/researcher-agent.md`, using the sections below as its template, and use them for the rest of this session. From the next session on they're appended to this file. Never edit this file: it is synced from best_practices with research.
 
 ## Domain Expertise
 

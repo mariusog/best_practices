@@ -11,7 +11,7 @@ usage() {
     echo "Usage: $0 <target-directory> [--lang python|typescript|go|rust|ruby]"
     echo ""
     echo "Sets up a new project with best-practices structure:"
-    echo "  - .claude/ directory (skills, plus agent roles synced via bin/sync-agents)"
+    echo "  - .claude/ directory (skills, plus agent roles composed from best_practices main at each session start)"
     echo "  - CLAUDE.md (project instructions)"
     echo "  - TASKS.md (task tracking)"
     echo "  - .gitignore"
@@ -95,7 +95,7 @@ else
     find "$SCRIPT_DIR/.claude" -mindepth 1 -maxdepth 1 -not -name agents -exec cp -r {} "$TARGET/.claude/" \;
 fi
 # Roles are synced, never copied for editing; project specifics go in .claude/agent-context/
-"$SCRIPT_DIR/bin/sync-agents" "$TARGET"
+"$SCRIPT_DIR/bin/sync-agents" "$TARGET" --track
 mkdir -p "$TARGET/.claude/agent-context"
 
 # 2. Copy CLAUDE.md

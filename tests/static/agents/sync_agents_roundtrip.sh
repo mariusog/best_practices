@@ -42,4 +42,21 @@ echo "Owns src/ too" >> "$context/core-agent.md"
 printf -- '---\nname: renamed\n---\n' > "$context/core-agent.md"
 "$ROOT/bin/sync-agents" "$target" > /dev/null 2>&1 && fail "sync let a context file set name:"
 
+# Tracking mode: no ref in UPSTREAM, roles gitignored, the session hook composes from main.
+tracked="$(mktemp -d)" cache="$(mktemp -d)"
+trap 'rm -rf "$target" "$tracked" "$cache"' EXIT
+"$ROOT/bin/sync-agents" "$tracked" --roles "lead-agent core-agent" --track > /dev/null || fail "tracking sync failed"
+grep -q '^ref:' "$tracked/.claude/agents/UPSTREAM" && fail "tracking sync wrote a ref: into UPSTREAM"
+grep -qx "core-agent.md" "$tracked/.claude/agents/.gitignore" || fail "tracking sync did not gitignore its roles"
+"$ROOT/bin/sync-agents" --check "$tracked" > /dev/null || fail "check failed on a tracking project"
+rm "$tracked/.claude/agents/"*.md
+mkdir -p "$tracked/.claude/hooks"
+cp "$ROOT/templates/.claude/hooks/sync-agents.sh" "$tracked/.claude/hooks/"
+BEST_PRACTICES_URL="file://$(cd "$ROOT" && pwd)" XDG_CACHE_HOME="$cache" \
+    bash "$tracked/.claude/hooks/sync-agents.sh" --strict > /dev/null || fail "the session hook failed to compose the roles"
+[[ -f "$tracked/.claude/agents/core-agent.md" ]] || fail "the session hook did not write the roles"
+grep -q '^ref:' "$tracked/.claude/agents/UPSTREAM" && fail "the session hook pinned a tracking project"
+BEST_PRACTICES_URL="file:///nonexistent" XDG_CACHE_HOME="$(mktemp -d)" \
+    bash "$tracked/.claude/hooks/sync-agents.sh" 2> /dev/null || fail "the session hook failed a session when offline"
+
 exit $status

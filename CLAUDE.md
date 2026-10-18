@@ -318,11 +318,18 @@ best_practices is the single source of truth for every shared role. A project ho
 
 | Kind | Where | Edited in the project? |
 |------|-------|------------------------|
-| Shared roles | `.claude/agents/<role>.md`, listed under `roles:` in `.claude/agents/UPSTREAM` | **Never.** Synced from best_practices with `bin/sync-agents`; change the role upstream, then re-sync |
-| Project specifics for a shared role | `.claude/agent-context/<role>.md` (owned files, product context, local conventions) | Yes. `bin/sync-agents` appends its body to the role, and its frontmatter keys (e.g. `description`, `model`) replace the role's. Re-sync after editing it |
+| Shared roles | `.claude/agents/<role>.md`, listed under `roles:` in `.claude/agents/UPSTREAM` | **Never, and not committed.** Generated from best_practices main by `.claude/hooks/sync-agents.sh` and gitignored; change the role upstream |
+| Project specifics for a shared role | `.claude/agent-context/<role>.md` (owned files, product context, local conventions) | Yes. `bin/sync-agents` appends its body to the role, and its frontmatter keys (e.g. `description`, `model`) replace the role's. Applies from the next session |
 | Project-only agents | `.claude/agents/<name>.md`, not listed in `UPSTREAM` | Yes, as long as the name isn't a shared role's |
 
-Run `bin/sync-agents --check <project-dir>` from a best_practices checkout in the project's CI. It fails when a synced role differs from what best_practices at the commit recorded in `UPSTREAM` plus the project's context file produce (a hand edit, or a context file edited without re-syncing), or when a project-only agent reuses a shared role's name.
+`.claude/hooks/sync-agents.sh` keeps a shallow clone of best_practices in `~/.cache/best_practices` and runs its `bin/sync-agents`. It runs at two points:
+
+- **Devcontainer creation** (`postCreateCommand`), so the first session already has its agents.
+- **Every session start** (a `SessionStart` hook), refreshing at most every 10 minutes. Claude Code reads `.claude/agents/` before that hook runs, so a change in best_practices or in a context file applies from the next session.
+
+It never fails a session: offline, the project keeps the roles it last composed. CI runs it with `--strict`, which fetches every time and fails on a context file that can't be composed, or on a project-only agent that reuses a shared role's name.
+
+A project that needs a fixed version can still pin one: put a `ref: <sha>` line in `UPSTREAM`, commit its roles, and re-sync by hand with `bin/sync-agents <project-dir> --ref <sha>`. The hook leaves a pinned project alone.
 
 A context file's frontmatter is how a project keeps its own triggers: Claude Code picks an agent by its `description`, so a project can replace the generic one with examples in its own terms. It can't set `name`.
 
