@@ -136,12 +136,15 @@ Goal: address review feedback before handing off. Once CI is green, the PR's rev
    - PR-level reviews: `gh api repos/<owner>/<repo>/pulls/<PR#>/reviews`
    - Issue-style comments: `gh pr view <PR#> --json comments`
    - Include automated reviewers (Codex, Copilot) — they routinely catch real P1/P2 correctness bugs, not just style.
-2. **Triage every comment** — nothing is silently ignored:
+2. **Sort every comment by author.** You post under the user's GitHub identity, so who wrote a comment decides whether you may answer it:
+   - **Automated reviewers** (Codex, Copilot, other `[bot]` accounts) and **the user's own comments**: handle autonomously with steps 3–5.
+   - **Any other human**: you may push a fix for an objectively valid finding on code this PR touches, but never reply, resolve their thread, @-mention them, or file a follow-up they suggested on your own, not even a "fixed in <sha>". Draft the reply in chat, show the user your triage, and post only what they approve. A colleague hears from the user, not from the agent.
+3. **Triage every comment** — nothing is silently ignored:
    - **Fix in this PR** if it's a valid correctness/quality issue on code this PR touches (the default for P1/P2 findings). Write a regression test where applicable, commit, push.
    - **Reply + file a follow-up issue** if it's out-of-scope or a larger refactor — same follow-up rule as Phases 3–4.
    - **Reply + decline** with a brief rationale if it's a false positive or you disagree.
-3. Post a short reply on each thread (or a single PR comment referencing the fix commit) so every comment is visibly resolved, fixed, or answered.
-4. **Any fix push re-opens Phase 5** — wait for green CI again before proceeding. Loop Phases 5↔6 until CI is green AND every comment is resolved.
+4. **Reply, then resolve the thread.** A reply alone leaves the thread open, which reads as unaddressed. REST can't resolve threads; use GraphQL (`resolveReviewThread` with the thread's `PRRT_…` id, listed via `pullRequest.reviewThreads`). Leave a thread open when the answer is "deferred, awaiting a decision". Mark every agent-posted comment as agent output with a footer, since it appears under the user's name.
+5. **Any fix push re-opens Phase 5** — wait for green CI again before proceeding, and re-check for new comments: a fix often draws a new finding on the next review round. Loop Phases 5↔6 until CI is green AND every comment is resolved.
 
 Exit criteria: every review comment is fixed, deferred-with-issue, or answered; CI is green on the final commit.
 
@@ -166,6 +169,7 @@ Then **stop**. Merging is the user's call.
 - **Follow-up rule is "issue unless trivial"**: trivial = (a) touches a file already in the PR diff AND (b) ≤ 2-line change. Anything else → file an issue.
 - **CI failures are NEVER follow-ups.** If CI is red, the PR is not done.
 - **Don't skip a phase because its skill is missing** — fall back and apply it by hand.
+- **Never answer another human's review comment on your own.** Only bot reviewers and the user's own comments get autonomous replies and resolves; a human colleague's thread waits for the user's approval, even when the reply would only report a fix.
 - **Don't ping with unresolved review comments.** Automated reviewers (Codex/Copilot) often flag genuine bugs — treat their P1/P2 findings like any other; fix or explicitly answer them.
 - **Don't merge for the user.** Stop at the ping step.
 - **One concurrent PR through this pipeline at a time** unless the user explicitly says otherwise. Parallel PRs multiply context cost without speeding up the human review bottleneck.
